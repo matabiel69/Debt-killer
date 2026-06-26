@@ -2,2093 +2,1156 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Debt Killer">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0F1611">
+<meta name="theme-color" content="#5A9D75">
 <title>Debt Killer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎯%3C/text%3E%3C/svg%3E">
 <style>
 :root {
-  --bg: #0F1611;
-  --bg-soft: #16201A;
-  --bg-card: #1B2620;
-  --bg-elev: #243029;
-  --line: #2D3A33;
-  --line-soft: #1F2A24;
-  --ink: #E8EDE9;
-  --ink-soft: #A8B5AD;
-  --ink-dim: #6F7C75;
   --sage: #7FB890;
   --sage-deep: #5A9D75;
-  --sage-glow: rgba(127, 184, 144, 0.15);
-  --amber: #E8B66B;
-  --amber-soft: #C99850;
-  --rose: #D88A8A;
-  --rose-soft: rgba(216, 138, 138, 0.12);
-  --kill: #F5A85B;
-  --kill-bg: rgba(245, 168, 91, 0.1);
+  --sage-dark: #3F7A55;
+  --sage-bg: #F1F7F2;
+  --paper: #FFFFFF;
+  --ink: #1F2A24;
+  --ink-soft: #4A5751;
+  --line: #DCE6DE;
+  --gold: #C9A961;
+  --warn: #B8741A;
+  --dead: #9DB0A4;
 }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; background: var(--sage-bg); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+.app { max-width: 720px; margin: 0 auto; padding-bottom: 100px; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-html {
-  background: var(--bg);
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  background: var(--bg);
-  background-image:
-    radial-gradient(ellipse 600px 400px at 50% 0%, rgba(127, 184, 144, 0.06), transparent),
-    radial-gradient(ellipse 600px 400px at 50% 100%, rgba(232, 182, 107, 0.04), transparent);
-  color: var(--ink);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  min-height: 100vh;
-  padding-top: env(safe-area-inset-top);
-  -webkit-overflow-scrolling: touch;
-}
-
-.app { max-width: 480px; margin: 0 auto; padding: 0 18px 110px; min-height: 100vh; }
-
-/* Top bar */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(15, 22, 17, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  margin: 0 -18px;
-  padding: 18px 18px 14px;
-  border-bottom: 1px solid var(--line-soft);
-  will-change: transform;
-}
-
-.brand-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.brand {
-  font-family: 'Instrument Serif', serif;
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-.brand em { color: var(--sage); font-style: italic; }
-
-.today-pill {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sage);
-  background: var(--sage-glow);
-  border: 1px solid rgba(127, 184, 144, 0.25);
-  padding: 6px 11px;
-  border-radius: 100px;
-  white-space: nowrap;
-}
-
-/* Hero */
-.hero {
-  margin-top: 22px;
-  padding: 24px 22px;
-  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-soft) 100%);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, var(--sage-glow), transparent 70%);
-  pointer-events: none;
-}
-
-.hero-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  margin-bottom: 8px;
-}
-
-.hero-amount {
-  font-family: 'Instrument Serif', serif;
-  font-size: 44px;
-  font-weight: 400;
-  line-height: 1;
-  color: var(--ink);
-  letter-spacing: -0.02em;
-  position: relative;
-}
-.hero-amount .cents { font-size: 22px; color: var(--ink-soft); }
-.hero-amount.changed { animation: numberPulse 0.5s ease-out; }
-@keyframes numberPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.04); color: var(--sage); }
-  100% { transform: scale(1); }
-}
-
-.hero-sub {
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--ink-soft);
-}
-
-.progress-track {
-  margin-top: 20px;
-  height: 8px;
-  background: var(--bg-elev);
-  border-radius: 100px;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--sage-deep), var(--sage));
-  border-radius: 100px;
-  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-.progress-fill::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: shimmer 2.5s ease-in-out infinite;
-}
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.progress-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--ink-dim);
-}
-.progress-meta strong { color: var(--ink); font-weight: 600; }
-
-/* Stats grid */
-.stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 14px;
-}
-.stat {
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 14px 16px;
-}
-.stat-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  margin-bottom: 6px;
-}
-.stat-value {
-  font-family: 'Instrument Serif', serif;
-  font-size: 22px;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-}
-.stat-value.sage { color: var(--sage); }
-.stat-value.amber { color: var(--amber); }
-
-/* Cycle nav */
-.cycle-nav {
-  margin-top: 18px;
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.nav-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  color: var(--ink-soft);
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.12s, background 0.15s;
-  flex-shrink: 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  line-height: 1;
-}
-.nav-btn:active { transform: scale(0.9); background: var(--sage-glow); color: var(--sage); }
-.nav-btn:disabled { opacity: 0.3; }
-.nav-btn:disabled:active { transform: none; }
-
-.cycle-info {
-  flex: 1;
-  text-align: center;
-  cursor: pointer;
-  padding: 4px 0;
-  border-radius: 10px;
-  transition: background 0.15s;
-  min-width: 0;
-}
-.cycle-info:active { background: var(--bg-elev); }
-.cycle-info-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.cycle-info-period {
-  font-family: 'Instrument Serif', serif;
-  font-size: 18px;
-  color: var(--ink);
-  margin-top: 2px;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cycle-info-tag {
-  display: inline-block;
-  font-size: 10px;
-  margin-top: 4px;
-  padding: 2px 8px;
-  border-radius: 100px;
-  background: var(--sage-glow);
-  color: var(--sage);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.cycle-info-tag.amber { background: rgba(232, 182, 107, 0.12); color: var(--amber); }
-.cycle-info-tag.dim { background: var(--bg-elev); color: var(--ink-dim); }
-.cycle-info-tag.kill { background: rgba(245, 168, 91, 0.12); color: var(--kill); }
-
-/* Section */
-.section {
-  margin-top: 18px;
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 18px 14px;
-  border-bottom: 1px solid var(--line-soft);
-  gap: 8px;
-}
-.section-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 19px;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
-.section-emoji { font-family: 'Inter', sans-serif; }
-.section-total {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-soft);
-  text-align: right;
-  white-space: nowrap;
-}
-.section-total.green { color: var(--sage); }
-.section-total.amber { color: var(--amber); }
-.section-total .progress-text {
-  color: var(--ink-dim);
-  font-weight: 500;
-}
-
-/* Items */
-.item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 18px;
-  border-bottom: 1px solid var(--line-soft);
-  transition: background 0.15s;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.item:last-child { border-bottom: none; }
-.item:active { background: var(--bg-elev); }
-
-.checkbox {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  border: 1.5px solid var(--line);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.15s, background 0.15s, border-color 0.15s;
-  background: var(--bg-soft);
-}
-.item.checked .checkbox {
-  background: var(--sage);
-  border-color: var(--sage);
-  animation: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.item.checked.kill .checkbox {
-  background: var(--kill);
-  border-color: var(--kill);
-}
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.18); }
-  100% { transform: scale(1); }
-}
-.checkbox svg {
-  width: 14px;
-  height: 14px;
-  stroke: var(--bg);
-  stroke-width: 3;
-  fill: none;
-  opacity: 0;
-  transition: opacity 0.2s 0.05s;
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-}
-.item.checked .checkbox svg {
-  opacity: 1;
-  animation: drawCheck 0.3s ease-out 0.05s forwards;
-}
-@keyframes drawCheck {
-  to { stroke-dashoffset: 0; }
-}
-
-.item-body { flex: 1; min-width: 0; }
-.item-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transition: color 0.2s;
-}
-.item.checked .item-name { color: var(--ink-dim); text-decoration: line-through; text-decoration-color: var(--ink-dim); }
-
-.item-meta {
-  font-size: 11px;
-  color: var(--ink-dim);
-  margin-top: 2px;
-  font-weight: 500;
-}
-.item-meta.due-today { color: var(--amber); font-weight: 600; }
-.item-meta.due-soon { color: var(--amber-soft); }
-
-.item-amount {
-  font-family: 'Instrument Serif', serif;
-  font-size: 17px;
-  font-weight: 400;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-  flex-shrink: 0;
-  transition: color 0.2s;
-}
-.item.checked .item-amount { color: var(--ink-dim); text-decoration: line-through; text-decoration-color: var(--ink-dim); }
-
-.item.kill .item-name { color: var(--kill); font-weight: 600; }
-.item.checked.kill .item-name { color: var(--ink-dim); }
-.item.kill .item-amount { color: var(--kill); }
-.item.checked.kill .item-amount { color: var(--ink-dim); }
-
-/* Empty state */
-.empty {
-  padding: 30px 18px;
-  text-align: center;
-  color: var(--ink-dim);
-  font-size: 13px;
-}
+/* Header */
+.header { background: var(--sage-deep); color: white; padding: 16px 18px 14px;
+  position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.brand { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+.brand em { font-style: italic; color: #E8F0E9; font-weight: 600; }
+.tagline { font-size: 12px; opacity: 0.85; margin-top: 2px; }
 
 /* Tabs */
-.tabs {
-  display: flex;
-  gap: 6px;
-  margin-top: 22px;
-  background: var(--bg-card);
-  padding: 4px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-}
-.tab {
-  flex: 1;
-  padding: 9px 8px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-soft);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, transform 0.1s;
-  background: transparent;
-  border: none;
-  font-family: inherit;
-}
-.tab.active { background: var(--bg-elev); color: var(--ink); }
-.tab:active { transform: scale(0.97); }
+.tabs { display: flex; background: var(--paper); border-bottom: 1px solid var(--line);
+  position: sticky; top: 64px; z-index: 49; }
+.tab { flex: 1; padding: 12px 4px; text-align: center; font-size: 13px; font-weight: 600;
+  color: var(--ink-soft); border-bottom: 3px solid transparent; cursor: pointer; }
+.tab.active { color: var(--sage-dark); border-bottom-color: var(--sage-deep); }
 
-/* Floating button */
-.bottom-actions {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 18px calc(14px + env(safe-area-inset-bottom));
-  background: linear-gradient(180deg, transparent, rgba(15, 22, 17, 0.92) 25%);
-  z-index: 40;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-.go-today {
-  pointer-events: auto;
-  background: var(--sage);
-  color: var(--bg);
-  border: none;
-  padding: 12px 22px;
-  border-radius: 100px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(127, 184, 144, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: transform 0.15s, opacity 0.25s;
-}
-.go-today:active { transform: scale(0.95); }
-.go-today.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+/* Cycle nav */
+.cycle-nav { display: flex; align-items: center; justify-content: space-between;
+  background: var(--paper); padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.cycle-nav button { background: var(--sage-bg); border: 1px solid var(--line);
+  color: var(--ink); padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+.cycle-nav button:disabled { opacity: 0.4; }
+.cycle-label { font-size: 14px; font-weight: 700; color: var(--sage-dark); text-align: center; }
+.cycle-label .small { font-size: 11px; font-weight: 500; color: var(--ink-soft); display: block; margin-top: 1px; }
 
-/* Modal */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s;
-}
-.modal-backdrop.open { opacity: 1; pointer-events: auto; }
+/* Sections */
+.section { background: var(--paper); margin: 10px; border-radius: 12px;
+  border: 1px solid var(--line); overflow: hidden; }
+.section-head { padding: 12px 14px; background: var(--sage-bg);
+  border-bottom: 1px solid var(--line); font-weight: 700; font-size: 14px;
+  color: var(--sage-dark); display: flex; justify-content: space-between; align-items: center; }
+.section-head .total { font-size: 14px; color: var(--ink); font-weight: 700; }
+.row { display: flex; align-items: center; padding: 10px 14px;
+  border-bottom: 1px solid var(--line); gap: 10px; font-size: 14px; }
+.row:last-child { border-bottom: none; }
+.row.done { background: #F4F8F5; }
+.row.done .row-name { color: var(--dead); text-decoration: line-through; }
+.row.done .row-amount { color: var(--dead); }
+.row-check { width: 22px; height: 22px; min-width: 22px; border: 2px solid var(--line);
+  border-radius: 5px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; background: white; }
+.row-check.checked { background: var(--sage-deep); border-color: var(--sage-deep); }
+.row-check.checked::after { content: "✓"; color: white; font-weight: bold; font-size: 14px; }
+.row-name { flex: 1; }
+.row-name .sub { font-size: 11px; color: var(--ink-soft); display: block; margin-top: 1px; }
+.row-amount { font-weight: 700; min-width: 80px; text-align: right; }
+.row-amount input { width: 90px; padding: 4px 6px; border: 1px solid var(--line);
+  border-radius: 6px; text-align: right; font-size: 14px; font-weight: 700; font-family: inherit; }
 
-.modal {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 480px;
-  margin: 0 auto;
-  background: var(--bg-card);
-  border-radius: 24px 24px 0 0;
-  z-index: 101;
-  max-height: 80vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  transform: translateY(105%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.3s;
-  border-top: 1px solid var(--line);
-  padding-bottom: env(safe-area-inset-bottom);
-  visibility: hidden;
-  pointer-events: none;
-}
-.modal.open {
-  transform: translateY(0);
-  visibility: visible;
-  pointer-events: auto;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
-}
+/* Summary card */
+.summary { background: linear-gradient(135deg, var(--sage-deep), var(--sage-dark));
+  color: white; margin: 10px; border-radius: 12px; padding: 14px 16px; }
+.summary-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 0; font-size: 14px; }
+.summary-row.big { font-size: 18px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 10px; margin-top: 6px; }
+.summary-row .label { opacity: 0.9; }
 
-.modal-handle {
-  width: 36px;
-  height: 4px;
-  background: var(--line);
-  border-radius: 100px;
-  margin: 12px auto 4px;
-}
+/* Recommendation card */
+.rec-card { background: white; margin: 10px; border-radius: 12px;
+  border: 2px solid var(--sage); padding: 14px 16px; }
+.rec-title { font-weight: 700; color: var(--sage-dark); font-size: 15px; margin-bottom: 8px; }
+.rec-input { width: 100%; padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 8px; font-size: 16px; font-weight: 700; text-align: center; font-family: inherit;
+  margin-bottom: 10px; }
+.rec-result { background: var(--sage-bg); padding: 10px 12px; border-radius: 8px;
+  font-size: 13px; line-height: 1.5; }
+.rec-result strong { color: var(--sage-dark); }
+.rec-result .kill-item { padding: 4px 0; border-bottom: 1px dashed var(--line); }
+.rec-result .kill-item:last-child { border-bottom: none; }
 
-.modal-head {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--line-soft);
-}
-.modal-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 22px;
-  color: var(--ink);
-}
+/* Strategy toggle */
+.strategy { display: flex; gap: 6px; margin: 10px; }
+.strat-btn { flex: 1; padding: 10px; background: white; border: 1px solid var(--line);
+  border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+.strat-btn.active { background: var(--sage-deep); color: white; border-color: var(--sage-deep); }
 
-.modal-list { padding: 6px 0 12px; }
-.modal-item {
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: background 0.15s;
-  gap: 10px;
-}
-.modal-item:active { background: var(--bg-elev); }
-.modal-item.current {
-  background: var(--sage-glow);
-  border-left: 3px solid var(--sage);
-  padding-left: 17px;
-}
-.modal-item-left { flex: 1; min-width: 0; }
-.modal-item-cycle {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ink-dim);
-  letter-spacing: 0.05em;
-}
-.modal-item-period {
-  font-size: 14px;
-  color: var(--ink);
-  margin-top: 2px;
-  font-weight: 500;
-}
-.modal-item-tag {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 100px;
-  background: var(--bg-elev);
-  color: var(--ink-dim);
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
-}
-.modal-item-tag.today { background: var(--sage-glow); color: var(--sage); }
-.modal-item-tag.kill { background: rgba(245, 168, 91, 0.12); color: var(--kill); }
-.modal-item-tag.future { background: var(--bg-elev); color: var(--ink-dim); }
+/* Debt list */
+.debt-item { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.debt-item:last-child { border-bottom: none; }
+.debt-item.dead { background: #F4F8F5; }
+.debt-item.dead .debt-name { color: var(--dead); text-decoration: line-through; }
+.debt-head { display: flex; justify-content: space-between; align-items: center; }
+.debt-name { font-weight: 700; font-size: 14px; }
+.debt-meta { font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+.debt-balance { font-weight: 700; font-size: 14px; }
+.debt-bar { height: 6px; background: var(--line); border-radius: 3px;
+  margin-top: 8px; overflow: hidden; }
+.debt-bar-fill { height: 100%; background: var(--sage); transition: width 0.3s; }
+.debt-bar-fill.urgent { background: var(--warn); }
 
-/* Views */
-.view { display: none; }
-.view.active { display: block; animation: fadeIn 0.25s ease-out; }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* Phase badge */
+.phase-badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-left: 6px; }
+.phase-1 { background: #FFF4DC; color: #8B6914; }
+.phase-2 { background: #FFE3D8; color: #8B3E14; }
+.phase-3 { background: #E0EAFF; color: #1F3A8B; }
 
-/* Debt cards */
-.debt-card {
-  margin-top: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.12s, opacity 0.25s;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.debt-card:active { transform: scale(0.99); }
-.debt-card.killed {
-  background: var(--bg-soft);
-  opacity: 0.55;
-}
-.debt-card.killed .debt-name { text-decoration: line-through; color: var(--ink-dim); }
-.debt-card.killed .debt-balance { text-decoration: line-through; color: var(--ink-dim); }
+/* Milestones */
+.milestone { display: flex; align-items: center; padding: 14px;
+  border-bottom: 1px solid var(--line); gap: 12px; }
+.milestone:last-child { border-bottom: none; }
+.milestone-icon { width: 40px; height: 40px; border-radius: 20px; background: var(--sage-bg);
+  display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.milestone-icon.hit { background: var(--sage); }
+.milestone-title { font-weight: 700; font-size: 14px; }
+.milestone-sub { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
 
-.debt-body { flex: 1; min-width: 0; }
-.debt-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.debt-cycle {
-  font-size: 11px;
-  color: var(--ink-dim);
-  margin-top: 2px;
-}
-.debt-balance {
-  font-family: 'Instrument Serif', serif;
-  font-size: 20px;
-  color: var(--amber);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
+/* Hero */
+.hero { padding: 18px; text-align: center; }
+.hero-num { font-size: 32px; font-weight: 800; color: var(--sage-dark); letter-spacing: -1px; }
+.hero-label { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
 
-/* Cycle summary pills */
-.cycle-summary {
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-.summary-pill {
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 10px 12px;
-  min-width: 0;
-}
-.summary-pill-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.summary-pill-value {
-  font-family: 'Instrument Serif', serif;
-  font-size: 17px;
-  color: var(--ink);
-  margin-top: 2px;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.summary-pill-value.sage { color: var(--sage); }
-.summary-pill-value.rose { color: var(--rose); }
+/* Hidden tabs */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-/* Encouragement */
-.encourage {
-  margin-top: 12px;
-  padding: 14px 16px;
-  background: linear-gradient(135deg, var(--sage-glow), transparent);
-  border: 1px solid rgba(127, 184, 144, 0.2);
-  border-radius: 14px;
-  font-size: 13px;
-  color: var(--ink-soft);
-  text-align: center;
-  line-height: 1.5;
-}
-.encourage strong { color: var(--sage); font-weight: 700; }
-.encourage.kill { background: linear-gradient(135deg, var(--kill-bg), transparent); border-color: rgba(245, 168, 91, 0.2); }
-.encourage.kill strong { color: var(--kill); }
+/* Utility */
+.btn { background: var(--sage-deep); color: white; border: none; padding: 10px 18px;
+  border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-ghost { background: white; color: var(--sage-dark); border: 1px solid var(--sage); }
+.btn-warn { background: var(--warn); color: white; }
+.flex-row { display: flex; gap: 8px; align-items: center; padding: 10px 14px; flex-wrap: wrap; }
+.note { font-size: 12px; color: var(--ink-soft); padding: 8px 14px; background: #FAFCFA;
+  border-top: 1px dashed var(--line); }
+.warning-banner { background: #FFE3D8; color: #8B3E14; padding: 10px 14px; font-size: 13px;
+  font-weight: 600; text-align: center; }
 
-.tiny-btn {
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--ink-dim);
-  padding: 6px 12px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s;
-}
-.tiny-btn:active { background: var(--bg-elev); }
-.tiny-btn.danger { color: var(--rose); border-color: rgba(216, 138, 138, 0.3); }
+/* RIGHT NOW card */
+.now-card { background: white; margin: 10px; border-radius: 14px;
+  border: 1px solid var(--line); padding: 16px 18px; }
+.now-label { font-size: 11px; font-weight: 700; color: var(--ink-soft);
+  letter-spacing: 0.5px; text-transform: uppercase; }
+.now-amount { font-size: 36px; font-weight: 800; color: var(--sage-dark);
+  letter-spacing: -1.5px; line-height: 1.05; margin: 2px 0 4px; }
+.now-amount .cents { font-size: 16px; color: var(--ink-soft); font-weight: 700; vertical-align: top; margin-left: -3px; }
+.now-cycle { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+.now-progress { height: 6px; background: var(--sage-bg); border-radius: 3px; overflow: hidden; }
+.now-progress-fill { height: 100%; background: var(--sage-deep); transition: width 0.3s; }
+.now-progress-meta { display: flex; justify-content: space-between; font-size: 11px;
+  color: var(--ink-soft); margin-top: 6px; font-weight: 600; }
 
-/* Badges on items (edited / added) */
-.badge {
-  display: inline-block;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 1px 6px;
-  border-radius: 100px;
-  margin-left: 4px;
-  vertical-align: 1px;
-}
-.badge.edited { background: rgba(232, 182, 107, 0.15); color: var(--amber); }
-.badge.added { background: var(--sage-glow); color: var(--sage); }
+/* Three-stat row */
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px; }
+.stat-box { background: white; border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px; text-align: center; }
+.stat-label { font-size: 10px; font-weight: 700; color: var(--ink-soft);
+  letter-spacing: 0.3px; text-transform: uppercase; }
+.stat-value { font-size: 15px; font-weight: 700; color: var(--ink); margin-top: 3px; }
+.stat-value.green { color: var(--sage-dark); }
+.stat-value.orange { color: var(--warn); }
 
-/* Edit pencil */
-.item-edit {
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--ink-dim);
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  margin-left: 8px;
-  font-size: 13px;
-  cursor: pointer;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, color 0.15s, transform 0.1s;
-  font-family: inherit;
-  padding: 0;
-}
-.item-edit:active { transform: scale(0.9); background: var(--bg-elev); color: var(--ink); }
+/* Cycle badges */
+.cycle-badges { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+  padding: 8px 14px 4px; }
+.cyc-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px;
+  font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
+.cyc-badge.here { background: var(--sage); color: white; }
+.cyc-badge.va { background: #FFF4DC; color: #8B6914; }
+.cyc-badge.kill { background: #FFE3D8; color: #8B3E14; }
 
-/* Add button */
-.add-btn {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-top: 1px dashed var(--line);
-  color: var(--ink-dim);
-  padding: 14px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  letter-spacing: 0.02em;
-  transition: background 0.15s, color 0.15s;
-  text-align: center;
-}
-.add-btn:active { background: var(--bg-elev); color: var(--ink); }
-
-/* Edit sheet form */
-.edit-body {
-  padding: 18px 20px calc(20px + env(safe-area-inset-bottom));
-}
-.edit-field {
-  display: block;
-  margin-bottom: 16px;
-}
-.edit-field.flex-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.edit-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  margin-bottom: 6px;
-}
-.edit-input {
-  width: 100%;
-  background: var(--bg-soft);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  padding: 12px 14px;
-  border-radius: 12px;
-  font-size: 16px; /* ≥16 prevents iOS zoom */
-  font-family: inherit;
-  font-weight: 500;
-  -webkit-appearance: none;
-  appearance: none;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.edit-input:focus { border-color: var(--sage); }
-.edit-input[readonly] { color: var(--ink-soft); background: var(--bg); }
-.edit-amount-wrap {
-  display: flex;
-  align-items: center;
-  background: var(--bg-soft);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding-left: 14px;
-  transition: border-color 0.15s;
-}
-.edit-amount-wrap:focus-within { border-color: var(--sage); }
-.edit-amount-wrap .edit-input {
-  border: none;
-  padding-left: 4px;
-  background: transparent;
-  font-family: 'Instrument Serif', serif;
-  font-size: 22px;
-}
-.edit-amount-wrap .edit-input:focus { border: none; }
-.edit-currency {
-  font-family: 'Instrument Serif', serif;
-  font-size: 22px;
-  color: var(--ink-soft);
-}
-.edit-original-text {
-  font-family: 'Instrument Serif', serif;
-  font-size: 16px;
-  color: var(--ink-soft);
-}
-#edit-original-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--bg-soft);
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--line-soft);
-}
-#edit-original-row .edit-label { margin-bottom: 0; }
-.edit-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-}
-.edit-btn {
-  width: 100%;
-  padding: 13px;
-  border-radius: 12px;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--line);
-  background: var(--bg-elev);
-  color: var(--ink);
-  transition: transform 0.1s, background 0.15s;
-}
-.edit-btn:active { transform: scale(0.98); }
-.edit-btn.primary { background: var(--sage); color: var(--bg); border-color: var(--sage); }
-.edit-btn.danger { color: var(--rose); border-color: rgba(216, 138, 138, 0.3); background: transparent; }
-.edit-hint {
-  font-size: 11px;
-  color: var(--ink-dim);
-  text-align: center;
-  margin-top: 12px;
-  line-height: 1.5;
-}
-
-/* Confetti */
-.confetti-canvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 200;
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+/* Motivational banner */
+.banner { margin: 10px; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--gold); background: #FFF8EB; font-size: 13px; }
+.banner b { color: var(--warn); }
 </style>
 </head>
 <body>
-
 <div class="app">
-  <div class="topbar">
-    <div class="brand-row">
-      <div class="brand">Debt <em>Killer</em></div>
-      <div class="today-pill" id="today-pill">— —</div>
+  <div class="header">
+    <div class="brand">Debt <em>Killer</em></div>
+    <div class="tagline">Sept 2027 → debt-free overland life</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" data-tab="overview">Overview</div>
+    <div class="tab" data-tab="cycle">Cycle</div>
+    <div class="tab" data-tab="debts">Debts</div>
+    <div class="tab" data-tab="milestones">Goals</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="hero">
+      <div class="hero-num" id="totalDebtNum">$0</div>
+      <div class="hero-label">total unsecured debt remaining</div>
+    </div>
+    <div class="summary">
+      <div class="summary-row"><span class="label">Debts killed</span><span id="debtsKilled">0 of 0</span></div>
+      <div class="summary-row"><span class="label">Total paid down</span><span id="totalPaid">$0</span></div>
+      <div class="summary-row"><span class="label">Truck savings</span><span id="truckSavings">$0</span></div>
+      <div class="summary-row"><span class="label">Target debt-free</span><span id="targetDate">Sept 2027</span></div>
+      <div class="summary-row big"><span>Cycles to go</span><span id="cyclesLeft">--</span></div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-title">💡 What should I kill?</div>
+      <div style="font-size:12px;color:var(--ink-soft);margin-bottom:8px">Type the dollars you have extra this cycle. I'll rank what to kill.</div>
+      <input type="number" class="rec-input" id="recInput" placeholder="$500" inputmode="decimal">
+      <div class="rec-result" id="recResult">Enter an amount above to see your kill list.</div>
+    </div>
+
+    <div class="strategy">
+      <div class="strat-btn" data-strat="maxattack">🔥 Max Attack</div>
+      <div class="strat-btn active" data-strat="hybrid">💪 Balanced</div>
+      <div class="strat-btn" data-strat="safety">🛡️ Safety First</div>
+    </div>
+    <div class="note" style="margin:0 10px 10px;border-radius:8px;border:1px solid var(--line)" id="stratExplain">
+      <b>Balanced:</b> $100/cycle to savings, rest crushes debt. Hybrid kill order (small Affirms first, then highest APR). Debt-free of unsecured by Jul 2027 with $3K+ truck fund.
+    </div>
+
+    <div class="rec-card" id="snowballCard" style="display:none;border-color:var(--gold);background:#FFF8EB">
+      <div class="rec-title" style="color:var(--warn)">🔥 Snowball rolling</div>
+      <div style="font-size:13px" id="snowballText"></div>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-view="cycle" onclick="switchView('cycle')">This Cycle</button>
-    <button class="tab" data-view="debts" onclick="switchView('debts')">Debts</button>
-    <button class="tab" data-view="overview" onclick="switchView('overview')">Overview</button>
-  </div>
-
-  <!-- CYCLE VIEW -->
-  <div class="view active" id="view-cycle">
-    <div class="hero">
-      <div class="hero-label" id="hero-label">Current Balance</div>
-      <div class="hero-amount" id="hero-amount">$0</div>
-      <div class="hero-sub" id="hero-sub">Loading…</div>
-      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
-      <div class="progress-meta">
-        <span>Cycle <strong id="prog-cur">1</strong> of 34</span>
-        <span><strong id="prog-pct">0</strong>% to debt-free</span>
+  <!-- CYCLE -->
+  <div class="tab-content" id="tab-cycle">
+    <div class="now-card">
+      <div class="now-label">Right Now</div>
+      <div class="now-amount" id="nowAmount">$0</div>
+      <div class="now-cycle" id="nowCycleLabel">--</div>
+      <div class="now-progress"><div class="now-progress-fill" id="nowProgressBar" style="width:0%"></div></div>
+      <div class="now-progress-meta">
+        <span id="nowProgressLeft">Cycle 1 of 34</span>
+        <span id="nowProgressRight">0% to debt-free</span>
       </div>
     </div>
 
     <div class="cycle-nav">
-      <button class="nav-btn" id="prev-btn" onclick="changeCycle(-1)" aria-label="Previous cycle">‹</button>
-      <div class="cycle-info" onclick="openCyclePicker()">
-        <div class="cycle-info-label" id="cycle-id-label">Cycle 1</div>
-        <div class="cycle-info-period" id="cycle-period">—</div>
-        <div id="cycle-tags"></div>
+      <button id="prevCycle">‹ Prev</button>
+      <div class="cycle-label">
+        <span id="cycleNum">Cycle 1</span>
+        <span class="small" id="cycleDates">--</span>
       </div>
-      <button class="nav-btn" id="next-btn" onclick="changeCycle(1)" aria-label="Next cycle">›</button>
+      <button id="nextCycle">Next ›</button>
+    </div>
+    <div class="cycle-badges" id="cycleBadges"></div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-label">Money In</div><div class="stat-value green" id="statIn">$0</div></div>
+      <div class="stat-box"><div class="stat-label">Money Out</div><div class="stat-value orange" id="statOut">$0</div></div>
+      <div class="stat-box"><div class="stat-label">Ends At</div><div class="stat-value" id="statEnds">$0</div></div>
     </div>
 
-    <div class="cycle-summary">
-      <div class="summary-pill">
-        <div class="summary-pill-label">Money In</div>
-        <div class="summary-pill-value sage" id="sum-in">$0</div>
-      </div>
-      <div class="summary-pill">
-        <div class="summary-pill-label">Money Out</div>
-        <div class="summary-pill-value" id="sum-out">$0</div>
-      </div>
-      <div class="summary-pill">
-        <div class="summary-pill-label">Ends At</div>
-        <div class="summary-pill-value" id="sum-end">$0</div>
+    <div id="motivBanner"></div>
+
+    <div class="section">
+      <div class="section-head">Starting balance<span class="total" id="startBalDisp">$0</span></div>
+      <div class="row">
+        <div class="row-name">Checking balance at cycle start</div>
+        <div class="row-amount"><input type="number" id="startBalInput" step="0.01"></div>
       </div>
     </div>
 
-    <div id="encourage-box"></div>
-
-    <div class="section" id="section-income">
-      <div class="section-head">
-        <div class="section-title"><span class="section-emoji">💰</span> Income</div>
-        <div class="section-total green" id="income-total">$0</div>
-      </div>
-      <div id="income-list"></div>
+    <div class="section">
+      <div class="section-head">Income<span class="total" id="totalIncome">$0</span></div>
+      <div id="incomeRows"></div>
     </div>
 
-    <div class="section" id="section-bills">
-      <div class="section-head">
-        <div class="section-title"><span class="section-emoji">📤</span> Bills</div>
-        <div class="section-total" id="bills-total">$0</div>
-      </div>
-      <div id="bills-list"></div>
+    <div class="section">
+      <div class="section-head">Bills (check off as paid)<span class="total" id="totalBills">$0</span></div>
+      <div id="billRows"></div>
     </div>
 
-    <div class="section" id="section-ef" style="display:none">
-      <div class="section-head">
-        <div class="section-title"><span class="section-emoji">🛡️</span> Emergency Fund</div>
-        <div class="section-total amber" id="ef-total">$0</div>
-      </div>
-      <div id="ef-list"></div>
+    <div class="section">
+      <div class="section-head">Debt attack this cycle<span class="total" id="totalAttack">$0</span></div>
+      <div id="attackRows"></div>
+      <div class="note">Edit the amount to change what you throw at each debt. Check the box when you actually send the payment.</div>
     </div>
 
-    <div class="section" id="section-debt" style="display:none">
-      <div class="section-head">
-        <div class="section-title"><span class="section-emoji">🎯</span> Debt Attack</div>
-        <div class="section-total amber" id="debt-total">$0</div>
+    <div class="section">
+      <div class="section-head">Savings<span class="total" id="totalSavings">$0</span></div>
+      <div class="row">
+        <div class="row-check" id="savingsCheck"></div>
+        <div class="row-name">Move to Chase Savings 5961<span class="sub">Truck fund + emergency cushion</span></div>
+        <div class="row-amount"><input type="number" id="savingsInput" step="0.01"></div>
       </div>
-      <div id="debt-list"></div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-row"><span class="label">Income</span><span id="sumIncome">$0</span></div>
+      <div class="summary-row"><span class="label">Bills</span><span id="sumBills">$0</span></div>
+      <div class="summary-row"><span class="label">Debt attack</span><span id="sumAttack">$0</span></div>
+      <div class="summary-row"><span class="label">Savings</span><span id="sumSavings">$0</span></div>
+      <div class="summary-row big"><span>Ending balance</span><span id="endBalance">$0</span></div>
+    </div>
+    <div id="bufferWarn"></div>
+  </div>
+
+  <!-- DEBTS -->
+  <div class="tab-content" id="tab-debts">
+    <div class="section">
+      <div class="section-head">Active debts<span class="total" id="activeCount">0</span></div>
+      <div id="debtList"></div>
+    </div>
+    <div class="note" style="margin:10px;border-radius:8px;border:1px solid var(--line)">
+      Tap any debt to mark it killed. Numbers update everywhere automatically.
     </div>
   </div>
 
-  <!-- DEBTS VIEW -->
-  <div class="view" id="view-debts">
-    <div class="hero" style="margin-top: 22px">
-      <div class="hero-label">Total Remaining Debt</div>
-      <div class="hero-amount" id="debt-remaining">$0</div>
-      <div class="hero-sub" id="debt-killed-text">— of 24 debts killed</div>
-      <div class="progress-track"><div class="progress-fill" id="debt-progress" style="width: 0%"></div></div>
-      <div class="progress-meta">
-        <span><strong>Target:</strong> March 4, 2027</span>
-        <span><strong id="debt-pct">0</strong>% gone</span>
-      </div>
+  <!-- MILESTONES -->
+  <div class="tab-content" id="tab-milestones">
+    <div class="section">
+      <div class="section-head">Roadmap to Sept 2027</div>
+      <div id="milestoneList"></div>
     </div>
-    <div id="debt-cards"></div>
-  </div>
-
-  <!-- OVERVIEW VIEW -->
-  <div class="view" id="view-overview">
-    <div class="hero" style="margin-top: 22px">
-      <div class="hero-label">By August 2027</div>
-      <div class="hero-amount">$22,870<span class="cents">.41</span></div>
-      <div class="hero-sub">in checking + $6,600 emergency fund</div>
-    </div>
-    <div class="stats" style="margin-top:14px">
-      <div class="stat"><div class="stat-label">Cycles Done</div><div class="stat-value sage" id="ov-done">0</div></div>
-      <div class="stat"><div class="stat-label">Cycles Left</div><div class="stat-value" id="ov-left">34</div></div>
-      <div class="stat"><div class="stat-label">Debts Killed</div><div class="stat-value sage" id="ov-killed">0</div></div>
-      <div class="stat"><div class="stat-label">Emergency Fund</div><div class="stat-value amber" id="ov-ef">$0</div></div>
-    </div>
-
-    <div class="section" style="margin-top: 18px">
-      <div class="section-head">
-        <div class="section-title">🎯 Key Milestones</div>
-      </div>
-      <div id="milestones-list"></div>
-    </div>
-
-    <div class="section" style="margin-top: 18px">
-      <div class="section-head">
-        <div class="section-title">⚙️ Settings</div>
-      </div>
-      <div style="padding: 16px 18px;">
-        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="tiny-btn" onclick="exportData()">Backup Data</button>
-          <button class="tiny-btn" onclick="importData()">Restore Data</button>
-          <button class="tiny-btn" onclick="clearEditsOnly()">Clear Edits Only</button>
-          <button class="tiny-btn danger" onclick="resetAll()">Reset Everything</button>
-        </div>
-        <p style="font-size: 11px; color: var(--ink-dim); margin-top: 12px; line-height: 1.6;">Your check-offs, edits, and added items save automatically in this browser. Backup gives you a file you can save anywhere — useful before clearing browser data or switching phones.</p>
-      </div>
+    <div class="flex-row" style="justify-content:center;margin-top:10px">
+      <button class="btn btn-ghost" id="resetBtn">Reset all data</button>
     </div>
   </div>
 
 </div>
-
-<button class="go-today hidden" id="go-today-btn" onclick="goToToday()">
-  <span style="font-size:14px">↓</span> Jump to today
-</button>
-
-<div class="modal-backdrop" id="modal-backdrop" onclick="closeCyclePicker()"></div>
-<div class="modal" id="cycle-picker">
-  <div class="modal-handle"></div>
-  <div class="modal-head"><div class="modal-title">Pick a cycle</div></div>
-  <div class="modal-list" id="cycle-picker-list"></div>
-</div>
-
-<div class="modal" id="edit-sheet">
-  <div class="modal-handle"></div>
-  <div class="modal-head">
-    <div class="modal-title" id="edit-title">Edit</div>
-  </div>
-  <div class="edit-body">
-    <label class="edit-field">
-      <span class="edit-label">Name</span>
-      <input type="text" id="edit-name-input" class="edit-input" autocomplete="off">
-    </label>
-    <label class="edit-field">
-      <span class="edit-label">Amount</span>
-      <div class="edit-amount-wrap">
-        <span class="edit-currency">$</span>
-        <input type="number" id="edit-amount-input" class="edit-input edit-amount" inputmode="decimal" step="0.01" min="0" autocomplete="off">
-      </div>
-    </label>
-    <div class="edit-field" id="edit-original-row" style="display:none">
-      <span class="edit-label">Original</span>
-      <span class="edit-original-text" id="edit-original-amount">—</span>
-    </div>
-    <div class="edit-actions">
-      <button class="edit-btn primary" onclick="saveEdit()">Save</button>
-      <button class="edit-btn" onclick="closeSheet('edit-sheet')">Cancel</button>
-      <button class="edit-btn danger" id="edit-revert-btn" onclick="revertEdit()" style="display:none">Revert to original</button>
-      <button class="edit-btn danger" id="edit-delete-btn" onclick="deleteExtraItem()" style="display:none">Delete</button>
-    </div>
-    <p class="edit-hint">Changes ripple through all future cycles' starting balances.</p>
-  </div>
-</div>
-
-<canvas class="confetti-canvas" id="confetti"></canvas>
-<input type="file" id="import-file" accept=".json" style="display:none">
 
 <script>
-const BUDGET_B64 = "eyJjeWNsZXMiOlt7ImlkIjoxLCJzaGVldE5hbWUiOiJDMSBcdTIwMTQgTWF5IDEiLCJwZXJpb2QiOiJNYXkgMS0xNCwgMjAyNiIsInN0YXJ0RGF0ZSI6IjIwMjYtMDUtMDEiLCJlbmREYXRlIjoiMjAyNi0wNS0xNCIsInJhbmdlVGV4dCI6Ik1heSAxLTE0LCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IE1heSAxICB8ICBDREwgYmktd2Vla2x5ICArICBWQSBNb25leSIsInN0YXJ0aW5nQmFsYW5jZSI6MC4wLCJpbmNvbWUiOlt7Im5hbWUiOiJWQSBEaXNhYmlsaXR5IiwiYW1vdW50Ijo0Mjk4LjA0LCJ3aGVuIjoiTWF5IDEifSx7Im5hbWUiOiJWQSBFZHVjYXRpb24gKEdJIEJpbGwpIiwiYW1vdW50Ijo5MzUuMiwid2hlbiI6Ik1heSAxIn0seyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMzI4Ljc1LCJ3aGVuIjoiTWF5IDEifV0sImJpbGxzIjpbeyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiTWF5IDEifSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJNYXkgMiJ9LHsibmFtZSI6IlVwc3RhcnQgRnUgbWluIiwiYW1vdW50Ijo0MS4yMSwid2hlbiI6Ik1heSAyIn0seyJuYW1lIjoiUm9hZHJ1bm5lciIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJNYXkgMiJ9LHsibmFtZSI6Ikh5dW5kYWkiLCJhbW91bnQiOjk1NS44NCwid2hlbiI6Ik1heSA0In0seyJuYW1lIjoiQWZmaXJtIEEiLCJhbW91bnQiOjQ1LjAyLCJ3aGVuIjoiTWF5IDQifSx7Im5hbWUiOiJVdGlsaXRpZXMgZXgiLCJhbW91bnQiOjkwLjAsIndoZW4iOiJNYXkgNSJ9LHsibmFtZSI6IkFmZmlybSBCICgxOTM2KSIsImFtb3VudCI6MTM0LjQyLCJ3aGVuIjoiTWF5IDYifSx7Im5hbWUiOiJBZmZpcm0gQyIsImFtb3VudCI6NTAuNTMsIndoZW4iOiJNYXkgNyJ9LHsibmFtZSI6IkFmZmlybSBEIiwiYW1vdW50Ijo0Mi40OSwid2hlbiI6Ik1heSA4In0seyJuYW1lIjoiQWZmaXJtIEUgKDkwNikiLCJhbW91bnQiOjQ1LjUzLCJ3aGVuIjoiTWF5IDEzIn0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6IkNsZWFyZWQgbmVnYXRpdmUgYmFsYW5jZSIsImFtb3VudCI6MzAwLjAsIndoZW4iOiJNYXkgMSJ9LHsibmFtZSI6Ikxhc3QgU3RhcmJ1Y2tzIiwiYW1vdW50IjoxMS4yMiwid2hlbiI6Ik1heSAxIn1dLCJlbWVyZ2VuY3lGdW5kIjowLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IENhcGl0YWwgT25lIiwiYW1vdW50Ijo1MTMuMCwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IEFwcGxlIENhcmQiLCJhbW91bnQiOjczMC4wLCJzdGF0dXMiOiJERUFEIC0gZnJlZXMgbWluIHBheW1lbnQifSx7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQ2hhc2UgQ2FyZCIsImFtb3VudCI6MTA1MC4wMywic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In1dLCJ0b3RhbEluY29tZSI6NzU2MS45OSwidG90YWxCaWxscyI6NDgxMi40MSwidG90YWxEZWJ0QXR0YWNrIjoyMjkzLjAzLCJ0b3RhbE91dCI6NzEwNS40NCwiZW5kaW5nQmFsYW5jZSI6NDU2LjU1fSx7ImlkIjoyLCJzaGVldE5hbWUiOiJDMiBcdTIwMTQgTWF5IDE1IiwicGVyaW9kIjoiTWF5IDE1LTI4LCAyMDI2Iiwic3RhcnREYXRlIjoiMjAyNi0wNS0xNSIsImVuZERhdGUiOiIyMDI2LTA1LTI4IiwicmFuZ2VUZXh0IjoiTWF5IDE1LTI4LCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IE1heSAxNSAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6NDU2LjU1LCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ik1heSAxNSJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJBZmZpcm0gRiAoMzM0OSkiLCJhbW91bnQiOjg2LjY4LCJ3aGVuIjoiTWF5IDE1In0seyJuYW1lIjoiVC1Nb2JpbGUiLCJhbW91bnQiOjIxOC44NCwid2hlbiI6Ik1heSAxNiJ9LHsibmFtZSI6IllhbWFoYSIsImFtb3VudCI6NDEwLjAsIndoZW4iOiJNYXkgMTcifSx7Im5hbWUiOiJBZmZpcm0gRyAoNTEwKSIsImFtb3VudCI6NTEuMTYsIndoZW4iOiJNYXkgMTcifSx7Im5hbWUiOiJBZmZpcm0gSCBMb3dlcyIsImFtb3VudCI6NDkuMzYsIndoZW4iOiJNYXkgMTcifSx7Im5hbWUiOiJQYXlQYWwgR292WCIsImFtb3VudCI6MjkuODEsIndoZW4iOiJNYXkgMTcifSx7Im5hbWUiOiJBZmZpcm0gSSAoOTkwKSIsImFtb3VudCI6NDMuNzgsIndoZW4iOiJNYXkgMTgifSx7Im5hbWUiOiJQYXlQYWwgU2NoZWVscyIsImFtb3VudCI6MzEuNywid2hlbiI6Ik1heSAxOSJ9LHsibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6Ik1heSAxOSJ9LHsibmFtZSI6IlBheVBhbCBSZXZaaWxsYSAoNTEwKSIsImFtb3VudCI6ODguNjMsIndoZW4iOiJNYXkgMjAifSx7Im5hbWUiOiJVU0FBIiwiYW1vdW50Ijo1MTEuNjcsIndoZW4iOiJNYXkgMjAifSx7Im5hbWUiOiJBZmZpcm0gSiAoNTU0KSIsImFtb3VudCI6MjguMjgsIndoZW4iOiJNYXkgMjAifSx7Im5hbWUiOiJBbWV4IG1pbiIsImFtb3VudCI6MTE2LjAsIndoZW4iOiJNYXkgMjEifSx7Im5hbWUiOiJWZXJjZWwiLCJhbW91bnQiOjExLjI1LCJ3aGVuIjoiTWF5IDIyIn0seyJuYW1lIjoiQ2hhc2UgZmVlIiwiYW1vdW50IjoyNS4wLCJ3aGVuIjoiTWF5IDIyIn0seyJuYW1lIjoiQWZmaXJtIEsgKDEwNDApIiwiYW1vdW50Ijo0My40MSwid2hlbiI6Ik1heSAyNSJ9LHsibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiTWF5IDI3In0seyJuYW1lIjoiQ2l0aSBtaW4iLCJhbW91bnQiOjEwMC4wLCJ3aGVuIjoiTWF5IDI4In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IExvd2UncyBQYXlQYWwiLCJhbW91bnQiOjI5Ljc5OTk5OTk5OTk5ODgsInN0YXR1cyI6InJlbWFpbmluZyAkNDEuMTIifV0sInRvdGFsSW5jb21lIjoyNjk2LjU1LCJ0b3RhbEJpbGxzIjoyMjY2Ljc1LCJ0b3RhbERlYnRBdHRhY2siOjI5Ljc5OTk5OTk5OTk5ODgsInRvdGFsT3V0IjoyNDk2LjU1LCJlbmRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAxfSx7ImlkIjozLCJzaGVldE5hbWUiOiJDMyBcdTIwMTQgTWF5IDI5IiwicGVyaW9kIjoiTWF5IDI5IC0gSnVuIDExLCAyMDI2Iiwic3RhcnREYXRlIjoiMjAyNi0wNS0yOSIsImVuZERhdGUiOiIyMDI2LTA2LTExIiwicmFuZ2VUZXh0IjoiTWF5IDI5IC0gSnVuIDExLCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IE1heSAyOSAgfCAgQ0RMIGJpLXdlZWtseSAgKyAgVkEgTW9uZXkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wMDAwMDAwMDAwMDEsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiTWF5IDI5In0seyJuYW1lIjoiVkEgRGlzYWJpbGl0eSIsImFtb3VudCI6NDI5OC4wNCwid2hlbiI6IjFzdCBvZiBtb250aCJ9LHsibmFtZSI6IlZBIEVkdWNhdGlvbiIsImFtb3VudCI6OTAwLjAsIndoZW4iOiIxc3Qgb2YgbW9udGgifV0sImJpbGxzIjpbeyJuYW1lIjoiQ29tY2FzdCIsImFtb3VudCI6MTM2LjIzLCJ3aGVuIjoiTWF5IDMwIn0seyJuYW1lIjoiVXBzdGFydCBNcGxpIG1pbiIsImFtb3VudCI6MTA2LjYxLCJ3aGVuIjoiTWF5IDMwIn0seyJuYW1lIjoiTGVtb25hZGUiLCJhbW91bnQiOjc2LjI1LCJ3aGVuIjoiTWF5IDMwIn0seyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiSnVuIDEifSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJKdW4gMiJ9LHsibmFtZSI6IlVwc3RhcnQgRnUgbWluIiwiYW1vdW50Ijo0MS4yMSwid2hlbiI6Ikp1biAyIn0seyJuYW1lIjoiUm9hZHJ1bm5lciIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJKdW4gMiJ9LHsibmFtZSI6Ikh5dW5kYWkiLCJhbW91bnQiOjk1NS44NCwid2hlbiI6Ikp1biA0In0seyJuYW1lIjoiQWZmaXJtIEEiLCJhbW91bnQiOjQ1LjAyLCJ3aGVuIjoiSnVuIDQifSx7Im5hbWUiOiJVdGlsaXRpZXMgZXgiLCJhbW91bnQiOjkwLjAsIndoZW4iOiJKdW4gNSJ9LHsibmFtZSI6IkFmZmlybSBCICgxOTM2KSIsImFtb3VudCI6MTM0LjQyLCJ3aGVuIjoiSnVuIDYifSx7Im5hbWUiOiJBZmZpcm0gQyIsImFtb3VudCI6NTAuNTMsIndoZW4iOiJKdW4gNyJ9LHsibmFtZSI6IkFmZmlybSBEIiwiYW1vdW50Ijo0Mi40OSwid2hlbiI6Ikp1biA4In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogTG93ZSdzIFBheVBhbCIsImFtb3VudCI6NDEuMTIwMDAwMDAwMDAxMiwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IFVwc3RhcnQgRnUiLCJhbW91bnQiOjIxNC4yMSwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IEFmZmlybSBBbWF6b24gJDI1MS45NCIsImFtb3VudCI6MjUxLjk0LCJzdGF0dXMiOiJERUFEIC0gZnJlZXMgbWluIHBheW1lbnQifSx7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQWZmaXJtIEFtYXpvbiAkMzA0LjU5IiwiYW1vdW50IjozMDQuNTksInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzY1x1ZGZhZiBLSUxMOiBQYXlQYWwgR292WCAoZXN0KSIsImFtb3VudCI6MjAwLjAsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzY1x1ZGZhZiBLSUxMOiBQYXlQYWwgU2NoZWVscyAoZXN0KSIsImFtb3VudCI6MjAwLjAsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzY1x1ZGZhZiBLSUxMOiBBZmZpcm0gQSAoZXN0KSIsImFtb3VudCI6MjAwLjAsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzY1x1ZGZhZiBLSUxMOiBBZmZpcm0gQyAoZXN0KSIsImFtb3VudCI6MjUwLjAsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzY1x1ZGZhZiBLSUxMOiBBZmZpcm0gRCAoZXN0KSIsImFtb3VudCI6MjAwLjAsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzZFx1ZGNjOSBQYXktZG93bjogUGF5UGFsIFJldlppbGxhIiwiYW1vdW50IjoyMzUuMTM5OTk5OTk5OTk5LCJzdGF0dXMiOiJyZW1haW5pbmcgJDI3NC42OSJ9XSwidG90YWxJbmNvbWUiOjc2MzguMDQsInRvdGFsQmlsbHMiOjQ3NzQuNzUsInRvdGFsRGVidEF0dGFjayI6MjA5Ny4wLCJ0b3RhbE91dCI6NzA3MS43NSwiZW5kaW5nQmFsYW5jZSI6NTY2LjI5MDAwMDAwMDAwMX0seyJpZCI6NCwic2hlZXROYW1lIjoiQzQgXHUyMDE0IEp1biAxMiIsInBlcmlvZCI6Ikp1biAxMi0yNSwgMjAyNiIsInN0YXJ0RGF0ZSI6IjIwMjYtMDYtMTIiLCJlbmREYXRlIjoiMjAyNi0wNi0yNSIsInJhbmdlVGV4dCI6Ikp1biAxMi0yNSwgMjAyNiIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBKdW4gMTIgIHwgIENETCBiaS13ZWVrbHkiLCJzdGFydGluZ0JhbGFuY2UiOjU2Ni4yOTAwMDAwMDAwMDEsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiSnVuIDEyIn1dLCJiaWxscyI6W3sibmFtZSI6IkFmZmlybSBFICg5MDYpIiwiYW1vdW50Ijo0NS41Mywid2hlbiI6Ikp1biAxMyJ9LHsibmFtZSI6IkFmZmlybSBGICgzMzQ5KSIsImFtb3VudCI6ODYuNjgsIndoZW4iOiJKdW4gMTUifSx7Im5hbWUiOiJULU1vYmlsZSIsImFtb3VudCI6MjE4Ljg0LCJ3aGVuIjoiSnVuIDE2In0seyJuYW1lIjoiWWFtYWhhIiwiYW1vdW50Ijo0MTAuMCwid2hlbiI6Ikp1biAxNyJ9LHsibmFtZSI6IkFmZmlybSBHICg1MTApIiwiYW1vdW50Ijo1MS4xNiwid2hlbiI6Ikp1biAxNyJ9LHsibmFtZSI6IkFmZmlybSBJICg5OTApIiwiYW1vdW50Ijo0My43OCwid2hlbiI6Ikp1biAxOCJ9LHsibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6Ikp1biAxOSJ9LHsibmFtZSI6IlBheVBhbCBSZXZaaWxsYSAoNTEwKSIsImFtb3VudCI6ODguNjMsIndoZW4iOiJKdW4gMjAifSx7Im5hbWUiOiJVU0FBIiwiYW1vdW50Ijo1MTEuNjcsIndoZW4iOiJKdW4gMjAifSx7Im5hbWUiOiJBZmZpcm0gSiAoNTU0KSIsImFtb3VudCI6MjguMjgsIndoZW4iOiJKdW4gMjAifSx7Im5hbWUiOiJBbWV4IG1pbiIsImFtb3VudCI6MTE2LjAsIndoZW4iOiJKdW4gMjEifSx7Im5hbWUiOiJWZXJjZWwiLCJhbW91bnQiOjExLjI1LCJ3aGVuIjoiSnVuIDIyIn0seyJuYW1lIjoiQ2hhc2UgZmVlIiwiYW1vdW50IjoyNS4wLCJ3aGVuIjoiSnVuIDIyIn0seyJuYW1lIjoiQWZmaXJtIEsgKDEwNDApIiwiYW1vdW50Ijo0My40MSwid2hlbiI6Ikp1biAyNSJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IFBheVBhbCBSZXZaaWxsYSIsImFtb3VudCI6Mjc0LjY5MDAwMDAwMDAwMSwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNkXHVkY2M5IFBheS1kb3duOiBBZmZpcm0gQW1hem9uICQ1MDkuOTUiLCJhbW91bnQiOjM2LjE3OTk5OTk5OTk5ODYsInN0YXR1cyI6InJlbWFpbmluZyAkNDczLjc3In1dLCJ0b3RhbEluY29tZSI6MjgwNi4yOSwidG90YWxCaWxscyI6MjA5NS40MiwidG90YWxEZWJ0QXR0YWNrIjozMTAuODcsInRvdGFsT3V0IjoyNjA2LjI5LCJlbmRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAxfSx7ImlkIjo1LCJzaGVldE5hbWUiOiJDNSBcdTIwMTQgSnVuIDI2IiwicGVyaW9kIjoiSnVuIDI2IC0gSnVsIDksIDIwMjYiLCJzdGFydERhdGUiOiIyMDI2LTA2LTI2IiwiZW5kRGF0ZSI6IjIwMjYtMDctMDkiLCJyYW5nZVRleHQiOiJKdW4gMjYgLSBKdWwgOSwgMjAyNiIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBKdW4gMjYgIHwgIENETCBiaS13ZWVrbHkgICsgIFZBIE1vbmV5Iiwic3RhcnRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAxLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ikp1biAyNiJ9LHsibmFtZSI6IlZBIERpc2FiaWxpdHkiLCJhbW91bnQiOjQyOTguMDQsIndoZW4iOiIxc3Qgb2YgbW9udGgifSx7Im5hbWUiOiJWQSBFZHVjYXRpb24iLCJhbW91bnQiOjkwMC4wLCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn1dLCJiaWxscyI6W3sibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiSnVuIDI3In0seyJuYW1lIjoiQ2l0aSBtaW4iLCJhbW91bnQiOjEwMC4wLCJ3aGVuIjoiSnVuIDI4In0seyJuYW1lIjoiQ29tY2FzdCIsImFtb3VudCI6MTM2LjIzLCJ3aGVuIjoiSnVuIDMwIn0seyJuYW1lIjoiVXBzdGFydCBNcGxpIG1pbiIsImFtb3VudCI6MTA2LjYxLCJ3aGVuIjoiSnVuIDMwIn0seyJuYW1lIjoiTGVtb25hZGUiLCJhbW91bnQiOjc2LjI1LCJ3aGVuIjoiSnVuIDMwIn0seyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiSnVsIDEifSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJKdWwgMiJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiSnVsIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJKdWwgNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6Ikp1bCA1In0seyJuYW1lIjoiQWZmaXJtIEIgKDE5MzYpIiwiYW1vdW50IjoxMzQuNDIsIndoZW4iOiJKdWwgNiJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IEFmZmlybSBBbWF6b24gJDUwOS45NSIsImFtb3VudCI6NDczLjc3MDAwMDAwMDAwMSwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IEFmZmlybSBBbWF6b24gJDU1NCIsImFtb3VudCI6NTU0LjExLCJzdGF0dXMiOiJERUFEIC0gZnJlZXMgbWluIHBheW1lbnQifSx7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQWZmaXJtIEFtYXpvbiAkOTA2IiwiYW1vdW50Ijo5MDUuNzMsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzZFx1ZGNjOSBQYXktZG93bjogQWZmaXJtIEFtYXpvbiAkOTkwIiwiYW1vdW50Ijo0NzkuNTU5OTk5OTk5OTk5LCJzdGF0dXMiOiJyZW1haW5pbmcgJDUxMC44MyJ9XSwidG90YWxJbmNvbWUiOjc2MzguMDQsInRvdGFsQmlsbHMiOjQ3MDEuNDksInRvdGFsRGVidEF0dGFjayI6MjQxMy4xNywidG90YWxPdXQiOjczMTQuNjYsImVuZGluZ0JhbGFuY2UiOjMyMy4zODAwMDAwMDAwMDF9LHsiaWQiOjYsInNoZWV0TmFtZSI6IkM2IFx1MjAxNCBKdWwgMTAiLCJwZXJpb2QiOiJKdWwgMTAtMjMsIDIwMjYiLCJzdGFydERhdGUiOiIyMDI2LTA3LTEwIiwiZW5kRGF0ZSI6IjIwMjYtMDctMjMiLCJyYW5nZVRleHQiOiJKdWwgMTAtMjMsIDIwMjYiLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogSnVsIDEwICB8ICBDREwgYmktd2Vla2x5Iiwic3RhcnRpbmdCYWxhbmNlIjozMjMuMzgwMDAwMDAwMDAxLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ikp1bCAxMCJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJBZmZpcm0gRiAoMzM0OSkiLCJhbW91bnQiOjg2LjY4LCJ3aGVuIjoiSnVsIDE1In0seyJuYW1lIjoiVC1Nb2JpbGUiLCJhbW91bnQiOjIxOC44NCwid2hlbiI6Ikp1bCAxNiJ9LHsibmFtZSI6IllhbWFoYSIsImFtb3VudCI6NDEwLjAsIndoZW4iOiJKdWwgMTcifSx7Im5hbWUiOiJBZmZpcm0gSSAoOTkwKSIsImFtb3VudCI6NDMuNzgsIndoZW4iOiJKdWwgMTgifSx7Im5hbWUiOiJpQ2xvdWQiLCJhbW91bnQiOjkuOTksIndoZW4iOiJKdWwgMTkifSx7Im5hbWUiOiJVU0FBIiwiYW1vdW50Ijo1MTEuNjcsIndoZW4iOiJKdWwgMjAifSx7Im5hbWUiOiJBbWV4IG1pbiIsImFtb3VudCI6MTE2LjAsIndoZW4iOiJKdWwgMjEifSx7Im5hbWUiOiJWZXJjZWwiLCJhbW91bnQiOjExLjI1LCJ3aGVuIjoiSnVsIDIyIn0seyJuYW1lIjoiQ2hhc2UgZmVlIiwiYW1vdW50IjoyNS4wLCJ3aGVuIjoiSnVsIDIyIn0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IEFmZmlybSBBbWF6b24gJDk5MCIsImFtb3VudCI6MzI0Ljk3LCJzdGF0dXMiOiJyZW1haW5pbmcgJDE4NS44NiJ9XSwidG90YWxJbmNvbWUiOjI1NjMuMzgsInRvdGFsQmlsbHMiOjE4MzguNDEsInRvdGFsRGVidEF0dGFjayI6MzI0Ljk3LCJ0b3RhbE91dCI6MjM2My4zOCwiZW5kaW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwMX0seyJpZCI6Nywic2hlZXROYW1lIjoiQzcgXHUyMDE0IEp1bCAyNCIsInBlcmlvZCI6Ikp1bCAyNCAtIEF1ZyA2LCAyMDI2Iiwic3RhcnREYXRlIjoiMjAyNi0wNy0yNCIsImVuZERhdGUiOiIyMDI2LTA4LTA2IiwicmFuZ2VUZXh0IjoiSnVsIDI0IC0gQXVnIDYsIDIwMjYiLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogSnVsIDI0ICB8ICBDREwgYmktd2Vla2x5ICArICBWQSBNb25leSIsInN0YXJ0aW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwMSwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJKdWwgMjQifSx7Im5hbWUiOiJWQSBEaXNhYmlsaXR5IiwiYW1vdW50Ijo0Mjk4LjA0LCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn0seyJuYW1lIjoiVkEgRWR1Y2F0aW9uIiwiYW1vdW50Ijo5MDAuMCwid2hlbiI6IjFzdCBvZiBtb250aCJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJBZmZpcm0gSyAoMTA0MCkiLCJhbW91bnQiOjQzLjQxLCJ3aGVuIjoiSnVsIDI1In0seyJuYW1lIjoiQXBwbGUgTXVzaWMiLCJhbW91bnQiOjUuOTksIndoZW4iOiJKdWwgMjcifSx7Im5hbWUiOiJDaXRpIG1pbiIsImFtb3VudCI6MTAwLjAsIndoZW4iOiJKdWwgMjgifSx7Im5hbWUiOiJDb21jYXN0IiwiYW1vdW50IjoxMzYuMjMsIndoZW4iOiJKdWwgMzAifSx7Im5hbWUiOiJVcHN0YXJ0IE1wbGkgbWluIiwiYW1vdW50IjoxMDYuNjEsIndoZW4iOiJKdWwgMzAifSx7Im5hbWUiOiJMZW1vbmFkZSIsImFtb3VudCI6NzYuMjUsIndoZW4iOiJKdWwgMzAifSx7Im5hbWUiOiJSZW50IiwiYW1vdW50IjoyMDgxLjAsIndoZW4iOiJBdWcgMSJ9LHsibmFtZSI6IlVwc3RhcnQgTWljaGVsYSBtaW4iLCJhbW91bnQiOjQwOS45NSwid2hlbiI6IkF1ZyAyIn0seyJuYW1lIjoiUm9hZHJ1bm5lciIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJBdWcgMiJ9LHsibmFtZSI6Ikh5dW5kYWkiLCJhbW91bnQiOjk1NS44NCwid2hlbiI6IkF1ZyA0In0seyJuYW1lIjoiVXRpbGl0aWVzIGV4IiwiYW1vdW50Ijo5MC4wLCJ3aGVuIjoiQXVnIDUifSx7Im5hbWUiOiJBZmZpcm0gQiAoMTkzNikiLCJhbW91bnQiOjEzNC40Miwid2hlbiI6IkF1ZyA2In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQWZmaXJtIEFtYXpvbiAkOTkwIiwiYW1vdW50IjoxODUuODYwMDAwMDAwMDAxLCJzdGF0dXMiOiJERUFEIC0gZnJlZXMgbWluIHBheW1lbnQifSx7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQWZmaXJtIEFtYXpvbiAkMTA0MCIsImFtb3VudCI6MTA0MC4yMSwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNkXHVkY2M5IFBheS1kb3duOiBBZmZpcm0gQW1hem9uICQxOTM2IiwiYW1vdW50IjoxMjY3LjA3LCJzdGF0dXMiOiJyZW1haW5pbmcgJDY2OC40OSJ9XSwidG90YWxJbmNvbWUiOjc2MzguMDQsInRvdGFsQmlsbHMiOjQ3NDQuOSwidG90YWxEZWJ0QXR0YWNrIjoyNDkzLjE0LCJ0b3RhbE91dCI6NzQzOC4wNCwiZW5kaW5nQmFsYW5jZSI6MjAwLjB9LHsiaWQiOjgsInNoZWV0TmFtZSI6IkM4IFx1MjAxNCBBdWcgNyIsInBlcmlvZCI6IkF1ZyA3LTIwLCAyMDI2Iiwic3RhcnREYXRlIjoiMjAyNi0wOC0wNyIsImVuZERhdGUiOiIyMDI2LTA4LTIwIiwicmFuZ2VUZXh0IjoiQXVnIDctMjAsIDIwMjYiLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogQXVnIDcgIHwgIENETCBiaS13ZWVrbHkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IkF1ZyA3In1dLCJiaWxscyI6W3sibmFtZSI6IkFmZmlybSBGICgzMzQ5KSIsImFtb3VudCI6ODYuNjgsIndoZW4iOiJBdWcgMTUifSx7Im5hbWUiOiJULU1vYmlsZSIsImFtb3VudCI6MjE4Ljg0LCJ3aGVuIjoiQXVnIDE2In0seyJuYW1lIjoiWWFtYWhhIiwiYW1vdW50Ijo0MTAuMCwid2hlbiI6IkF1ZyAxNyJ9LHsibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6IkF1ZyAxOSJ9LHsibmFtZSI6IlVTQUEiLCJhbW91bnQiOjUxMS42Nywid2hlbiI6IkF1ZyAyMCJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNkXHVkY2M5IFBheS1kb3duOiBBZmZpcm0gQW1hem9uICQxOTM2IiwiYW1vdW50IjozOTcuNjIsInN0YXR1cyI6InJlbWFpbmluZyAkMjcwLjg3In1dLCJ0b3RhbEluY29tZSI6MjQ0MC4wLCJ0b3RhbEJpbGxzIjoxNjQyLjM4LCJ0b3RhbERlYnRBdHRhY2siOjM5Ny42MiwidG90YWxPdXQiOjIyNDAuMCwiZW5kaW5nQmFsYW5jZSI6MjAwLjB9LHsiaWQiOjksInNoZWV0TmFtZSI6IkM5IFx1MjAxNCBBdWcgMjEiLCJwZXJpb2QiOiJBdWcgMjEgLSBTZXAgMywgMjAyNiIsInN0YXJ0RGF0ZSI6IjIwMjYtMDgtMjEiLCJlbmREYXRlIjoiMjAyNi0wOS0wMyIsInJhbmdlVGV4dCI6IkF1ZyAyMSAtIFNlcCAzLCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IEF1ZyAyMSAgfCAgQ0RMIGJpLXdlZWtseSAgKyAgVkEgTW9uZXkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IkF1ZyAyMSJ9LHsibmFtZSI6IlZBIERpc2FiaWxpdHkiLCJhbW91bnQiOjQyOTguMDQsIndoZW4iOiIxc3Qgb2YgbW9udGgifSx7Im5hbWUiOiJWQSBFZHVjYXRpb24iLCJhbW91bnQiOjkwMC4wLCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn1dLCJiaWxscyI6W3sibmFtZSI6IkFtZXggbWluIiwiYW1vdW50IjoxMTYuMCwid2hlbiI6IkF1ZyAyMSJ9LHsibmFtZSI6IlZlcmNlbCIsImFtb3VudCI6MTEuMjUsIndoZW4iOiJBdWcgMjIifSx7Im5hbWUiOiJDaGFzZSBmZWUiLCJhbW91bnQiOjI1LjAsIndoZW4iOiJBdWcgMjIifSx7Im5hbWUiOiJBcHBsZSBNdXNpYyIsImFtb3VudCI6NS45OSwid2hlbiI6IkF1ZyAyNyJ9LHsibmFtZSI6IkNpdGkgbWluIiwiYW1vdW50IjoxMDAuMCwid2hlbiI6IkF1ZyAyOCJ9LHsibmFtZSI6IkNvbWNhc3QiLCJhbW91bnQiOjEzNi4yMywid2hlbiI6IkF1ZyAzMCJ9LHsibmFtZSI6IlVwc3RhcnQgTXBsaSBtaW4iLCJhbW91bnQiOjEwNi42MSwid2hlbiI6IkF1ZyAzMCJ9LHsibmFtZSI6IkxlbW9uYWRlIiwiYW1vdW50Ijo3Ni4yNSwid2hlbiI6IkF1ZyAzMCJ9LHsibmFtZSI6IlJlbnQiLCJhbW91bnQiOjIwODEuMCwid2hlbiI6IlNlcCAxIn0seyJuYW1lIjoiVXBzdGFydCBNaWNoZWxhIG1pbiIsImFtb3VudCI6NDA5Ljk1LCJ3aGVuIjoiU2VwIDIifSx7Im5hbWUiOiJSb2FkcnVubmVyIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6IlNlcCAyIn0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQWZmaXJtIEFtYXpvbiAkMTkzNiIsImFtb3VudCI6MjcwLjg3MDAwMDAwMDAwMSwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IFVwc3RhcnQgTXBsaSIsImFtb3VudCI6MjM5My4wNiwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In0seyJuYW1lIjoiXHVkODNkXHVkY2M5IFBheS1kb3duOiBBZmZpcm0gUmV2WmlsbGEgJDMzNDkiLCJhbW91bnQiOjQzOS42NDk5OTk5OTk5OTksInN0YXR1cyI6InJlbWFpbmluZyAkMjkwOC44NyJ9XSwidG90YWxJbmNvbWUiOjc2MzguMDQsInRvdGFsQmlsbHMiOjM2NzMuNDgsInRvdGFsRGVidEF0dGFjayI6MzEwMy41OCwidG90YWxPdXQiOjY5NzcuMDYsImVuZGluZ0JhbGFuY2UiOjY2MC45ODAwMDAwMDAwMDF9LHsiaWQiOjEwLCJzaGVldE5hbWUiOiJDMTAgXHUyMDE0IFNlcCA0IiwicGVyaW9kIjoiU2VwIDQtMTcsIDIwMjYiLCJzdGFydERhdGUiOiIyMDI2LTA5LTA0IiwiZW5kRGF0ZSI6IjIwMjYtMDktMTciLCJyYW5nZVRleHQiOiJTZXAgNC0xNywgMjAyNiIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBTZXAgNCAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6NjYwLjk4MDAwMDAwMDAwMSwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJTZXAgNCJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJTZXAgNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6IlNlcCA1In0seyJuYW1lIjoiQWZmaXJtIEYgKDMzNDkpIiwiYW1vdW50Ijo4Ni42OCwid2hlbiI6IlNlcCAxNSJ9LHsibmFtZSI6IlQtTW9iaWxlIiwiYW1vdW50IjoyMTguODQsIndoZW4iOiJTZXAgMTYifSx7Im5hbWUiOiJZYW1haGEiLCJhbW91bnQiOjQxMC4wLCJ3aGVuIjoiU2VwIDE3In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IEFmZmlybSBSZXZaaWxsYSAkMzM0OSIsImFtb3VudCI6MzM0LjQyLCJzdGF0dXMiOiJyZW1haW5pbmcgJDI1NzQuNDUifV0sInRvdGFsSW5jb21lIjoyOTAwLjk4LCJ0b3RhbEJpbGxzIjoyMTY2LjU2LCJ0b3RhbERlYnRBdHRhY2siOjMzNC40MiwidG90YWxPdXQiOjI3MDAuOTgsImVuZGluZ0JhbGFuY2UiOjIwMC4wfSx7ImlkIjoxMSwic2hlZXROYW1lIjoiQzExIFx1MjAxNCBTZXAgMTgiLCJwZXJpb2QiOiJTZXAgMTggLSBPY3QgMSwgMjAyNiIsInN0YXJ0RGF0ZSI6IjIwMjYtMDktMTgiLCJlbmREYXRlIjoiMjAyNi0xMC0wMSIsInJhbmdlVGV4dCI6IlNlcCAxOCAtIE9jdCAxLCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IFNlcCAxOCAgfCAgQ0RMIGJpLXdlZWtseSAgKyAgVkEgTW9uZXkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IlNlcCAxOCJ9LHsibmFtZSI6IlZBIERpc2FiaWxpdHkiLCJhbW91bnQiOjQyOTguMDQsIndoZW4iOiIxc3Qgb2YgbW9udGgifSx7Im5hbWUiOiJWQSBFZHVjYXRpb24iLCJhbW91bnQiOjkwMC4wLCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn1dLCJiaWxscyI6W3sibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6IlNlcCAxOSJ9LHsibmFtZSI6IlVTQUEiLCJhbW91bnQiOjUxMS42Nywid2hlbiI6IlNlcCAyMCJ9LHsibmFtZSI6IkFtZXggbWluIiwiYW1vdW50IjoxMTYuMCwid2hlbiI6IlNlcCAyMSJ9LHsibmFtZSI6IlZlcmNlbCIsImFtb3VudCI6MTEuMjUsIndoZW4iOiJTZXAgMjIifSx7Im5hbWUiOiJDaGFzZSBmZWUiLCJhbW91bnQiOjI1LjAsIndoZW4iOiJTZXAgMjIifSx7Im5hbWUiOiJBcHBsZSBNdXNpYyIsImFtb3VudCI6NS45OSwid2hlbiI6IlNlcCAyNyJ9LHsibmFtZSI6IkNpdGkgbWluIiwiYW1vdW50IjoxMDAuMCwid2hlbiI6IlNlcCAyOCJ9LHsibmFtZSI6IkNvbWNhc3QiLCJhbW91bnQiOjEzNi4yMywid2hlbiI6IlNlcCAzMCJ9LHsibmFtZSI6IkxlbW9uYWRlIiwiYW1vdW50Ijo3Ni4yNSwid2hlbiI6IlNlcCAzMCJ9LHsibmFtZSI6IlJlbnQiLCJhbW91bnQiOjIwODEuMCwid2hlbiI6Ik9jdCAxIn0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQWZmaXJtIFJldlppbGxhICQzMzQ5IiwiYW1vdW50IjoyNTc0LjQ1LCJzdGF0dXMiOiJERUFEIC0gZnJlZXMgbWluIHBheW1lbnQifSx7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IEFtZXgiLCJhbW91bnQiOjg3Ny4zMzk5OTk5OTk5OTksInN0YXR1cyI6InJlbWFpbmluZyAkMjY5Mi42NiJ9XSwidG90YWxJbmNvbWUiOjc2MzguMDQsInRvdGFsQmlsbHMiOjM0NzguNTgsInRvdGFsRGVidEF0dGFjayI6MzQ1MS43OSwidG90YWxPdXQiOjcxMzAuMzcsImVuZGluZ0JhbGFuY2UiOjUwNy42NzAwMDAwMDAwMDJ9LHsiaWQiOjEyLCJzaGVldE5hbWUiOiJDMTIgXHUyMDE0IE9jdCAyIiwicGVyaW9kIjoiT2N0IDItMTUsIDIwMjYiLCJzdGFydERhdGUiOiIyMDI2LTEwLTAyIiwiZW5kRGF0ZSI6IjIwMjYtMTAtMTUiLCJyYW5nZVRleHQiOiJPY3QgMi0xNSwgMjAyNiIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBPY3QgMiAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6NTA3LjY3MDAwMDAwMDAwMiwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJPY3QgMiJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJPY3QgMiJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiT2N0IDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJPY3QgNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6Ik9jdCA1In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IEFtZXgiLCJhbW91bnQiOjI4Ni42OCwic3RhdHVzIjoicmVtYWluaW5nICQyNDA1Ljk4In1dLCJ0b3RhbEluY29tZSI6Mjc0Ny42NywidG90YWxCaWxscyI6MjA2MC45OSwidG90YWxEZWJ0QXR0YWNrIjoyODYuNjgsInRvdGFsT3V0IjoyNTQ3LjY3LCJlbmRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAyfSx7ImlkIjoxMywic2hlZXROYW1lIjoiQzEzIFx1MjAxNCBPY3QgMTYiLCJwZXJpb2QiOiJPY3QgMTYtMjksIDIwMjYiLCJzdGFydERhdGUiOiIyMDI2LTEwLTE2IiwiZW5kRGF0ZSI6IjIwMjYtMTAtMjkiLCJyYW5nZVRleHQiOiJPY3QgMTYtMjksIDIwMjYiLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogT2N0IDE2ICB8ICBDREwgYmktd2Vla2x5Iiwic3RhcnRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAyLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ik9jdCAxNiJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJULU1vYmlsZSIsImFtb3VudCI6MjE4Ljg0LCJ3aGVuIjoiT2N0IDE2In0seyJuYW1lIjoiWWFtYWhhIiwiYW1vdW50Ijo0MTAuMCwid2hlbiI6Ik9jdCAxNyJ9LHsibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6Ik9jdCAxOSJ9LHsibmFtZSI6IlVTQUEiLCJhbW91bnQiOjUxMS42Nywid2hlbiI6Ik9jdCAyMCJ9LHsibmFtZSI6IkFtZXggbWluIiwiYW1vdW50IjoxMTYuMCwid2hlbiI6Ik9jdCAyMSJ9LHsibmFtZSI6IlZlcmNlbCIsImFtb3VudCI6MTEuMjUsIndoZW4iOiJPY3QgMjIifSx7Im5hbWUiOiJDaGFzZSBmZWUiLCJhbW91bnQiOjI1LjAsIndoZW4iOiJPY3QgMjIifSx7Im5hbWUiOiJBcHBsZSBNdXNpYyIsImFtb3VudCI6NS45OSwid2hlbiI6Ik9jdCAyNyJ9LHsibmFtZSI6IkNpdGkgbWluIiwiYW1vdW50IjoxMDAuMCwid2hlbiI6Ik9jdCAyOCJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNkXHVkY2M5IFBheS1kb3duOiBBbWV4IiwiYW1vdW50IjoyMjYuMDYsInN0YXR1cyI6InJlbWFpbmluZyAkMjE3OS45MiJ9XSwidG90YWxJbmNvbWUiOjI0NDAuMCwidG90YWxCaWxscyI6MTgxMy45NCwidG90YWxEZWJ0QXR0YWNrIjoyMjYuMDYsInRvdGFsT3V0IjoyMjQwLjAsImVuZGluZ0JhbGFuY2UiOjIwMC4wMDAwMDAwMDAwMDJ9LHsiaWQiOjE0LCJzaGVldE5hbWUiOiJDMTQgXHUyMDE0IE9jdCAzMCIsInBlcmlvZCI6Ik9jdCAzMCAtIE5vdiAxMiwgMjAyNiIsInN0YXJ0RGF0ZSI6IjIwMjYtMTAtMzAiLCJlbmREYXRlIjoiMjAyNi0xMS0xMiIsInJhbmdlVGV4dCI6Ik9jdCAzMCAtIE5vdiAxMiwgMjAyNiIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBPY3QgMzAgIHwgIENETCBiaS13ZWVrbHkgICsgIFZBIE1vbmV5Iiwic3RhcnRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAyLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ik9jdCAzMCJ9LHsibmFtZSI6IlZBIERpc2FiaWxpdHkiLCJhbW91bnQiOjQyOTguMDQsIndoZW4iOiIxc3Qgb2YgbW9udGgifSx7Im5hbWUiOiJWQSBFZHVjYXRpb24iLCJhbW91bnQiOjkwMC4wLCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn1dLCJiaWxscyI6W3sibmFtZSI6IkNvbWNhc3QiLCJhbW91bnQiOjEzNi4yMywid2hlbiI6Ik9jdCAzMCJ9LHsibmFtZSI6IkxlbW9uYWRlIiwiYW1vdW50Ijo3Ni4yNSwid2hlbiI6Ik9jdCAzMCJ9LHsibmFtZSI6IlJlbnQiLCJhbW91bnQiOjIwODEuMCwid2hlbiI6Ik5vdiAxIn0seyJuYW1lIjoiVXBzdGFydCBNaWNoZWxhIG1pbiIsImFtb3VudCI6NDA5Ljk1LCJ3aGVuIjoiTm92IDIifSx7Im5hbWUiOiJSb2FkcnVubmVyIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Ik5vdiAyIn0seyJuYW1lIjoiSHl1bmRhaSIsImFtb3VudCI6OTU1Ljg0LCJ3aGVuIjoiTm92IDQifSx7Im5hbWUiOiJVdGlsaXRpZXMgZXgiLCJhbW91bnQiOjkwLjAsIndoZW4iOiJOb3YgNSJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IEFtZXgiLCJhbW91bnQiOjIxNzkuOTIsInN0YXR1cyI6IkRFQUQgLSBmcmVlcyBtaW4gcGF5bWVudCJ9LHsibmFtZSI6Ilx1ZDgzZFx1ZGNjOSBQYXktZG93bjogQ2l0aSIsImFtb3VudCI6NzAzLjY0OTk5OTk5OTk5OSwic3RhdHVzIjoicmVtYWluaW5nICQzNzY3LjA1In1dLCJ0b3RhbEluY29tZSI6NzYzOC4wNCwidG90YWxCaWxscyI6NDM1NC40NywidG90YWxEZWJ0QXR0YWNrIjoyODgzLjU3LCJ0b3RhbE91dCI6NzQzOC4wNCwiZW5kaW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwNH0seyJpZCI6MTUsInNoZWV0TmFtZSI6IkMxNSBcdTIwMTQgTm92IDEzIiwicGVyaW9kIjoiTm92IDEzLTI2LCAyMDI2Iiwic3RhcnREYXRlIjoiMjAyNi0xMS0xMyIsImVuZERhdGUiOiIyMDI2LTExLTI2IiwicmFuZ2VUZXh0IjoiTm92IDEzLTI2LCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IE5vdiAxMyAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwNCwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJOb3YgMTMifV0sImJpbGxzIjpbeyJuYW1lIjoiVC1Nb2JpbGUiLCJhbW91bnQiOjIxOC44NCwid2hlbiI6Ik5vdiAxNiJ9LHsibmFtZSI6IllhbWFoYSIsImFtb3VudCI6NDEwLjAsIndoZW4iOiJOb3YgMTcifSx7Im5hbWUiOiJpQ2xvdWQiLCJhbW91bnQiOjkuOTksIndoZW4iOiJOb3YgMTkifSx7Im5hbWUiOiJVU0FBIiwiYW1vdW50Ijo1MTEuNjcsIndoZW4iOiJOb3YgMjAifSx7Im5hbWUiOiJWZXJjZWwiLCJhbW91bnQiOjExLjI1LCJ3aGVuIjoiTm92IDIyIn0seyJuYW1lIjoiQ2hhc2UgZmVlIiwiYW1vdW50IjoyNS4wLCJ3aGVuIjoiTm92IDIyIn0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IENpdGkiLCJhbW91bnQiOjQ0OC4wNSwic3RhdHVzIjoicmVtYWluaW5nICQzMzE5LjAwIn1dLCJ0b3RhbEluY29tZSI6MjQ0MC4wLCJ0b3RhbEJpbGxzIjoxNTkxLjk1LCJ0b3RhbERlYnRBdHRhY2siOjQ0OC4wNSwidG90YWxPdXQiOjIyNDAuMCwiZW5kaW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwNH0seyJpZCI6MTYsInNoZWV0TmFtZSI6IkMxNiBcdTIwMTQgTm92IDI3IiwicGVyaW9kIjoiTm92IDI3IC0gRGVjIDEwLCAyMDI2Iiwic3RhcnREYXRlIjoiMjAyNi0xMS0yNyIsImVuZERhdGUiOiIyMDI2LTEyLTEwIiwicmFuZ2VUZXh0IjoiTm92IDI3IC0gRGVjIDEwLCAyMDI2IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IE5vdiAyNyAgfCAgQ0RMIGJpLXdlZWtseSAgKyAgVkEgTW9uZXkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wMDAwMDAwMDAwMDQsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiTm92IDI3In0seyJuYW1lIjoiVkEgRGlzYWJpbGl0eSIsImFtb3VudCI6NDI5OC4wNCwid2hlbiI6IjFzdCBvZiBtb250aCJ9LHsibmFtZSI6IlZBIEVkdWNhdGlvbiIsImFtb3VudCI6OTAwLjAsIndoZW4iOiIxc3Qgb2YgbW9udGgifV0sImJpbGxzIjpbeyJuYW1lIjoiQXBwbGUgTXVzaWMiLCJhbW91bnQiOjUuOTksIndoZW4iOiJOb3YgMjcifSx7Im5hbWUiOiJDaXRpIG1pbiIsImFtb3VudCI6MTAwLjAsIndoZW4iOiJOb3YgMjgifSx7Im5hbWUiOiJDb21jYXN0IiwiYW1vdW50IjoxMzYuMjMsIndoZW4iOiJOb3YgMzAifSx7Im5hbWUiOiJMZW1vbmFkZSIsImFtb3VudCI6NzYuMjUsIndoZW4iOiJOb3YgMzAifSx7Im5hbWUiOiJSZW50IiwiYW1vdW50IjoyMDgxLjAsIndoZW4iOiJEZWMgMSJ9LHsibmFtZSI6IlVwc3RhcnQgTWljaGVsYSBtaW4iLCJhbW91bnQiOjQwOS45NSwid2hlbiI6IkRlYyAyIn0seyJuYW1lIjoiUm9hZHJ1bm5lciIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJEZWMgMiJ9LHsibmFtZSI6Ikh5dW5kYWkiLCJhbW91bnQiOjk1NS44NCwid2hlbiI6IkRlYyA0In0seyJuYW1lIjoiVXRpbGl0aWVzIGV4IiwiYW1vdW50Ijo5MC4wLCJ3aGVuIjoiRGVjIDUifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W3sibmFtZSI6Ilx1ZDgzZFx1ZGNjOSBQYXktZG93bjogQ2l0aSIsImFtb3VudCI6Mjc3Ny41OCwic3RhdHVzIjoicmVtYWluaW5nICQ1NDEuNDIifV0sInRvdGFsSW5jb21lIjo3NjM4LjA0LCJ0b3RhbEJpbGxzIjo0NDYwLjQ2LCJ0b3RhbERlYnRBdHRhY2siOjI3NzcuNTgsInRvdGFsT3V0Ijo3NDM4LjA0LCJlbmRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDA0fSx7ImlkIjoxNywic2hlZXROYW1lIjoiQzE3IFx1MjAxNCBEZWMgMTEiLCJwZXJpb2QiOiJEZWMgMTEtMjQsIDIwMjYiLCJzdGFydERhdGUiOiIyMDI2LTEyLTExIiwiZW5kRGF0ZSI6IjIwMjYtMTItMjQiLCJyYW5nZVRleHQiOiJEZWMgMTEtMjQsIDIwMjYiLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogRGVjIDExICB8ICBDREwgYmktd2Vla2x5Iiwic3RhcnRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDA0LCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IkRlYyAxMSJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJULU1vYmlsZSIsImFtb3VudCI6MjE4Ljg0LCJ3aGVuIjoiRGVjIDE2In0seyJuYW1lIjoiWWFtYWhhIiwiYW1vdW50Ijo0MTAuMCwid2hlbiI6IkRlYyAxNyJ9LHsibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6IkRlYyAxOSJ9LHsibmFtZSI6IlVTQUEiLCJhbW91bnQiOjUxMS42Nywid2hlbiI6IkRlYyAyMCJ9LHsibmFtZSI6IlZlcmNlbCIsImFtb3VudCI6MTEuMjUsIndoZW4iOiJEZWMgMjIifSx7Im5hbWUiOiJDaGFzZSBmZWUiLCJhbW91bnQiOjI1LjAsIndoZW4iOiJEZWMgMjIifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W3sibmFtZSI6Ilx1ZDgzZFx1ZGNjOSBQYXktZG93bjogQ2l0aSIsImFtb3VudCI6NDQ4LjA1LCJzdGF0dXMiOiJyZW1haW5pbmcgJDkzLjM3In1dLCJ0b3RhbEluY29tZSI6MjQ0MC4wLCJ0b3RhbEJpbGxzIjoxNTkxLjk1LCJ0b3RhbERlYnRBdHRhY2siOjQ0OC4wNSwidG90YWxPdXQiOjIyNDAuMCwiZW5kaW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwNH0seyJpZCI6MTgsInNoZWV0TmFtZSI6IkMxOCBcdTIwMTQgRGVjIDI1IiwicGVyaW9kIjoiRGVjIDI1LCAyMDI2IC0gSmFuIDcsIDIwMjciLCJzdGFydERhdGUiOiIyMDI2LTEyLTI1IiwiZW5kRGF0ZSI6IjIwMjctMDEtMDciLCJyYW5nZVRleHQiOiJEZWMgMjUsIDIwMjYgLSBKYW4gNywgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBEZWMgMjUgIHwgIENETCBiaS13ZWVrbHkgICsgIFZBIE1vbmV5Iiwic3RhcnRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDA0LCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IkRlYyAyNSJ9LHsibmFtZSI6IlZBIERpc2FiaWxpdHkiLCJhbW91bnQiOjQyOTguMDQsIndoZW4iOiIxc3Qgb2YgbW9udGgifSx7Im5hbWUiOiJWQSBFZHVjYXRpb24iLCJhbW91bnQiOjkwMC4wLCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn1dLCJiaWxscyI6W3sibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiRGVjIDI3In0seyJuYW1lIjoiQ2l0aSBtaW4iLCJhbW91bnQiOjEwMC4wLCJ3aGVuIjoiRGVjIDI4In0seyJuYW1lIjoiQ29tY2FzdCIsImFtb3VudCI6MTM2LjIzLCJ3aGVuIjoiRGVjIDMwIn0seyJuYW1lIjoiTGVtb25hZGUiLCJhbW91bnQiOjc2LjI1LCJ3aGVuIjoiRGVjIDMwIn0seyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiSmFuIDEifSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJKYW4gMiJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiSmFuIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJKYW4gNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6IkphbiA1In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2NcdWRmYWYgS0lMTDogQ2l0aSIsImFtb3VudCI6OTMuMzcwMDAwMDAwMDAxLCJzdGF0dXMiOiJERUFEIC0gZnJlZXMgbWluIHBheW1lbnQifSx7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IFVwc3RhcnQgTWljaGVsYSIsImFtb3VudCI6MjY4NC4yMSwic3RhdHVzIjoicmVtYWluaW5nICQ1NTAyLjAwIn1dLCJ0b3RhbEluY29tZSI6NzYzOC4wNCwidG90YWxCaWxscyI6NDQ2MC40NiwidG90YWxEZWJ0QXR0YWNrIjoyNzc3LjU4LCJ0b3RhbE91dCI6NzQzOC4wNCwiZW5kaW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwM30seyJpZCI6MTksInNoZWV0TmFtZSI6IkMxOSBcdTIwMTQgSmFuIDgiLCJwZXJpb2QiOiJKYW4gOC0yMSwgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDEtMDgiLCJlbmREYXRlIjoiMjAyNy0wMS0yMSIsInJhbmdlVGV4dCI6IkphbiA4LTIxLCAyMDI3IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IEphbiA4ICB8ICBDREwgYmktd2Vla2x5Iiwic3RhcnRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAzLCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IkphbiA4In1dLCJiaWxscyI6W3sibmFtZSI6IlQtTW9iaWxlIiwiYW1vdW50IjoyMTguODQsIndoZW4iOiJKYW4gMTYifSx7Im5hbWUiOiJZYW1haGEiLCJhbW91bnQiOjQxMC4wLCJ3aGVuIjoiSmFuIDE3In0seyJuYW1lIjoiaUNsb3VkIiwiYW1vdW50Ijo5Ljk5LCJ3aGVuIjoiSmFuIDE5In0seyJuYW1lIjoiVVNBQSIsImFtb3VudCI6NTExLjY3LCJ3aGVuIjoiSmFuIDIwIn0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IFVwc3RhcnQgTWljaGVsYSIsImFtb3VudCI6NDg0LjMsInN0YXR1cyI6InJlbWFpbmluZyAkNTAxNy43MCJ9XSwidG90YWxJbmNvbWUiOjI0NDAuMCwidG90YWxCaWxscyI6MTU1NS43LCJ0b3RhbERlYnRBdHRhY2siOjQ4NC4zLCJ0b3RhbE91dCI6MjI0MC4wLCJlbmRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAzfSx7ImlkIjoyMCwic2hlZXROYW1lIjoiQzIwIFx1MjAxNCBKYW4gMjIiLCJwZXJpb2QiOiJKYW4gMjIgLSBGZWIgNCwgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDEtMjIiLCJlbmREYXRlIjoiMjAyNy0wMi0wNCIsInJhbmdlVGV4dCI6IkphbiAyMiAtIEZlYiA0LCAyMDI3IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IEphbiAyMiAgfCAgQ0RMIGJpLXdlZWtseSAgKyAgVkEgTW9uZXkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wMDAwMDAwMDAwMDMsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiSmFuIDIyIn0seyJuYW1lIjoiVkEgRGlzYWJpbGl0eSIsImFtb3VudCI6NDI5OC4wNCwid2hlbiI6IjFzdCBvZiBtb250aCJ9LHsibmFtZSI6IlZBIEVkdWNhdGlvbiIsImFtb3VudCI6OTAwLjAsIndoZW4iOiIxc3Qgb2YgbW9udGgifV0sImJpbGxzIjpbeyJuYW1lIjoiVmVyY2VsIiwiYW1vdW50IjoxMS4yNSwid2hlbiI6IkphbiAyMiJ9LHsibmFtZSI6IkNoYXNlIGZlZSIsImFtb3VudCI6MjUuMCwid2hlbiI6IkphbiAyMiJ9LHsibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiSmFuIDI3In0seyJuYW1lIjoiQ29tY2FzdCIsImFtb3VudCI6MTM2LjIzLCJ3aGVuIjoiSmFuIDMwIn0seyJuYW1lIjoiTGVtb25hZGUiLCJhbW91bnQiOjc2LjI1LCJ3aGVuIjoiSmFuIDMwIn0seyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiRmViIDEifSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJGZWIgMiJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiRmViIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJGZWIgNCJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNkXHVkY2M5IFBheS1kb3duOiBVcHN0YXJ0IE1pY2hlbGEiLCJhbW91bnQiOjI5MzEuMzMsInN0YXR1cyI6InJlbWFpbmluZyAkMjA4Ni4zNyJ9XSwidG90YWxJbmNvbWUiOjc2MzguMDQsInRvdGFsQmlsbHMiOjQzMDYuNzEsInRvdGFsRGVidEF0dGFjayI6MjkzMS4zMywidG90YWxPdXQiOjc0MzguMDQsImVuZGluZ0JhbGFuY2UiOjIwMC4wMDAwMDAwMDAwMDN9LHsiaWQiOjIxLCJzaGVldE5hbWUiOiJDMjEgXHUyMDE0IEZlYiA1IiwicGVyaW9kIjoiRmViIDUtMTgsIDIwMjciLCJzdGFydERhdGUiOiIyMDI3LTAyLTA1IiwiZW5kRGF0ZSI6IjIwMjctMDItMTgiLCJyYW5nZVRleHQiOiJGZWIgNS0xOCwgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBGZWIgNSAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6MjAwLjAwMDAwMDAwMDAwMywiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJGZWIgNSJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJVdGlsaXRpZXMgZXgiLCJhbW91bnQiOjkwLjAsIndoZW4iOiJGZWIgNSJ9LHsibmFtZSI6IlQtTW9iaWxlIiwiYW1vdW50IjoyMTguODQsIndoZW4iOiJGZWIgMTYifSx7Im5hbWUiOiJZYW1haGEiLCJhbW91bnQiOjQxMC4wLCJ3aGVuIjoiRmViIDE3In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOlt7Im5hbWUiOiJcdWQ4M2RcdWRjYzkgUGF5LWRvd246IFVwc3RhcnQgTWljaGVsYSIsImFtb3VudCI6OTE1Ljk2LCJzdGF0dXMiOiJyZW1haW5pbmcgJDExNzAuNDEifV0sInRvdGFsSW5jb21lIjoyNDQwLjAsInRvdGFsQmlsbHMiOjExMjQuMDQsInRvdGFsRGVidEF0dGFjayI6OTE1Ljk2LCJ0b3RhbE91dCI6MjI0MC4wLCJlbmRpbmdCYWxhbmNlIjoyMDAuMDAwMDAwMDAwMDAzfSx7ImlkIjoyMiwic2hlZXROYW1lIjoiQzIyIFx1MjAxNCBGZWIgMTkiLCJwZXJpb2QiOiJGZWIgMTkgLSBNYXIgNCwgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDItMTkiLCJlbmREYXRlIjoiMjAyNy0wMy0wNCIsInJhbmdlVGV4dCI6IkZlYiAxOSAtIE1hciA0LCAyMDI3IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IEZlYiAxOSAgfCAgQ0RMIGJpLXdlZWtseSAgKyAgVkEgTW9uZXkiLCJzdGFydGluZ0JhbGFuY2UiOjIwMC4wMDAwMDAwMDAwMDMsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiRmViIDE5In0seyJuYW1lIjoiVkEgRGlzYWJpbGl0eSIsImFtb3VudCI6NDI5OC4wNCwid2hlbiI6IjFzdCBvZiBtb250aCJ9LHsibmFtZSI6IlZBIEVkdWNhdGlvbiIsImFtb3VudCI6OTAwLjAsIndoZW4iOiIxc3Qgb2YgbW9udGgifV0sImJpbGxzIjpbeyJuYW1lIjoiaUNsb3VkIiwiYW1vdW50Ijo5Ljk5LCJ3aGVuIjoiRmViIDE5In0seyJuYW1lIjoiVVNBQSIsImFtb3VudCI6NTExLjY3LCJ3aGVuIjoiRmViIDIwIn0seyJuYW1lIjoiVmVyY2VsIiwiYW1vdW50IjoxMS4yNSwid2hlbiI6IkZlYiAyMiJ9LHsibmFtZSI6IkNoYXNlIGZlZSIsImFtb3VudCI6MjUuMCwid2hlbiI6IkZlYiAyMiJ9LHsibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiRmViIDI3In0seyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiTWFyIDEifSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEgbWluIiwiYW1vdW50Ijo0MDkuOTUsIndoZW4iOiJNYXIgMiJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiTWFyIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJNYXIgNCJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbeyJuYW1lIjoiXHVkODNjXHVkZmFmIEtJTEw6IFVwc3RhcnQgTWljaGVsYSIsImFtb3VudCI6MTE3MC40MSwic3RhdHVzIjoiREVBRCAtIGZyZWVzIG1pbiBwYXltZW50In1dLCJ0b3RhbEluY29tZSI6NzYzOC4wNCwidG90YWxCaWxscyI6NDYxNS44OSwidG90YWxEZWJ0QXR0YWNrIjoxMTcwLjQxLCJ0b3RhbE91dCI6NTk4Ni4zLCJlbmRpbmdCYWxhbmNlIjoxNjUxLjc0fSx7ImlkIjoyMywic2hlZXROYW1lIjoiQzIzIFx1MjAxNCBNYXIgNSIsInBlcmlvZCI6Ik1hciA1LTE4LCAyMDI3Iiwic3RhcnREYXRlIjoiMjAyNy0wMy0wNSIsImVuZERhdGUiOiIyMDI3LTAzLTE4IiwicmFuZ2VUZXh0IjoiTWFyIDUtMTgsIDIwMjciLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogTWFyIDUgIHwgIENETCBiaS13ZWVrbHkiLCJzdGFydGluZ0JhbGFuY2UiOjE2NTEuNzQsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiTWFyIDUifV0sImJpbGxzIjpbeyJuYW1lIjoiVXRpbGl0aWVzIGV4IiwiYW1vdW50Ijo5MC4wLCJ3aGVuIjoiTWFyIDUifSx7Im5hbWUiOiJULU1vYmlsZSIsImFtb3VudCI6MjE4Ljg0LCJ3aGVuIjoiTWFyIDE2In0seyJuYW1lIjoiWWFtYWhhIiwiYW1vdW50Ijo0MTAuMCwid2hlbiI6Ik1hciAxNyJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbXSwidG90YWxJbmNvbWUiOjM4OTEuNzQsInRvdGFsQmlsbHMiOjExMjQuMDQsInRvdGFsRGVidEF0dGFjayI6MCwidG90YWxPdXQiOjEzMjQuMDQsImVuZGluZ0JhbGFuY2UiOjI1NjcuN30seyJpZCI6MjQsInNoZWV0TmFtZSI6IkMyNCBcdTIwMTQgTWFyIDE5IiwicGVyaW9kIjoiTWFyIDE5IC0gQXByIDEsIDIwMjciLCJzdGFydERhdGUiOiIyMDI3LTAzLTE5IiwiZW5kRGF0ZSI6IjIwMjctMDQtMDEiLCJyYW5nZVRleHQiOiJNYXIgMTkgLSBBcHIgMSwgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBNYXIgMTkgIHwgIENETCBiaS13ZWVrbHkgICsgIFZBIE1vbmV5Iiwic3RhcnRpbmdCYWxhbmNlIjoyNTY3LjcsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiTWFyIDE5In0seyJuYW1lIjoiVkEgRGlzYWJpbGl0eSIsImFtb3VudCI6NDI5OC4wNCwid2hlbiI6IjFzdCBvZiBtb250aCJ9LHsibmFtZSI6IlZBIEVkdWNhdGlvbiIsImFtb3VudCI6OTAwLjAsIndoZW4iOiIxc3Qgb2YgbW9udGgifV0sImJpbGxzIjpbeyJuYW1lIjoiaUNsb3VkIiwiYW1vdW50Ijo5Ljk5LCJ3aGVuIjoiTWFyIDE5In0seyJuYW1lIjoiVVNBQSIsImFtb3VudCI6NTExLjY3LCJ3aGVuIjoiTWFyIDIwIn0seyJuYW1lIjoiVmVyY2VsIiwiYW1vdW50IjoxMS4yNSwid2hlbiI6Ik1hciAyMiJ9LHsibmFtZSI6IkNoYXNlIGZlZSIsImFtb3VudCI6MjUuMCwid2hlbiI6Ik1hciAyMiJ9LHsibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiTWFyIDI3In0seyJuYW1lIjoiQ29tY2FzdCIsImFtb3VudCI6MTM2LjIzLCJ3aGVuIjoiTWFyIDMwIn0seyJuYW1lIjoiTGVtb25hZGUiLCJhbW91bnQiOjc2LjI1LCJ3aGVuIjoiTWFyIDMwIn0seyJuYW1lIjoiUmVudCIsImFtb3VudCI6MjA4MS4wLCJ3aGVuIjoiQXByIDEifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W10sInRvdGFsSW5jb21lIjoxMDAwNS43NCwidG90YWxCaWxscyI6MzI2Mi41OCwidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6MzQ2Mi41OCwiZW5kaW5nQmFsYW5jZSI6NjU0My4xNn0seyJpZCI6MjUsInNoZWV0TmFtZSI6IkMyNSBcdTIwMTQgQXByIDIiLCJwZXJpb2QiOiJBcHIgMi0xNSwgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDQtMDIiLCJlbmREYXRlIjoiMjAyNy0wNC0xNSIsInJhbmdlVGV4dCI6IkFwciAyLTE1LCAyMDI3IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IEFwciAyICB8ICBDREwgYmktd2Vla2x5Iiwic3RhcnRpbmdCYWxhbmNlIjo2NTQzLjE2LCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6IkFwciAyIn1dLCJiaWxscyI6W3sibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiQXByIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJBcHIgNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6IkFwciA1In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOltdLCJ0b3RhbEluY29tZSI6ODc4My4xNiwidG90YWxCaWxscyI6MTY1MS4wNCwidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6MTg1MS4wNCwiZW5kaW5nQmFsYW5jZSI6NjkzMi4xMn0seyJpZCI6MjYsInNoZWV0TmFtZSI6IkMyNiBcdTIwMTQgQXByIDE2IiwicGVyaW9kIjoiQXByIDE2LTI5LCAyMDI3Iiwic3RhcnREYXRlIjoiMjAyNy0wNC0xNiIsImVuZERhdGUiOiIyMDI3LTA0LTI5IiwicmFuZ2VUZXh0IjoiQXByIDE2LTI5LCAyMDI3IiwicGF5Y2hlY2tUZXh0IjoiUGF5Y2hlY2s6IEFwciAxNiAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6NjkzMi4xMiwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJBcHIgMTYifV0sImJpbGxzIjpbeyJuYW1lIjoiVC1Nb2JpbGUiLCJhbW91bnQiOjIxOC44NCwid2hlbiI6IkFwciAxNiJ9LHsibmFtZSI6IllhbWFoYSIsImFtb3VudCI6NDEwLjAsIndoZW4iOiJBcHIgMTcifSx7Im5hbWUiOiJpQ2xvdWQiLCJhbW91bnQiOjkuOTksIndoZW4iOiJBcHIgMTkifSx7Im5hbWUiOiJVU0FBIiwiYW1vdW50Ijo1MTEuNjcsIndoZW4iOiJBcHIgMjAifSx7Im5hbWUiOiJWZXJjZWwiLCJhbW91bnQiOjExLjI1LCJ3aGVuIjoiQXByIDIyIn0seyJuYW1lIjoiQ2hhc2UgZmVlIiwiYW1vdW50IjoyNS4wLCJ3aGVuIjoiQXByIDIyIn0seyJuYW1lIjoiQXBwbGUgTXVzaWMiLCJhbW91bnQiOjUuOTksIndoZW4iOiJBcHIgMjcifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W10sInRvdGFsSW5jb21lIjo5MTcyLjEyLCJ0b3RhbEJpbGxzIjoxNTk3Ljk0LCJ0b3RhbERlYnRBdHRhY2siOjAsInRvdGFsT3V0IjoxNzk3Ljk0LCJlbmRpbmdCYWxhbmNlIjo3Mzc0LjE4fSx7ImlkIjoyNywic2hlZXROYW1lIjoiQzI3IFx1MjAxNCBBcHIgMzAiLCJwZXJpb2QiOiJBcHIgMzAgLSBNYXkgMTMsIDIwMjciLCJzdGFydERhdGUiOiIyMDI3LTA0LTMwIiwiZW5kRGF0ZSI6IjIwMjctMDUtMTMiLCJyYW5nZVRleHQiOiJBcHIgMzAgLSBNYXkgMTMsIDIwMjciLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogQXByIDMwICB8ICBDREwgYmktd2Vla2x5ICArICBWQSBNb25leSIsInN0YXJ0aW5nQmFsYW5jZSI6NzM3NC4xOCwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJBcHIgMzAifSx7Im5hbWUiOiJWQSBEaXNhYmlsaXR5IiwiYW1vdW50Ijo0Mjk4LjA0LCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn0seyJuYW1lIjoiVkEgRWR1Y2F0aW9uIiwiYW1vdW50Ijo5MDAuMCwid2hlbiI6IjFzdCBvZiBtb250aCJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJDb21jYXN0IiwiYW1vdW50IjoxMzYuMjMsIndoZW4iOiJBcHIgMzAifSx7Im5hbWUiOiJMZW1vbmFkZSIsImFtb3VudCI6NzYuMjUsIndoZW4iOiJBcHIgMzAifSx7Im5hbWUiOiJSZW50IiwiYW1vdW50IjoyMDgxLjAsIndoZW4iOiJNYXkgMSJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiTWF5IDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJNYXkgNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6Ik1heSA1In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOltdLCJ0b3RhbEluY29tZSI6MTQ4MTIuMjIsInRvdGFsQmlsbHMiOjM5NDQuNTIsInRvdGFsRGVidEF0dGFjayI6MCwidG90YWxPdXQiOjQxNDQuNTIsImVuZGluZ0JhbGFuY2UiOjEwNjY3Ljd9LHsiaWQiOjI4LCJzaGVldE5hbWUiOiJDMjggXHUyMDE0IE1heSAxNCIsInBlcmlvZCI6Ik1heSAxNC0yNywgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDUtMTQiLCJlbmREYXRlIjoiMjAyNy0wNS0yNyIsInJhbmdlVGV4dCI6Ik1heSAxNC0yNywgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBNYXkgMTQgIHwgIENETCBiaS13ZWVrbHkiLCJzdGFydGluZ0JhbGFuY2UiOjEwNjY3LjcsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiTWF5IDE0In1dLCJiaWxscyI6W3sibmFtZSI6IlQtTW9iaWxlIiwiYW1vdW50IjoyMTguODQsIndoZW4iOiJNYXkgMTYifSx7Im5hbWUiOiJZYW1haGEiLCJhbW91bnQiOjQxMC4wLCJ3aGVuIjoiTWF5IDE3In0seyJuYW1lIjoiaUNsb3VkIiwiYW1vdW50Ijo5Ljk5LCJ3aGVuIjoiTWF5IDE5In0seyJuYW1lIjoiVVNBQSIsImFtb3VudCI6NTExLjY3LCJ3aGVuIjoiTWF5IDIwIn0seyJuYW1lIjoiVmVyY2VsIiwiYW1vdW50IjoxMS4yNSwid2hlbiI6Ik1heSAyMiJ9LHsibmFtZSI6IkNoYXNlIGZlZSIsImFtb3VudCI6MjUuMCwid2hlbiI6Ik1heSAyMiJ9LHsibmFtZSI6IkFwcGxlIE11c2ljIiwiYW1vdW50Ijo1Ljk5LCJ3aGVuIjoiTWF5IDI3In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOltdLCJ0b3RhbEluY29tZSI6MTI5MDcuNywidG90YWxCaWxscyI6MTU5Ny45NCwidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6MTc5Ny45NCwiZW5kaW5nQmFsYW5jZSI6MTExMDkuNzZ9LHsiaWQiOjI5LCJzaGVldE5hbWUiOiJDMjkgXHUyMDE0IE1heSAyOCIsInBlcmlvZCI6Ik1heSAyOCAtIEp1biAxMCwgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDUtMjgiLCJlbmREYXRlIjoiMjAyNy0wNi0xMCIsInJhbmdlVGV4dCI6Ik1heSAyOCAtIEp1biAxMCwgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBNYXkgMjggIHwgIENETCBiaS13ZWVrbHkgICsgIFZBIE1vbmV5Iiwic3RhcnRpbmdCYWxhbmNlIjoxMTEwOS43NiwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJNYXkgMjgifSx7Im5hbWUiOiJWQSBEaXNhYmlsaXR5IiwiYW1vdW50Ijo0Mjk4LjA0LCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn0seyJuYW1lIjoiVkEgRWR1Y2F0aW9uIiwiYW1vdW50Ijo5MDAuMCwid2hlbiI6IjFzdCBvZiBtb250aCJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJDb21jYXN0IiwiYW1vdW50IjoxMzYuMjMsIndoZW4iOiJNYXkgMzAifSx7Im5hbWUiOiJMZW1vbmFkZSIsImFtb3VudCI6NzYuMjUsIndoZW4iOiJNYXkgMzAifSx7Im5hbWUiOiJSZW50IiwiYW1vdW50IjoyMDgxLjAsIndoZW4iOiJKdW4gMSJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiSnVuIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJKdW4gNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6Ikp1biA1In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOltdLCJ0b3RhbEluY29tZSI6MTg1NDcuOCwidG90YWxCaWxscyI6Mzk0NC41MiwidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6NDE0NC41MiwiZW5kaW5nQmFsYW5jZSI6MTQ0MDMuMjh9LHsiaWQiOjMwLCJzaGVldE5hbWUiOiJDMzAgXHUyMDE0IEp1biAxMSIsInBlcmlvZCI6Ikp1biAxMS0yNCwgMjAyNyIsInN0YXJ0RGF0ZSI6IjIwMjctMDYtMTEiLCJlbmREYXRlIjoiMjAyNy0wNi0yNCIsInJhbmdlVGV4dCI6Ikp1biAxMS0yNCwgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBKdW4gMTEgIHwgIENETCBiaS13ZWVrbHkiLCJzdGFydGluZ0JhbGFuY2UiOjE0NDAzLjI4LCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ikp1biAxMSJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJULU1vYmlsZSIsImFtb3VudCI6MjE4Ljg0LCJ3aGVuIjoiSnVuIDE2In0seyJuYW1lIjoiWWFtYWhhIiwiYW1vdW50Ijo0MTAuMCwid2hlbiI6Ikp1biAxNyJ9LHsibmFtZSI6ImlDbG91ZCIsImFtb3VudCI6OS45OSwid2hlbiI6Ikp1biAxOSJ9LHsibmFtZSI6IlVTQUEiLCJhbW91bnQiOjUxMS42Nywid2hlbiI6Ikp1biAyMCJ9LHsibmFtZSI6IlZlcmNlbCIsImFtb3VudCI6MTEuMjUsIndoZW4iOiJKdW4gMjIifSx7Im5hbWUiOiJDaGFzZSBmZWUiLCJhbW91bnQiOjI1LjAsIndoZW4iOiJKdW4gMjIifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W10sInRvdGFsSW5jb21lIjoxNjY0My4yOCwidG90YWxCaWxscyI6MTU5MS45NSwidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6MTc5MS45NSwiZW5kaW5nQmFsYW5jZSI6MTQ4NTEuMzN9LHsiaWQiOjMxLCJzaGVldE5hbWUiOiJDMzEgXHUyMDE0IEp1biAyNSIsInBlcmlvZCI6Ikp1biAyNSAtIEp1bCA4LCAyMDI3Iiwic3RhcnREYXRlIjoiMjAyNy0wNi0yNSIsImVuZERhdGUiOiIyMDI3LTA3LTA4IiwicmFuZ2VUZXh0IjoiSnVuIDI1IC0gSnVsIDgsIDIwMjciLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogSnVuIDI1ICB8ICBDREwgYmktd2Vla2x5ICArICBWQSBNb25leSIsInN0YXJ0aW5nQmFsYW5jZSI6MTQ4NTEuMzMsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiSnVuIDI1In0seyJuYW1lIjoiVkEgRGlzYWJpbGl0eSIsImFtb3VudCI6NDI5OC4wNCwid2hlbiI6IjFzdCBvZiBtb250aCJ9LHsibmFtZSI6IlZBIEVkdWNhdGlvbiIsImFtb3VudCI6OTAwLjAsIndoZW4iOiIxc3Qgb2YgbW9udGgifV0sImJpbGxzIjpbeyJuYW1lIjoiQXBwbGUgTXVzaWMiLCJhbW91bnQiOjUuOTksIndoZW4iOiJKdW4gMjcifSx7Im5hbWUiOiJDb21jYXN0IiwiYW1vdW50IjoxMzYuMjMsIndoZW4iOiJKdW4gMzAifSx7Im5hbWUiOiJMZW1vbmFkZSIsImFtb3VudCI6NzYuMjUsIndoZW4iOiJKdW4gMzAifSx7Im5hbWUiOiJSZW50IiwiYW1vdW50IjoyMDgxLjAsIndoZW4iOiJKdWwgMSJ9LHsibmFtZSI6IlJvYWRydW5uZXIiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoiSnVsIDIifSx7Im5hbWUiOiJIeXVuZGFpIiwiYW1vdW50Ijo5NTUuODQsIndoZW4iOiJKdWwgNCJ9LHsibmFtZSI6IlV0aWxpdGllcyBleCIsImFtb3VudCI6OTAuMCwid2hlbiI6Ikp1bCA1In0seyJuYW1lIjoiRG9nIGRheWNhcmUgKDYgZGF5cykiLCJhbW91bnQiOjIwNS4yLCJ3aGVuIjoib25nb2luZyJ9LHsibmFtZSI6Ikdyb2NlcmllcyAoMiB3ZWVrcykiLCJhbW91bnQiOjIwMC4wLCJ3aGVuIjoib25nb2luZyJ9XSwiZW1lcmdlbmN5RnVuZCI6MjAwLjAsImRlYnRBdHRhY2siOltdLCJ0b3RhbEluY29tZSI6MjIyODkuMzcsInRvdGFsQmlsbHMiOjM5NTAuNTEsInRvdGFsRGVidEF0dGFjayI6MCwidG90YWxPdXQiOjQxNTAuNTEsImVuZGluZ0JhbGFuY2UiOjE4MTM4Ljg2fSx7ImlkIjozMiwic2hlZXROYW1lIjoiQzMyIFx1MjAxNCBKdWwgOSIsInBlcmlvZCI6Ikp1bCA5LTIyLCAyMDI3Iiwic3RhcnREYXRlIjoiMjAyNy0wNy0wOSIsImVuZERhdGUiOiIyMDI3LTA3LTIyIiwicmFuZ2VUZXh0IjoiSnVsIDktMjIsIDIwMjciLCJwYXljaGVja1RleHQiOiJQYXljaGVjazogSnVsIDkgIHwgIENETCBiaS13ZWVrbHkiLCJzdGFydGluZ0JhbGFuY2UiOjE4MTM4Ljg2LCJpbmNvbWUiOlt7Im5hbWUiOiJDREwgUGF5Y2hlY2siLCJhbW91bnQiOjIyNDAuMCwid2hlbiI6Ikp1bCA5In1dLCJiaWxscyI6W3sibmFtZSI6IlQtTW9iaWxlIiwiYW1vdW50IjoyMTguODQsIndoZW4iOiJKdWwgMTYifSx7Im5hbWUiOiJZYW1haGEiLCJhbW91bnQiOjQxMC4wLCJ3aGVuIjoiSnVsIDE3In0seyJuYW1lIjoiaUNsb3VkIiwiYW1vdW50Ijo5Ljk5LCJ3aGVuIjoiSnVsIDE5In0seyJuYW1lIjoiVVNBQSIsImFtb3VudCI6NTExLjY3LCJ3aGVuIjoiSnVsIDIwIn0seyJuYW1lIjoiVmVyY2VsIiwiYW1vdW50IjoxMS4yNSwid2hlbiI6Ikp1bCAyMiJ9LHsibmFtZSI6IkNoYXNlIGZlZSIsImFtb3VudCI6MjUuMCwid2hlbiI6Ikp1bCAyMiJ9LHsibmFtZSI6IkRvZyBkYXljYXJlICg2IGRheXMpIiwiYW1vdW50IjoyMDUuMiwid2hlbiI6Im9uZ29pbmcifSx7Im5hbWUiOiJHcm9jZXJpZXMgKDIgd2Vla3MpIiwiYW1vdW50IjoyMDAuMCwid2hlbiI6Im9uZ29pbmcifV0sImVtZXJnZW5jeUZ1bmQiOjIwMC4wLCJkZWJ0QXR0YWNrIjpbXSwidG90YWxJbmNvbWUiOjIwMzc4Ljg2LCJ0b3RhbEJpbGxzIjoxNTkxLjk1LCJ0b3RhbERlYnRBdHRhY2siOjAsInRvdGFsT3V0IjoxNzkxLjk1LCJlbmRpbmdCYWxhbmNlIjoxODU4Ni45MX0seyJpZCI6MzMsInNoZWV0TmFtZSI6IkMzMyBcdTIwMTQgSnVsIDIzIiwicGVyaW9kIjoiSnVsIDIzIC0gQXVnIDUsIDIwMjciLCJzdGFydERhdGUiOiIyMDI3LTA3LTIzIiwiZW5kRGF0ZSI6IjIwMjctMDgtMDUiLCJyYW5nZVRleHQiOiJKdWwgMjMgLSBBdWcgNSwgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBKdWwgMjMgIHwgIENETCBiaS13ZWVrbHkgICsgIFZBIE1vbmV5Iiwic3RhcnRpbmdCYWxhbmNlIjoxODU4Ni45MSwiaW5jb21lIjpbeyJuYW1lIjoiQ0RMIFBheWNoZWNrIiwiYW1vdW50IjoyMjQwLjAsIndoZW4iOiJKdWwgMjMifSx7Im5hbWUiOiJWQSBEaXNhYmlsaXR5IiwiYW1vdW50Ijo0Mjk4LjA0LCJ3aGVuIjoiMXN0IG9mIG1vbnRoIn0seyJuYW1lIjoiVkEgRWR1Y2F0aW9uIiwiYW1vdW50Ijo5MDAuMCwid2hlbiI6IjFzdCBvZiBtb250aCJ9XSwiYmlsbHMiOlt7Im5hbWUiOiJBcHBsZSBNdXNpYyIsImFtb3VudCI6NS45OSwid2hlbiI6Ikp1bCAyNyJ9LHsibmFtZSI6IkNvbWNhc3QiLCJhbW91bnQiOjEzNi4yMywid2hlbiI6Ikp1bCAzMCJ9LHsibmFtZSI6IkxlbW9uYWRlIiwiYW1vdW50Ijo3Ni4yNSwid2hlbiI6Ikp1bCAzMCJ9LHsibmFtZSI6IlJlbnQiLCJhbW91bnQiOjIwODEuMCwid2hlbiI6IkF1ZyAxIn0seyJuYW1lIjoiUm9hZHJ1bm5lciIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJBdWcgMiJ9LHsibmFtZSI6Ikh5dW5kYWkiLCJhbW91bnQiOjk1NS44NCwid2hlbiI6IkF1ZyA0In0seyJuYW1lIjoiVXRpbGl0aWVzIGV4IiwiYW1vdW50Ijo5MC4wLCJ3aGVuIjoiQXVnIDUifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W10sInRvdGFsSW5jb21lIjoyNjAyNC45NSwidG90YWxCaWxscyI6Mzk1MC41MSwidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6NDE1MC41MSwiZW5kaW5nQmFsYW5jZSI6MjE4NzQuNDR9LHsiaWQiOjM0LCJzaGVldE5hbWUiOiJDMzQgXHUyMDE0IEF1ZyA2IiwicGVyaW9kIjoiQXVnIDYtMTksIDIwMjciLCJzdGFydERhdGUiOiIyMDI3LTA4LTA2IiwiZW5kRGF0ZSI6IjIwMjctMDgtMTkiLCJyYW5nZVRleHQiOiJBdWcgNi0xOSwgMjAyNyIsInBheWNoZWNrVGV4dCI6IlBheWNoZWNrOiBBdWcgNiAgfCAgQ0RMIGJpLXdlZWtseSIsInN0YXJ0aW5nQmFsYW5jZSI6MjE4NzQuNDQsImluY29tZSI6W3sibmFtZSI6IkNETCBQYXljaGVjayIsImFtb3VudCI6MjI0MC4wLCJ3aGVuIjoiQXVnIDYifV0sImJpbGxzIjpbeyJuYW1lIjoiVC1Nb2JpbGUiLCJhbW91bnQiOjIxOC44NCwid2hlbiI6IkF1ZyAxNiJ9LHsibmFtZSI6IllhbWFoYSIsImFtb3VudCI6NDEwLjAsIndoZW4iOiJBdWcgMTcifSx7Im5hbWUiOiJpQ2xvdWQiLCJhbW91bnQiOjkuOTksIndoZW4iOiJBdWcgMTkifSx7Im5hbWUiOiJEb2cgZGF5Y2FyZSAoNiBkYXlzKSIsImFtb3VudCI6MjA1LjIsIndoZW4iOiJvbmdvaW5nIn0seyJuYW1lIjoiR3JvY2VyaWVzICgyIHdlZWtzKSIsImFtb3VudCI6MjAwLjAsIndoZW4iOiJvbmdvaW5nIn1dLCJlbWVyZ2VuY3lGdW5kIjoyMDAuMCwiZGVidEF0dGFjayI6W10sInRvdGFsSW5jb21lIjoyNDExNC40NCwidG90YWxCaWxscyI6MTA0NC4wMywidG90YWxEZWJ0QXR0YWNrIjowLCJ0b3RhbE91dCI6MTI0NC4wMywiZW5kaW5nQmFsYW5jZSI6MjI4NzAuNDF9XSwiZGVidHMiOlt7Im5hbWUiOiJDYXBpdGFsIE9uZSIsImJhbGFuY2UiOjUxMy4wLCJraWxsQ3ljbGUiOiJcdTI3MDUgQzEgKERheSAxKSIsInByZUNoZWNrZWQiOnRydWV9LHsibmFtZSI6IkFwcGxlIENhcmQiLCJiYWxhbmNlIjo3MzAuMCwia2lsbEN5Y2xlIjoiXHUyNzA1IEMxIChEYXkgMSkiLCJwcmVDaGVja2VkIjp0cnVlfSx7Im5hbWUiOiJDaGFzZSBDYXJkIiwiYmFsYW5jZSI6MTA1MC4wMywia2lsbEN5Y2xlIjoiXHUyNzA1IEMxIChEYXkgMSkiLCJwcmVDaGVja2VkIjp0cnVlfSx7Im5hbWUiOiJMb3dlJ3MgUGF5UGFsIiwiYmFsYW5jZSI6NzAuOTIsImtpbGxDeWNsZSI6IkMzIChNYXkgMjkgLSBKdW4gMTEsIDIwMjYpIiwicHJlQ2hlY2tlZCI6ZmFsc2V9LHsibmFtZSI6IlVwc3RhcnQgRnUiLCJiYWxhbmNlIjoyMTQuMjEsImtpbGxDeWNsZSI6IkMzIChNYXkgMjkgLSBKdW4gMTEsIDIwMjYpIiwicHJlQ2hlY2tlZCI6ZmFsc2V9LHsibmFtZSI6IkFmZmlybSBBbWF6b24gJDI1MS45NCIsImJhbGFuY2UiOjI1MS45NCwia2lsbEN5Y2xlIjoiQzMgKE1heSAyOSAtIEp1biAxMSwgMjAyNikiLCJwcmVDaGVja2VkIjpmYWxzZX0seyJuYW1lIjoiQWZmaXJtIEFtYXpvbiAkMzA0LjU5IiwiYmFsYW5jZSI6MzA0LjU5LCJraWxsQ3ljbGUiOiJDMyAoTWF5IDI5IC0gSnVuIDExLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJQYXlQYWwgR292WCAoZXN0KSIsImJhbGFuY2UiOjIwMC4wLCJraWxsQ3ljbGUiOiJDMyAoTWF5IDI5IC0gSnVuIDExLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJQYXlQYWwgU2NoZWVscyAoZXN0KSIsImJhbGFuY2UiOjIwMC4wLCJraWxsQ3ljbGUiOiJDMyAoTWF5IDI5IC0gSnVuIDExLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJBZmZpcm0gQSAoZXN0KSIsImJhbGFuY2UiOjIwMC4wLCJraWxsQ3ljbGUiOiJDMyAoTWF5IDI5IC0gSnVuIDExLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJBZmZpcm0gQyAoZXN0KSIsImJhbGFuY2UiOjI1MC4wLCJraWxsQ3ljbGUiOiJDMyAoTWF5IDI5IC0gSnVuIDExLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJBZmZpcm0gRCAoZXN0KSIsImJhbGFuY2UiOjIwMC4wLCJraWxsQ3ljbGUiOiJDMyAoTWF5IDI5IC0gSnVuIDExLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJQYXlQYWwgUmV2WmlsbGEiLCJiYWxhbmNlIjo1MDkuODMsImtpbGxDeWNsZSI6IkM0IChKdW4gMTItMjUsIDIwMjYpIiwicHJlQ2hlY2tlZCI6ZmFsc2V9LHsibmFtZSI6IkFmZmlybSBBbWF6b24gJDUwOS45NSIsImJhbGFuY2UiOjUwOS45NSwia2lsbEN5Y2xlIjoiQzUgKEp1biAyNiAtIEp1bCA5LCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJBZmZpcm0gQW1hem9uICQ1NTQiLCJiYWxhbmNlIjo1NTQuMTEsImtpbGxDeWNsZSI6IkM1IChKdW4gMjYgLSBKdWwgOSwgMjAyNikiLCJwcmVDaGVja2VkIjpmYWxzZX0seyJuYW1lIjoiQWZmaXJtIEFtYXpvbiAkOTA2IiwiYmFsYW5jZSI6OTA1LjczLCJraWxsQ3ljbGUiOiJDNSAoSnVuIDI2IC0gSnVsIDksIDIwMjYpIiwicHJlQ2hlY2tlZCI6ZmFsc2V9LHsibmFtZSI6IkFmZmlybSBBbWF6b24gJDk5MCIsImJhbGFuY2UiOjk5MC4zOSwia2lsbEN5Y2xlIjoiQzcgKEp1bCAyNCAtIEF1ZyA2LCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJBZmZpcm0gQW1hem9uICQxMDQwIiwiYmFsYW5jZSI6MTA0MC4yMSwia2lsbEN5Y2xlIjoiQzcgKEp1bCAyNCAtIEF1ZyA2LCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJBZmZpcm0gQW1hem9uICQxOTM2IiwiYmFsYW5jZSI6MTkzNS41Niwia2lsbEN5Y2xlIjoiQzkgKEF1ZyAyMSAtIFNlcCAzLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJVcHN0YXJ0IE1wbGkiLCJiYWxhbmNlIjoyMzkzLjA2LCJraWxsQ3ljbGUiOiJDOSAoQXVnIDIxIC0gU2VwIDMsIDIwMjYpIiwicHJlQ2hlY2tlZCI6ZmFsc2V9LHsibmFtZSI6IkFmZmlybSBSZXZaaWxsYSAkMzM0OSIsImJhbGFuY2UiOjMzNDguNTIsImtpbGxDeWNsZSI6IkMxMSAoU2VwIDE4IC0gT2N0IDEsIDIwMjYpIiwicHJlQ2hlY2tlZCI6ZmFsc2V9LHsibmFtZSI6IkFtZXgiLCJiYWxhbmNlIjozNTcwLjAsImtpbGxDeWNsZSI6IkMxNCAoT2N0IDMwIC0gTm92IDEyLCAyMDI2KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJDaXRpIiwiYmFsYW5jZSI6NDQ3MC43LCJraWxsQ3ljbGUiOiJDMTggKERlYyAyNSwgMjAyNiAtIEphbiA3LCAyMDI3KSIsInByZUNoZWNrZWQiOmZhbHNlfSx7Im5hbWUiOiJVcHN0YXJ0IE1pY2hlbGEiLCJiYWxhbmNlIjo4MTg2LjIxLCJraWxsQ3ljbGUiOiJDMjIgKEZlYiAxOSAtIE1hciA0LCAyMDI3KSIsInByZUNoZWNrZWQiOmZhbHNlfV0sInRvdGFsRGVidCI6MzAzMDUuOTMsInN0YXJ0RGF0ZSI6IjIwMjYtMDUtMDEiLCJlbmREYXRlIjoiMjAyNy0wOC0xOSJ9";
-const BUDGET = JSON.parse(atob(BUDGET_B64));
-const STORAGE_KEY = "jarred_debt_killer_v1";
+const STORAGE_KEY = "jarred_debt_killer_v8";
 
-let state = loadState();
-let currentCycleId = 1;
-let todayCycleId = 1;
-let lastBalance = null;
+// =============== DEBT DATA (current as of June 26, 2026) ===============
+const DEBTS = [
+  // PHASE 1 - SMALL AFFIRM QUICK WINS (smallest balances first)
+  { id: "aff_revzilla", name: "Affirm - RevZilla.com", balance: 336.27, monthly: 86.68, apr: 0, phase: 1, killOrder: 1 },
+  { id: "aff_amz_422", name: "Affirm - Amazon ($422)", balance: 422.32, monthly: 43.41, apr: 0, phase: 1, killOrder: 2 },
+  { id: "aff_amz_451", name: "Affirm - Amazon ($451)", balance: 451.51, monthly: 51.16, apr: 0, phase: 1, killOrder: 3 },
+  { id: "aff_amz_804", name: "Affirm - Amazon ($804)", balance: 804.16, monthly: 50.53, apr: 0, phase: 1, killOrder: 4 },
+  // PHASE 2 - HIGHEST APR + URGENT
+  { id: "amex", name: "Amex Platinum ⚠️ OVERDUE", balance: 3880.62, monthly: 130, apr: 0, phase: 2, killOrder: 5, urgent: true },
+  { id: "discover", name: "Discover", balance: 223.12, monthly: 25, apr: 22, phase: 2, killOrder: 6 },
+  { id: "chase", name: "Chase 6685", balance: 989.19, monthly: 50, apr: 25.74, phase: 2, killOrder: 7 },
+  { id: "upstart_small", name: "Upstart (small)", balance: 2401.05, monthly: 107, apr: 29.92, phase: 2, killOrder: 8 },
+  { id: "costco", name: "Costco (Citi)", balance: 5688.37, monthly: 120, apr: 22.49, phase: 2, killOrder: 9, sub: "$8k limit" },
+  { id: "upstart_big", name: "Upstart Michela", balance: 8144.64, monthly: 410, apr: 29.66, phase: 2, killOrder: 10 },
+  // PHASE 3 - SNOWBALL REMAINING
+  { id: "aff_amz_902", name: "Affirm - Amazon ($902)", balance: 902.36, monthly: 43.78, apr: 0, phase: 3, killOrder: 11 },
+  { id: "aff_amz_948", name: "Affirm - Amazon ($948)", balance: 948.67, monthly: 45.53, apr: 0, phase: 3, killOrder: 12 },
+  { id: "revzilla_klarna", name: "RevZilla Pay Monthly", balance: 1680.08, monthly: 88.63, apr: 20.99, phase: 3, killOrder: 13 },
+  { id: "aff_amz_1845", name: "Affirm - Amazon ($1845)", balance: 1845.43, monthly: 45.02, apr: 0, phase: 3, killOrder: 14 },
+  { id: "aff_amz_3078", name: "Affirm - Amazon ($3078)", balance: 3078.62, monthly: 134.42, apr: 0, phase: 3, killOrder: 15 },
+  { id: "roadrunner", name: "Octane / Roadrunner (moto)", balance: 8979.47, monthly: 200, apr: 14.99, phase: 3, killOrder: 16 },
+  { id: "yamaha", name: "Yamaha card (moto)", balance: 12068.45, monthly: 399, apr: 23, phase: 3, killOrder: 17 },
+];
+
+// =============== BILLS TEMPLATE ===============
+// Day-of-month based. Cycle picks up bills whose day falls in the cycle window.
+// Verified against 3 months of Chase Sapphire Checking statements
+const BILLS_TEMPLATE = [
+  { day: 1, name: "Upstart Michela", amount: 410 },
+  { day: 2, name: "Bilt rent", amount: 2081, sub: "Rent + parking + utilities" },
+  { day: 2, name: "Octane / Roadrunner", amount: 200 },
+  { day: 4, name: "Hyundai lease (HMF)", amount: 956 },
+  { day: 4, name: "Discover minimum", amount: 65 },
+  { day: 10, name: "Amex minimum", amount: 130 },
+  { day: 16, name: "T-Mobile", amount: 220 },
+  { day: 17, name: "Yamaha minimum", amount: 410 },
+  { day: 18, name: "USAA auto insurance", amount: 465 },
+  { day: 18, name: "Costco (Citi) minimum", amount: 120 },
+  { day: 20, name: "Subscriptions cap", amount: 250, sub: "Apple, Microsoft, Claude, Spotify, DashPass, Klover, PayPal BNPL" },
+  { day: 21, name: "RevZilla Pay Monthly", amount: 89 },
+  { day: 24, name: "Chase 6685 minimum", amount: 50 },
+  { day: 28, name: "Upstart smaller (Mpli)", amount: 107 },
+  { day: 29, name: "Comcast/Xfinity", amount: 136 },
+  { day: 30, name: "Lemonade renters insurance", amount: 76 },
+];
+
+// Affirm payments by date
+const AFFIRM_BILLS = [
+  { day: 4, name: "Affirm - Amazon $1845", amount: 45.02 },
+  { day: 6, name: "Affirm - Amazon $3078", amount: 134.42 },
+  { day: 7, name: "Affirm - Amazon $804", amount: 50.53 },
+  { day: 13, name: "Affirm - Amazon $948", amount: 45.53 },
+  { day: 15, name: "Affirm - RevZilla", amount: 86.68 },
+  { day: 17, name: "Affirm - Amazon $451", amount: 51.16 },
+  { day: 18, name: "Affirm - Amazon $902", amount: 43.78 },
+  { day: 25, name: "Affirm - Amazon $422", amount: 43.41 },
+];
+
+// =============== CYCLE GENERATION ===============
+function buildCycles() {
+  const cycles = [];
+  let cs = new Date(2026, 5, 26); // Fri Jun 26, 2026 - Cycle 1 starts NOW
+  const endTarget = new Date(2027, 8, 30); // Sept 30, 2027
+  let i = 1;
+  while (cs <= endTarget) {
+    const ce = new Date(cs);
+    ce.setDate(ce.getDate() + 13);
+    cycles.push({
+      id: i,
+      startDate: new Date(cs),
+      endDate: new Date(ce),
+    });
+    cs = new Date(ce);
+    cs.setDate(cs.getDate() + 1);
+    i++;
+  }
+  return cycles;
+}
+
+// Date-driven income for each cycle
+function getIncomeForCycle(cycle) {
+  const items = [];
+  const cur = new Date(cycle.startDate);
+  // Walk every day in cycle window
+  while (cur <= cycle.endDate) {
+    if (cur.getDate() === 1) {
+      // 1st of month = VA Disability + GI Bill hit
+      items.push({ id: "va", name: "VA Disability", sub: `100% P&T · ${fmtDate(cur)}`, amount: 4298, editable: false });
+      items.push({ id: "gibill", name: "VA Education (GI Bill)", sub: `${fmtDate(cur)} · varies $280-$1,052`, amount: 900, editable: true });
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+  // CDL paycheck - one per cycle, anchored to cycle start Monday
+  items.push({ id: "cdl", name: "CDL Schools paycheck", sub: `${fmtDate(cycle.startDate)} · biweekly`, amount: 2240, editable: true });
+  return items;
+}
+
+const CYCLES = buildCycles();
+
+function fmtDate(d) {
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+function fmtMoney(n) {
+  if (isNaN(n)) n = 0;
+  const sign = n < 0 ? "-" : "";
+  const abs = Math.abs(n);
+  return sign + "$" + abs.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function fmtMoneyExact(n) {
+  if (isNaN(n)) n = 0;
+  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Get bills for a specific cycle based on date window
+function getBillsForCycle(cycle) {
+  const bills = [];
+  const allBills = [...BILLS_TEMPLATE, ...AFFIRM_BILLS];
+  // Walk each day in cycle, check if any bill day matches
+  const cur = new Date(cycle.startDate);
+  while (cur <= cycle.endDate) {
+    const dayOfMonth = cur.getDate();
+    for (const b of allBills) {
+      if (b.day === dayOfMonth) {
+        bills.push({
+          ...b,
+          when: fmtDate(cur),
+          billId: `${b.name}_${cur.getMonth()}_${cur.getDate()}`,
+        });
+      }
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+  return bills;
+}
+
+// =============== STATE ===============
+let state = {
+  strategy: "hybrid",
+  currentCycle: 1,
+  debts: {}, // id -> { balance, killed, killedCycle }
+  cycles: {}, // cycleId -> { income: {giBill, cdl, startBal}, attacks: {debtId: amount}, savings, billsChecked: [], attacksChecked: [], savingsChecked: bool }
+};
+
+function initState() {
+  // Init debts from definitions
+  for (const d of DEBTS) {
+    state.debts[d.id] = { balance: d.balance, killed: false, killedCycle: null };
+  }
+  // Init cycles
+  for (const c of CYCLES) {
+    state.cycles[c.id] = {
+      startBal: 0,
+      incomeOverrides: {}, // id -> custom amount
+      incomeChecked: [], // ids of income items marked received
+      attacks: {},
+      savings: 100,
+      billsChecked: [],
+      attacksChecked: [],
+      savingsChecked: false,
+      efChecked: false,
+    };
+  }
+}
 
 function loadState() {
   try {
-    const s = localStorage.getItem(STORAGE_KEY);
-    if (s) {
-      const parsed = JSON.parse(s);
-      // Migrate old states that don't have edits/extras
-      if (!parsed.edits) parsed.edits = {};
-      if (!parsed.extras) parsed.extras = {};
-      return parsed;
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state = { ...state, ...parsed };
+      // Make sure all debts exist (in case schema changes)
+      for (const d of DEBTS) {
+        if (!state.debts[d.id]) state.debts[d.id] = { balance: d.balance, killed: false, killedCycle: null };
+      }
+      for (const c of CYCLES) {
+        if (!state.cycles[c.id]) {
+          state.cycles[c.id] = {
+            startBal: 0,
+            incomeOverrides: {},
+            incomeChecked: [],
+            attacks: {}, savings: 100, billsChecked: [], attacksChecked: [], savingsChecked: false, efChecked: false,
+          };
+        }
+        // Migrate existing cycles missing new fields
+        if (!state.cycles[c.id].incomeChecked) state.cycles[c.id].incomeChecked = [];
+        if (state.cycles[c.id].efChecked === undefined) state.cycles[c.id].efChecked = false;
+      }
+      return true;
     }
-  } catch(e) {}
-  return loadStateFromInit();
+  } catch (e) { console.error(e); }
+  return false;
 }
-
 function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-function haptic(intensity = 'light') {
-  if (!navigator.vibrate) return;
-  if (intensity === 'light') navigator.vibrate(8);
-  else if (intensity === 'medium') navigator.vibrate(15);
-  else if (intensity === 'success') navigator.vibrate([10, 40, 20]);
-}
-
-function fmtMoney(n) {
-  if (n === undefined || n === null || isNaN(n)) return "$0";
-  const v = Math.round(n * 100) / 100;
-  const dollars = Math.floor(Math.abs(v));
-  const cents = Math.round((Math.abs(v) - dollars) * 100);
-  const sign = v < 0 ? "−" : "";
-  const dStr = dollars.toLocaleString('en-US');
-  if (cents === 0) return sign + "$" + dStr;
-  return sign + "$" + dStr + "." + cents.toString().padStart(2,'0');
-}
-
-function fmtMoneyHero(n) {
-  if (n === undefined || n === null || isNaN(n)) return ['$0', ''];
-  const v = Math.round(n * 100) / 100;
-  const dollars = Math.floor(Math.abs(v));
-  const cents = Math.round((Math.abs(v) - dollars) * 100);
-  const sign = v < 0 ? "−" : "";
-  const dStr = dollars.toLocaleString('en-US');
-  return [sign + "$" + dStr, cents > 0 ? "." + cents.toString().padStart(2,'0') : ''];
-}
-
-function todayISO() {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return y + "-" + m + "-" + day;
-}
-
-function findTodayCycle() {
-  const today = todayISO();
-  for (const c of BUDGET.cycles) {
-    if (c.startDate && c.endDate && today >= c.startDate && today <= c.endDate) {
-      return c.id;
-    }
+// =============== KILL ORDER LOGIC ===============
+function getKillOrder() {
+  const active = DEBTS.filter(d => !state.debts[d.id].killed && state.debts[d.id].balance > 0);
+  if (state.strategy === "safety") {
+    // Safety First = smallest balance first (quick wins for momentum)
+    return active.sort((a, b) => state.debts[a.id].balance - state.debts[b.id].balance);
   }
-  if (today < BUDGET.startDate) return 1;
-  return BUDGET.cycles.length;
-}
-
-function getCycle(id) {
-  return BUDGET.cycles.find(c => c.id === id) || BUDGET.cycles[0];
-}
-
-function isItemChecked(cycleId, type, idx) {
-  return !!state.items[cycleId + "-" + type + "-" + idx];
-}
-
-function toggleItem(cycleId, type, idx, isKill) {
-  const key = cycleId + "-" + type + "-" + idx;
-  const wasChecked = !!state.items[key];
-  state.items[key] = !wasChecked;
-  
-  // If this is a debt KILL, sync the debt tracker
-  if (type === 'debt' && isKill) {
-    const cycle = getCycle(cycleId);
-    const debtAction = cycle.debtAttack[idx];
-    const debtName = debtAction.name.replace(/^🎯 KILL: /, '').trim();
-    const matchIdx = BUDGET.debts.findIndex(d => d.name === debtName);
-    if (matchIdx >= 0) {
-      state.debts[matchIdx] = !wasChecked;
-    }
-  }
-  
-  saveState();
-  haptic(!wasChecked && isKill ? 'success' : 'light');
-  
-  if (!wasChecked && isKill) {
-    fireConfetti();
-  }
-  
-  renderCycle();
-}
-
-function toggleDebt(idx) {
-  const wasChecked = !!state.debts[idx];
-  state.debts[idx] = !wasChecked;
-  saveState();
-  haptic(!wasChecked ? 'success' : 'light');
-  if (!wasChecked) fireConfetti();
-  renderDebts();
-  renderHero();
-}
-
-function formatToday() {
-  const d = new Date();
-  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-}
-
-function getKillCycle(killText) {
-  const m = killText.match(/C(\d+)/);
-  return m ? parseInt(m[1]) : null;
-}
-
-function countKilledDebts() {
-  return BUDGET.debts.filter((d, i) => state.debts[i]).length;
-}
-
-function totalDebtRemaining() {
-  return BUDGET.debts.reduce((sum, d, i) => state.debts[i] ? sum : sum + d.balance, 0);
-}
-
-function calcCurrentBalance() {
-  // Effective starting balance (after ripples from prior cycles) + checked income/bills/etc this cycle
-  const startBal = getEffectiveStartingBalance(currentCycleId);
-  const c = getCycle(currentCycleId);
-  let bal = startBal;
-  c.income.forEach((inc, i) => {
-    if (isItemChecked(c.id, 'income', i)) bal += getEditedAmount(c.id, 'income', i, inc.amount);
-  });
-  getExtras(c.id, 'income').forEach((ex, i) => {
-    if (isItemChecked(c.id, 'extraIncome', i)) bal += ex.amount;
-  });
-  c.bills.forEach((b, i) => {
-    if (isItemChecked(c.id, 'bill', i)) bal -= getEditedAmount(c.id, 'bill', i, b.amount);
-  });
-  getExtras(c.id, 'bill').forEach((ex, i) => {
-    if (isItemChecked(c.id, 'extraBill', i)) bal -= ex.amount;
-  });
-  if (isItemChecked(c.id, 'ef', 0)) bal -= c.emergencyFund;
-  c.debtAttack.forEach((d, i) => {
-    if (isItemChecked(c.id, 'debt', i)) bal -= getEditedAmount(c.id, 'debt', i, d.amount);
-  });
-  return bal;
-}
-
-function getEmergencyFund() {
-  // EF accumulates: $200 for each cycle where EF is checked off
-  let ef = 0;
-  for (const c of BUDGET.cycles) {
-    if (isItemChecked(c.id, 'ef', 0)) ef += c.emergencyFund;
-  }
-  return ef;
-}
-
-// ===== RENDER =====
-
-function renderTodayPill() {
-  document.getElementById('today-pill').textContent = formatToday();
-}
-
-function renderHero() {
-  const c = getCycle(currentCycleId);
-  const bal = calcCurrentBalance();
-  const [d, cents] = fmtMoneyHero(bal);
-  const heroEl = document.getElementById('hero-amount');
-  
-  if (lastBalance !== null && Math.abs(bal - lastBalance) > 0.01) {
-    heroEl.classList.remove('changed');
-    void heroEl.offsetWidth;
-    heroEl.classList.add('changed');
-  }
-  lastBalance = bal;
-  
-  heroEl.innerHTML = d + '<span class="cents">' + cents + '</span>';
-  
-  const isToday = currentCycleId === todayCycleId;
-  const isPast = currentCycleId < todayCycleId;
-  
-  let label = 'Current Balance';
-  let sub = c.period;
-  if (isToday) { label = 'Right Now'; sub = 'Cycle ' + c.id + ' • ' + c.period; }
-  else if (isPast) { label = 'Past Cycle Balance'; sub = 'Cycle ' + c.id + ' • ' + c.period; }
-  else { label = 'If On Plan'; sub = 'Cycle ' + c.id + ' • ' + c.period; }
-  
-  document.getElementById('hero-label').textContent = label;
-  document.getElementById('hero-sub').textContent = sub;
-  
-  // Progress = % of total debt killed
-  const killed = BUDGET.totalDebt - totalDebtRemaining();
-  const debtPct = Math.round((killed / BUDGET.totalDebt) * 100);
-  document.getElementById('progress-fill').style.width = debtPct + '%';
-  document.getElementById('prog-cur').textContent = currentCycleId;
-  document.getElementById('prog-pct').textContent = debtPct;
-}
-
-function renderItem(cycleId, type, idx, item, isKill, isExtra) {
-  const checkType = isExtra ? ('extra' + type.charAt(0).toUpperCase() + type.slice(1)) : type;
-  const checked = isItemChecked(cycleId, checkType, idx);
-  const edited = !isExtra && isItemEdited(cycleId, type, idx);
-  const div = document.createElement('div');
-  div.className = 'item' + (checked ? ' checked' : '') + (isKill ? ' kill' : '');
-  div.dataset.editable = (type === 'income' || type === 'bill') ? '1' : '0';
-  
-  // Tap = check off, edit pencil opens edit sheet
-  div.onclick = (e) => {
-    if (e.target.closest('.item-edit')) {
-      const btn = e.target.closest('.item-edit');
-      const cId = parseInt(btn.dataset.cycle);
-      const t = btn.dataset.type;
-      const i = parseInt(btn.dataset.idx);
-      const ex = btn.dataset.extra === '1';
-      openEditSheet(cId, t, i, ex);
-      return;
-    }
-    toggleItem(cycleId, checkType, idx, isKill);
-  };
-  
-  const when = item.when || item.status || '';
-  const cleanName = item.name.replace(/^🎯 KILL: /, '').replace(/^📉 Pay-down: /, '');
-  const effectiveAmount = (!isExtra && (type === 'income' || type === 'bill' || type === 'debt'))
-    ? getEditedAmount(cycleId, type, idx, item.amount)
-    : item.amount;
-  
-  let badges = '';
-  if (edited) badges += '<span class="badge edited">edited</span>';
-  if (isExtra) badges += '<span class="badge added">added</span>';
-  
-  let metaEl = '';
-  if (when || badges) {
-    metaEl = '<div class="item-meta">' + (when ? escapeHtml(when) : '') + (when && badges ? ' ' : '') + badges + '</div>';
-  }
-  
-  // Edit pencil for income/bills (not for ef/debt — those follow the plan)
-  let editBtn = '';
-  if (type === 'income' || type === 'bill') {
-    editBtn = '<button class="item-edit" aria-label="Edit" data-cycle="' + cycleId + '" data-type="' + type + '" data-idx="' + idx + '" data-extra="' + (isExtra ? '1' : '0') + '">&#9998;</button>';
-  }
-  
-  div.innerHTML = '<div class="checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' +
-    '<div class="item-body"><div class="item-name">' + escapeHtml(cleanName) + '</div>' +
-    metaEl + '</div>' +
-    '<div class="item-amount">' + fmtMoney(effectiveAmount) + '</div>' +
-    editBtn;
-  return div;
-}
-
-function escapeHtml(s) {
-  if (!s) return '';
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function makeAddButton(cycleId, type) {
-  const btn = document.createElement('button');
-  btn.className = 'add-btn';
-  btn.type = 'button';
-  btn.textContent = type === 'income' ? '+ Add income' : '+ Add expense';
-  btn.onclick = () => openAddSheet(cycleId, type);
-  return btn;
-}
-
-// ===== EDIT / ADD SHEET =====
-
-let editContext = null;
-
-function openEditSheet(cycleId, type, idx, isExtra) {
-  let item;
-  if (isExtra) {
-    item = getExtras(cycleId, type)[idx];
-  } else {
-    const c = getCycle(cycleId);
-    item = type === 'income' ? c.income[idx] : c.bills[idx];
-  }
-  if (!item) return;
-  editContext = { cycleId, type, idx, isExtra, mode: 'edit' };
-  
-  const effAmount = isExtra ? item.amount : getEditedAmount(cycleId, type, idx, item.amount);
-  const cleanName = item.name.replace(/^🎯 KILL: /, '').replace(/^📉 Pay-down: /, '');
-  
-  document.getElementById('edit-title').textContent = isExtra ? 'Edit ' + (type === 'income' ? 'income' : 'expense') : 'Edit ' + cleanName;
-  document.getElementById('edit-name-input').value = cleanName;
-  document.getElementById('edit-name-input').readOnly = !isExtra; // can rename only your own additions
-  document.getElementById('edit-amount-input').value = effAmount.toFixed(2);
-  document.getElementById('edit-original-row').style.display = isExtra ? 'none' : '';
-  if (!isExtra) {
-    document.getElementById('edit-original-amount').textContent = fmtMoney(item.amount);
-  }
-  document.getElementById('edit-revert-btn').style.display = (!isExtra && isItemEdited(cycleId, type, idx)) ? '' : 'none';
-  document.getElementById('edit-delete-btn').style.display = isExtra ? '' : 'none';
-  
-  openSheet('edit-sheet');
-  setTimeout(() => document.getElementById('edit-amount-input').focus(), 320);
-}
-
-function openAddSheet(cycleId, type) {
-  editContext = { cycleId, type, idx: null, isExtra: true, mode: 'add' };
-  document.getElementById('edit-title').textContent = 'Add ' + (type === 'income' ? 'income' : 'expense');
-  document.getElementById('edit-name-input').value = '';
-  document.getElementById('edit-name-input').readOnly = false;
-  document.getElementById('edit-name-input').placeholder = type === 'income' ? 'e.g. Side hustle' : 'e.g. Vet bill';
-  document.getElementById('edit-amount-input').value = '';
-  document.getElementById('edit-original-row').style.display = 'none';
-  document.getElementById('edit-revert-btn').style.display = 'none';
-  document.getElementById('edit-delete-btn').style.display = 'none';
-  
-  openSheet('edit-sheet');
-  setTimeout(() => document.getElementById('edit-name-input').focus(), 320);
-}
-
-function saveEdit() {
-  if (!editContext) return;
-  const { cycleId, type, idx, isExtra, mode } = editContext;
-  const name = document.getElementById('edit-name-input').value.trim();
-  const amountStr = document.getElementById('edit-amount-input').value.trim();
-  const amount = parseFloat(amountStr);
-  
-  if (mode === 'add' && !name) {
-    alert('Give it a name first.');
-    return;
-  }
-  if (isNaN(amount) || amount < 0) {
-    alert('Enter a valid amount.');
-    return;
-  }
-  
-  if (mode === 'add') {
-    addExtra(cycleId, type, { name: name, amount: amount, when: 'added' });
-  } else if (isExtra) {
-    state.extras[cycleId][type][idx] = { name: name, amount: amount, when: state.extras[cycleId][type][idx].when || 'added' };
-    saveState();
-  } else {
-    setEdit(cycleId, type, idx, amount);
-  }
-  
-  closeSheet('edit-sheet');
-  haptic('medium');
-  renderCycle();
-}
-
-function revertEdit() {
-  if (!editContext || editContext.isExtra) return;
-  const { cycleId, type, idx } = editContext;
-  setEdit(cycleId, type, idx, null);
-  closeSheet('edit-sheet');
-  haptic('light');
-  renderCycle();
-}
-
-function deleteExtraItem() {
-  if (!editContext || !editContext.isExtra) return;
-  const { cycleId, type, idx } = editContext;
-  if (!confirm('Delete this item?')) return;
-  deleteExtra(cycleId, type, idx);
-  closeSheet('edit-sheet');
-  haptic('light');
-  renderCycle();
-}
-
-function openSheet(id) {
-  document.getElementById('modal-backdrop').classList.add('open');
-  document.getElementById(id).classList.add('open');
-  document.getElementById('modal-backdrop').onclick = () => closeSheet(id);
-}
-
-function closeSheet(id) {
-  document.getElementById('modal-backdrop').classList.remove('open');
-  document.getElementById(id).classList.remove('open');
-  document.getElementById('modal-backdrop').onclick = closeCyclePicker;
-  // blur any focused input to dismiss keyboard
-  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-}
-
-function renderCycle() {
-  const c = getCycle(currentCycleId);
-  
-  document.getElementById('cycle-id-label').textContent = 'Cycle ' + c.id;
-  document.getElementById('cycle-period').textContent = c.period;
-  
-  const tags = document.getElementById('cycle-tags');
-  tags.innerHTML = '';
-  if (c.id === todayCycleId) {
-    tags.innerHTML = '<span class="cycle-info-tag">You are here</span>';
-  } else if (c.id < todayCycleId) {
-    tags.innerHTML = '<span class="cycle-info-tag dim">Past</span>';
-  } else {
-    tags.innerHTML = '<span class="cycle-info-tag dim">Upcoming</span>';
-  }
-  if (c.paycheckText && c.paycheckText.includes('VA')) {
-    tags.innerHTML += ' <span class="cycle-info-tag amber">VA payday</span>';
-  }
-  const hasKill = c.debtAttack.some(d => d.name.includes('KILL'));
-  if (hasKill) {
-    tags.innerHTML += ' <span class="cycle-info-tag kill">Kill day</span>';
-  }
-  
-  document.getElementById('prev-btn').disabled = c.id <= 1;
-  document.getElementById('next-btn').disabled = c.id >= 34;
-  
-  // Calc checked totals using effective (edited) amounts and include extras
-  const effIncome = c.income.map((inc,i) => getEditedAmount(c.id, 'income', i, inc.amount));
-  const effBills = c.bills.map((b,i) => getEditedAmount(c.id, 'bill', i, b.amount));
-  const effDebts = c.debtAttack.map((d,i) => getEditedAmount(c.id, 'debt', i, d.amount));
-  const extraIncome = getExtras(c.id, 'income');
-  const extraBills = getExtras(c.id, 'bill');
-  
-  const incomeChecked = c.income.reduce((s, inc, i) => s + (isItemChecked(c.id, 'income', i) ? effIncome[i] : 0), 0)
-    + extraIncome.reduce((s, ex, i) => s + (isItemChecked(c.id, 'extraIncome', i) ? ex.amount : 0), 0);
-  const billsChecked = c.bills.reduce((s, b, i) => s + (isItemChecked(c.id, 'bill', i) ? effBills[i] : 0), 0)
-    + extraBills.reduce((s, ex, i) => s + (isItemChecked(c.id, 'extraBill', i) ? ex.amount : 0), 0);
-  const efChecked = isItemChecked(c.id, 'ef', 0) ? c.emergencyFund : 0;
-  const debtChecked = c.debtAttack.reduce((s, d, i) => s + (isItemChecked(c.id, 'debt', i) ? effDebts[i] : 0), 0);
-  
-  const incomeTotal = effIncome.reduce((s,a)=>s+a,0) + extraIncome.reduce((s,e)=>s+e.amount,0);
-  const billsTotal = effBills.reduce((s,a)=>s+a,0) + extraBills.reduce((s,e)=>s+e.amount,0);
-  const debtTotal = effDebts.reduce((s,a)=>s+a,0);
-  
-  const startBal = getEffectiveStartingBalance(c.id);
-  document.getElementById('sum-in').textContent = fmtMoney(startBal + incomeChecked);
-  document.getElementById('sum-out').textContent = fmtMoney(billsChecked + efChecked + debtChecked);
-  document.getElementById('sum-end').textContent = fmtMoney(startBal + incomeChecked - billsChecked - efChecked - debtChecked);
-  
-  // Income
-  const incList = document.getElementById('income-list');
-  incList.innerHTML = '';
-  c.income.forEach((inc, i) => incList.appendChild(renderItem(c.id, 'income', i, inc, false, false)));
-  extraIncome.forEach((ex, i) => incList.appendChild(renderItem(c.id, 'income', i, ex, false, true)));
-  incList.appendChild(makeAddButton(c.id, 'income'));
-  document.getElementById('income-total').innerHTML = incomeChecked > 0 
-    ? '<span class="progress-text">' + fmtMoney(incomeChecked) + ' / </span>' + fmtMoney(incomeTotal)
-    : fmtMoney(incomeTotal);
-  
-  // Bills
-  const billsList = document.getElementById('bills-list');
-  billsList.innerHTML = '';
-  c.bills.forEach((b, i) => billsList.appendChild(renderItem(c.id, 'bill', i, b, false, false)));
-  extraBills.forEach((ex, i) => billsList.appendChild(renderItem(c.id, 'bill', i, ex, false, true)));
-  billsList.appendChild(makeAddButton(c.id, 'bill'));
-  document.getElementById('bills-total').innerHTML = billsChecked > 0
-    ? '<span class="progress-text">' + fmtMoney(billsChecked) + ' / </span>' + fmtMoney(billsTotal)
-    : fmtMoney(billsTotal);
-  
-  // EF
-  if (c.emergencyFund > 0) {
-    document.getElementById('section-ef').style.display = '';
-    const efList = document.getElementById('ef-list');
-    efList.innerHTML = '';
-    efList.appendChild(renderItem(c.id, 'ef', 0, {name: 'Move to emergency fund', amount: c.emergencyFund, when: '$200 per cycle'}, false, false));
-    document.getElementById('ef-total').textContent = fmtMoney(c.emergencyFund);
-  } else {
-    document.getElementById('section-ef').style.display = 'none';
-  }
-  
-  // Debt
-  if (c.debtAttack.length > 0) {
-    document.getElementById('section-debt').style.display = '';
-    const debtListEl = document.getElementById('debt-list');
-    debtListEl.innerHTML = '';
-    c.debtAttack.forEach((d, i) => {
-      const isKill = d.name.includes('KILL');
-      debtListEl.appendChild(renderItem(c.id, 'debt', i, d, isKill, false));
+  if (state.strategy === "maxattack") {
+    // Max Attack = urgent first, then highest APR avalanche
+    return active.sort((a, b) => {
+      if (a.urgent && !b.urgent) return -1;
+      if (b.urgent && !a.urgent) return 1;
+      return b.apr - a.apr || a.killOrder - b.killOrder;
     });
-    document.getElementById('debt-total').innerHTML = debtChecked > 0
-      ? '<span class="progress-text">' + fmtMoney(debtChecked) + ' / </span>' + fmtMoney(debtTotal)
-      : fmtMoney(debtTotal);
-  } else {
-    document.getElementById('section-debt').style.display = 'none';
   }
-  
-  // Encouragement message
-  const enc = document.getElementById('encourage-box');
-  let msg = '';
-  let isKillEnc = false;
-  const killsThisCycle = c.debtAttack.filter(d => d.name.includes('KILL')).length;
-  
-  if (c.id === 22) {
-    msg = '<strong>This is the one.</strong> Last debt cycle. Upstart Michela dies here. Debt-free March 4, 2027. 🏁';
-    isKillEnc = true;
-  } else if (c.id === 14) {
-    msg = '<strong>AMEX dies this cycle.</strong> Big one down. Halfway through.';
-    isKillEnc = true;
-  } else if (c.id === 18) {
-    msg = '<strong>CITI dies this cycle.</strong> Only Upstart Michela left after this.';
-    isKillEnc = true;
-  } else if (killsThisCycle >= 5) {
-    msg = '<strong>Massive cycle.</strong> ' + killsThisCycle + ' debts dying. Snowball is rolling.';
-    isKillEnc = true;
-  } else if (killsThisCycle >= 3) {
-    msg = '<strong>Big cycle.</strong> ' + killsThisCycle + ' debts dying. Keep showing up. 🔥';
-    isKillEnc = true;
-  } else if (killsThisCycle >= 1) {
-    msg = '<strong>' + (killsThisCycle === 1 ? 'One' : killsThisCycle) + ' debt going down.</strong> Snowball gets bigger from here.';
-    isKillEnc = true;
-  } else if (c.id >= 23) {
-    msg = '<strong>Debt free.</strong> Pure savings now. 💵';
-  } else if (c.id <= 2) {
-    msg = '<strong>Day one of the climb.</strong> The plan is solid. Trust it.';
-  }
-  enc.innerHTML = msg ? '<div class="encourage' + (isKillEnc ? ' kill' : '') + '">' + msg + '</div>' : '';
-  
-  renderHero();
+  // hybrid (default): urgent first, then by killOrder (small wins → big avalanche → snowball)
+  return active.sort((a, b) => {
+    if (a.urgent && !b.urgent) return -1;
+    if (b.urgent && !a.urgent) return 1;
+    return a.killOrder - b.killOrder;
+  });
 }
 
-function renderDebts() {
-  const list = document.getElementById('debt-cards');
-  list.innerHTML = '';
-  
-  const killed = countKilledDebts();
-  const remaining = totalDebtRemaining();
-  const pct = Math.round(((BUDGET.totalDebt - remaining) / BUDGET.totalDebt) * 100);
-  
-  const [d, cents] = fmtMoneyHero(remaining);
-  document.getElementById('debt-remaining').innerHTML = d + '<span class="cents">' + cents + '</span>';
-  document.getElementById('debt-killed-text').textContent = killed + ' of ' + BUDGET.debts.length + ' killed • Started at ' + fmtMoney(BUDGET.totalDebt);
-  document.getElementById('debt-progress').style.width = pct + '%';
-  document.getElementById('debt-pct').textContent = pct;
-  
-  const indexed = BUDGET.debts.map((d, i) => ({...d, idx: i}));
-  indexed.sort((a, b) => {
-    const aKilled = !!state.debts[a.idx];
-    const bKilled = !!state.debts[b.idx];
-    if (aKilled !== bKilled) return aKilled ? 1 : -1;
-    const aCyc = getKillCycle(a.killCycle) || 99;
-    const bCyc = getKillCycle(b.killCycle) || 99;
-    return aCyc - bCyc;
-  });
-  
-  indexed.forEach(d => {
-    const isKilled = !!state.debts[d.idx];
-    const card = document.createElement('div');
-    card.className = 'debt-card' + (isKilled ? ' killed' : '');
-    card.onclick = () => toggleDebt(d.idx);
-    card.innerHTML = 
-      '<div class="checkbox" style="' + (isKilled ? 'background:var(--sage);border-color:var(--sage);' : '') + '">' +
-        '<svg viewBox="0 0 24 24" style="' + (isKilled ? 'opacity:1;stroke-dashoffset:0' : '') + '"><polyline points="20 6 9 17 4 12"/></svg>' +
-      '</div>' +
-      '<div class="debt-body">' +
-        '<div class="debt-name">' + escapeHtml(d.name) + '</div>' +
-        '<div class="debt-cycle">' + escapeHtml(d.killCycle) + '</div>' +
-      '</div>' +
-      '<div class="debt-balance">' + fmtMoney(d.balance) + '</div>';
-    list.appendChild(card);
-  });
+// Default savings per cycle based on strategy
+function getStrategySavings() {
+  if (state.strategy === "maxattack") return 0;
+  if (state.strategy === "safety") return 250;
+  return 100; // hybrid default
+}
+
+// Sum of monthly minimums from killed debts (the snowball)
+function getFreedMinimums() {
+  let total = 0;
+  for (const d of DEBTS) {
+    if (state.debts[d.id].killed) total += d.monthly;
+  }
+  return total;
+}
+
+// Strategy explanations
+const STRAT_TEXT = {
+  maxattack: "<b>Max Attack:</b> $0 to savings, every spare dollar kills debt. <b>100% debt-free by Sep 2, 2027</b> (motorcycles included). Risk: no emergency cushion.",
+  hybrid: "<b>Balanced:</b> $100/cycle to savings, rest crushes debt. Hybrid kill order (small Affirms first, then highest APR). Debt-free of unsecured by Jul 2027 with $3K+ truck fund.",
+  safety: "<b>Safety First:</b> $250/cycle to savings ($6,500/yr), rest goes to debt. Smallest debts first for quick wins. Slower payoff but builds real emergency fund.",
+};
+
+// =============== RECOMMENDATION ENGINE ===============
+function recommend(amount) {
+  if (!amount || amount <= 0) return "Enter an amount above to see your kill list.";
+  const order = getKillOrder();
+  let remaining = amount;
+  const freedMo = getFreedMinimums();
+  let html = `<div style="margin-bottom:8px"><strong>You have ${fmtMoneyExact(amount)}.</strong> Hit these in order:</div>`;
+  let killed = 0;
+  let newlyFreedMo = 0;
+  for (const d of order) {
+    const bal = state.debts[d.id].balance;
+    if (remaining >= bal) {
+      html += `<div class="kill-item">✅ <strong>KILL ${d.name}</strong> - ${fmtMoneyExact(bal)} ${d.urgent ? "(URGENT!)" : ""} <span style="color:var(--sage-dark);font-size:11px">+frees ${fmtMoneyExact(d.monthly)}/mo</span></div>`;
+      remaining -= bal;
+      newlyFreedMo += d.monthly;
+      killed++;
+    } else if (remaining > 10) {
+      html += `<div class="kill-item">💥 Pay <strong>${fmtMoneyExact(remaining)}</strong> toward ${d.name} (${fmtMoneyExact(bal)} balance)</div>`;
+      remaining = 0;
+      break;
+    } else {
+      break;
+    }
+  }
+  if (killed > 0) {
+    html += `<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-weight:700;color:var(--sage-dark)">Kills this round: ${killed} 🔥 · Frees ${fmtMoneyExact(newlyFreedMo)}/mo</div>`;
+  }
+  if (freedMo > 0) {
+    html += `<div style="margin-top:4px;font-size:11px;color:var(--ink-soft)">Total snowball from past kills: ${fmtMoneyExact(freedMo)}/mo freed</div>`;
+  }
+  if (remaining > 10) {
+    html += `<div style="margin-top:6px;font-size:12px;color:var(--ink-soft)">Leftover: ${fmtMoneyExact(remaining)} → bank it for the truck fund or next cycle.</div>`;
+  }
+  return html;
+}
+
+// =============== RENDER ===============
+function render() {
+  renderOverview();
+  renderCycle();
+  renderDebts();
+  renderMilestones();
 }
 
 function renderOverview() {
-  const done = currentCycleId - 1;
-  document.getElementById('ov-done').textContent = done;
-  document.getElementById('ov-left').textContent = 34 - done;
-  document.getElementById('ov-killed').textContent = countKilledDebts();
-  document.getElementById('ov-ef').textContent = fmtMoney(getEmergencyFund());
-  
-  const milestones = [
-    { cycle: 1, label: 'May 1, 2026', text: 'Start day — 3 cards killed' },
-    { cycle: 3, label: 'May 29, 2026', text: '4 small debts killed' },
-    { cycle: 5, label: 'June 26, 2026', text: '3 more Affirms killed' },
-    { cycle: 9, label: 'Aug 21, 2026', text: 'Big Affirm $1936 + Upstart Mpli killed' },
-    { cycle: 11, label: 'Sept 18, 2026', text: 'Big Affirm RevZilla killed' },
-    { cycle: 14, label: 'Oct 30, 2026', text: 'AMEX KILLED 🎯' },
-    { cycle: 18, label: 'Dec 25, 2026', text: 'CITI KILLED 🎯' },
-    { cycle: 22, label: 'March 4, 2027', text: 'UPSTART MICHELA — DEBT FREE 🏁' },
+  let totalDebt = 0, totalPaid = 0, killed = 0;
+  for (const d of DEBTS) {
+    const s = state.debts[d.id];
+    if (s.killed) {
+      killed++;
+      totalPaid += d.balance;
+    } else {
+      totalDebt += s.balance;
+      totalPaid += (d.balance - s.balance);
+    }
+  }
+  document.getElementById("totalDebtNum").textContent = fmtMoney(totalDebt);
+  document.getElementById("debtsKilled").textContent = `${killed} of ${DEBTS.length}`;
+  document.getElementById("totalPaid").textContent = fmtMoney(totalPaid);
+
+  // Truck savings = sum of all savings entries marked checked
+  let truckSavings = 0;
+  for (const cid in state.cycles) {
+    if (state.cycles[cid].savingsChecked) truckSavings += (parseFloat(state.cycles[cid].savings) || 0);
+  }
+  document.getElementById("truckSavings").textContent = fmtMoney(truckSavings);
+
+  // Cycles left = cycles after current
+  const cyclesLeft = CYCLES.length - state.currentCycle;
+  document.getElementById("cyclesLeft").textContent = cyclesLeft;
+
+  // Snowball - freed monthly minimums
+  const freedMo = getFreedMinimums();
+  const snowballCard = document.getElementById("snowballCard");
+  const snowballText = document.getElementById("snowballText");
+  if (freedMo > 0) {
+    snowballCard.style.display = "block";
+    snowballText.innerHTML = `You've killed ${killed} debt${killed > 1 ? 's' : ''} and freed <strong>${fmtMoneyExact(freedMo)}/month</strong> in minimum payments. That's <strong>${fmtMoneyExact(freedMo/2)}/cycle</strong> extra ammo. Stack it on the next target.`;
+  } else {
+    snowballCard.style.display = "none";
+  }
+
+  // Update recommendation
+  const recVal = parseFloat(document.getElementById("recInput").value) || 0;
+  document.getElementById("recResult").innerHTML = recommend(recVal);
+}
+
+function renderCycle() {
+  const c = CYCLES.find(x => x.id === state.currentCycle);
+  if (!c) return;
+  const cs = state.cycles[c.id];
+
+  document.getElementById("cycleNum").textContent = `Cycle ${c.id}`;
+  document.getElementById("cycleDates").textContent = `${fmtDate(c.startDate)} - ${fmtDate(c.endDate)}, ${c.endDate.getFullYear()}`;
+  document.getElementById("prevCycle").disabled = c.id <= 1;
+  document.getElementById("nextCycle").disabled = c.id >= CYCLES.length;
+
+  // Starting balance - cascades from previous cycle's ending if not manually set
+  let startBal = cs.startBal;
+  if (c.id > 1 && (startBal === 0 || startBal === undefined)) {
+    startBal = computeEndingBalance(c.id - 1);
+  }
+  document.getElementById("startBalDisp").textContent = fmtMoney(startBal);
+  document.getElementById("startBalInput").value = cs.startBal || (c.id > 1 ? computeEndingBalance(c.id - 1).toFixed(2) : "");
+
+  // Income - date-driven, only items that land in this cycle
+  const incomeItems = getIncomeForCycle(c);
+  const incomeRows = document.getElementById("incomeRows");
+  incomeRows.innerHTML = "";
+  let incomeReceived = 0;
+  let incomeTotalPlanned = 0;
+  for (const item of incomeItems) {
+    const amount = (cs.incomeOverrides && cs.incomeOverrides[item.id] !== undefined) ? cs.incomeOverrides[item.id] : item.amount;
+    incomeTotalPlanned += parseFloat(amount) || 0;
+    const checked = cs.incomeChecked.includes(item.id);
+    if (checked) incomeReceived += parseFloat(amount) || 0;
+    const amountHtml = item.editable
+      ? `<input type="number" data-income="${item.id}" value="${amount}" step="0.01">`
+      : fmtMoney(amount);
+    incomeRows.innerHTML += `
+      <div class="row${checked ? ' done' : ''}">
+        <div class="row-check${checked ? ' checked' : ''}" data-incomecheck="${item.id}"></div>
+        <div class="row-name">${item.name}<span class="sub">${item.sub}</span></div>
+        <div class="row-amount">${amountHtml}</div>
+      </div>
+    `;
+  }
+  document.getElementById("totalIncome").textContent = `${fmtMoney(incomeReceived)} / ${fmtMoney(incomeTotalPlanned)}`;
+
+  // Bills for this cycle
+  const bills = getBillsForCycle(c);
+  const billRows = document.getElementById("billRows");
+  billRows.innerHTML = "";
+  // Add food/gas/personal as standing items
+  const foodGas = [
+    { billId: `dog_${c.id}`, name: "Murphy daycare (6 days)", sub: "3x/week @ $35", amount: 210, when: "ongoing" },
+    { billId: `food_${c.id}`, name: "Groceries", sub: "Commissary + Walmart", amount: 200, when: "this cycle" },
+    { billId: `gas_${c.id}`, name: "Gas / EV charging", sub: "", amount: 50, when: "this cycle" },
+    { billId: `personal_${c.id}`, name: "Personal / misc", sub: "Coffee, vape, etc.", amount: 100, when: "this cycle" },
   ];
-  
-  const ml = document.getElementById('milestones-list');
-  ml.innerHTML = '';
-  milestones.forEach(m => {
-    const passed = m.cycle < currentCycleId;
-    const current = m.cycle === currentCycleId;
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.onclick = () => { goToCycle(m.cycle); switchView('cycle'); };
-    div.innerHTML = 
-      '<div class="checkbox" style="' + (passed ? 'background:var(--sage);border-color:var(--sage);' : current ? 'border-color:var(--sage);' : '') + '">' +
-        '<svg viewBox="0 0 24 24" style="' + (passed ? 'opacity:1;stroke-dashoffset:0' : '') + '"><polyline points="20 6 9 17 4 12"/></svg>' +
-      '</div>' +
-      '<div class="item-body">' +
-        '<div class="item-name">' + escapeHtml(m.text) + '</div>' +
-        '<div class="item-meta">' + escapeHtml(m.label) + ' • Cycle ' + m.cycle + '</div>' +
-      '</div>';
-    ml.appendChild(div);
-  });
-}
-
-// ===== NAV =====
-
-function changeCycle(delta) {
-  const next = currentCycleId + delta;
-  if (next < 1 || next > 34) return;
-  haptic('light');
-  goToCycle(next, false);
-}
-
-function goToCycle(id, scroll = true) {
-  currentCycleId = id;
-  lastBalance = null;
-  renderCycle();
-  updateGoTodayBtn();
-  if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function goToToday() {
-  haptic('medium');
-  goToCycle(todayCycleId);
-}
-
-function updateGoTodayBtn() {
-  const btn = document.getElementById('go-today-btn');
-  const onCycleView = document.getElementById('view-cycle').classList.contains('active');
-  if (currentCycleId !== todayCycleId && onCycleView) {
-    btn.classList.remove('hidden');
-  } else {
-    btn.classList.add('hidden');
-  }
-}
-
-function switchView(view) {
-  haptic('light');
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('view-' + view).classList.add('active');
-  document.querySelector('.tab[data-view="' + view + '"]').classList.add('active');
-  if (view === 'debts') renderDebts();
-  if (view === 'overview') renderOverview();
-  updateGoTodayBtn();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function openCyclePicker() {
-  haptic('light');
-  const list = document.getElementById('cycle-picker-list');
-  list.innerHTML = '';
-  BUDGET.cycles.forEach(c => {
-    const isCurrent = c.id === currentCycleId;
-    const isToday = c.id === todayCycleId;
-    const isPast = c.id < todayCycleId;
-    const hasKill = c.debtAttack.some(d => d.name.includes('KILL'));
-    
-    const div = document.createElement('div');
-    div.className = 'modal-item' + (isCurrent ? ' current' : '');
-    div.onclick = () => { goToCycle(c.id); closeCyclePicker(); };
-    
-    let tag = '';
-    if (isToday) tag = '<span class="modal-item-tag today">Today</span>';
-    else if (hasKill) tag = '<span class="modal-item-tag kill">🎯 Kill</span>';
-    else if (!isPast) tag = '<span class="modal-item-tag future">Upcoming</span>';
-    
-    div.innerHTML = 
-      '<div class="modal-item-left">' +
-        '<div class="modal-item-cycle">CYCLE ' + c.id + '</div>' +
-        '<div class="modal-item-period">' + escapeHtml(c.period) + '</div>' +
-      '</div>' + tag;
-    list.appendChild(div);
-  });
-  document.getElementById('modal-backdrop').classList.add('open');
-  document.getElementById('cycle-picker').classList.add('open');
-  
-  // Scroll to current cycle in picker
-  setTimeout(() => {
-    const currentEl = document.querySelector('.modal-item.current');
-    if (currentEl) {
-      currentEl.scrollIntoView({ block: 'center', behavior: 'instant' });
-    }
-  }, 50);
-}
-
-function closeCyclePicker() {
-  document.getElementById('modal-backdrop').classList.remove('open');
-  document.getElementById('cycle-picker').classList.remove('open');
-}
-
-function resetAll() {
-  if (!confirm('Reset everything? This clears check-offs, edits, and added items. The original plan stays the same.')) return;
-  state = loadStateFromInit();
-  saveState();
-  lastBalance = null;
-  renderCycle();
-  renderDebts();
-  renderOverview();
-}
-
-function clearEditsOnly() {
-  if (!confirm('Clear all edits and added items but keep your check-offs?')) return;
-  state.edits = {};
-  state.extras = {};
-  // Also clear extra check-offs
-  Object.keys(state.items).forEach(k => {
-    if (k.includes('-extra')) delete state.items[k];
-  });
-  saveState();
-  lastBalance = null;
-  renderCycle();
-  renderOverview();
-}
-
-function loadStateFromInit() {
-  const init = { items: {}, debts: {}, edits: {}, extras: {} };
-  BUDGET.debts.forEach((d, i) => { if (d.preChecked) init.debts[i] = true; });
-  const c1 = BUDGET.cycles[0];
-  // Pre-check the 3 already-paid debts in C1
-  c1.debtAttack.forEach((d, i) => {
-    const isPreKilled = ['Capital One', 'Apple Card', 'Chase Card'].some(name => d.name.includes(name));
-    if (isPreKilled) init.items['1-debt-' + i] = true;
-  });
-  // If those debts are already paid, the C1 paycheck must have come in too — pre-check income
-  c1.income.forEach((inc, i) => {
-    init.items['1-income-' + i] = true;
-  });
-  return init;
-}
-
-// ===== EDITS / EXTRAS / RIPPLE =====
-// edits[`${cycleId}-${type}-${idx}`] = { amount: newAmount }  // override original item amount
-// extras[cycleId] = { income: [...], bill: [...] }            // user-added items per cycle
-// Item identification key for extras: `extra-${type}-${idx}` to keep tap toggles unique
-
-function getEditedAmount(cycleId, type, idx, originalAmount) {
-  const key = cycleId + '-' + type + '-' + idx;
-  if (state.edits && state.edits[key] && typeof state.edits[key].amount === 'number') {
-    return state.edits[key].amount;
-  }
-  return originalAmount;
-}
-
-function isItemEdited(cycleId, type, idx) {
-  const key = cycleId + '-' + type + '-' + idx;
-  return !!(state.edits && state.edits[key]);
-}
-
-function getExtras(cycleId, type) {
-  if (!state.extras || !state.extras[cycleId]) return [];
-  return state.extras[cycleId][type] || [];
-}
-
-function addExtra(cycleId, type, item) {
-  if (!state.extras[cycleId]) state.extras[cycleId] = {};
-  if (!state.extras[cycleId][type]) state.extras[cycleId][type] = [];
-  state.extras[cycleId][type].push(item);
-  saveState();
-}
-
-function deleteExtra(cycleId, type, idx) {
-  if (!state.extras[cycleId] || !state.extras[cycleId][type]) return;
-  state.extras[cycleId][type].splice(idx, 1);
-  // Clean up the checked state for this and shift remaining
-  // Just clear all extra check states for this cycle/type and let them re-mark — simpler
-  Object.keys(state.items).forEach(k => {
-    if (k.startsWith(cycleId + '-extra' + type.charAt(0).toUpperCase() + type.slice(1) + '-')) {
-      delete state.items[k];
-    }
-  });
-  saveState();
-}
-
-function setEdit(cycleId, type, idx, newAmount) {
-  const key = cycleId + '-' + type + '-' + idx;
-  if (newAmount === null || newAmount === undefined) {
-    if (state.edits) delete state.edits[key];
-  } else {
-    if (!state.edits) state.edits = {};
-    state.edits[key] = { amount: Number(newAmount) };
-  }
-  saveState();
-}
-
-// Compute the effective ending balance of a cycle, using the user's checks/edits
-// If respectChecks is false, assume all items are paid (used for ripple projections)
-function calcCycleNet(cycleId, respectChecks) {
-  const c = getCycle(cycleId);
-  if (!c) return 0;
-  let net = 0;
-  
-  // Income (planned)
-  c.income.forEach((inc, i) => {
-    const amt = getEditedAmount(cycleId, 'income', i, inc.amount);
-    if (!respectChecks || isItemChecked(cycleId, 'income', i)) net += amt;
-  });
-  // Income (extras)
-  getExtras(cycleId, 'income').forEach((ex, i) => {
-    if (!respectChecks || isItemChecked(cycleId, 'extraIncome', i)) net += ex.amount;
-  });
-  // Bills
-  c.bills.forEach((b, i) => {
-    const amt = getEditedAmount(cycleId, 'bill', i, b.amount);
-    if (!respectChecks || isItemChecked(cycleId, 'bill', i)) net -= amt;
-  });
-  getExtras(cycleId, 'bill').forEach((ex, i) => {
-    if (!respectChecks || isItemChecked(cycleId, 'extraBill', i)) net -= ex.amount;
-  });
-  // EF
-  if (!respectChecks || isItemChecked(cycleId, 'ef', 0)) net -= c.emergencyFund;
-  // Debt attack
-  c.debtAttack.forEach((d, i) => {
-    const amt = getEditedAmount(cycleId, 'debt', i, d.amount);
-    if (!respectChecks || isItemChecked(cycleId, 'debt', i)) net -= amt;
-  });
-  return net;
-}
-
-// Get the effective starting balance for a cycle (after all prior cycles' adjustments ripple in)
-function getEffectiveStartingBalance(cycleId) {
-  if (cycleId <= 1) return BUDGET.cycles[0].startingBalance;
-  // Use planned ending balance of previous cycle, adjusted by user's net change
-  // Adjustment = (cycle's actual outcome at full payment) - (cycle's planned outcome)
-  // Ripple sums all prior adjustments
-  let adjustment = 0;
-  for (let i = 1; i < cycleId; i++) {
-    const cycle = BUDGET.cycles[i - 1];
-    const plannedNet = cycle.endingBalance - cycle.startingBalance;
-    const actualNet = calcCycleNet(i, false); // assume planned completion for ripple
-    adjustment += (actualNet - plannedNet);
-  }
-  return BUDGET.cycles[cycleId - 1].startingBalance + adjustment;
-}
-
-function exportData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'debt-killer-backup-' + todayISO() + '.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  haptic('success');
-}
-
-function importData() {
-  const inp = document.getElementById('import-file');
-  inp.onchange = (e) => {
-    const f = e.target.files[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = (ev) => {
-      try {
-        const imported = JSON.parse(ev.target.result);
-        if (!imported.items || !imported.debts) throw new Error('bad file');
-        if (!confirm('Replace current data with backup file?')) return;
-        if (!imported.edits) imported.edits = {};
-        if (!imported.extras) imported.extras = {};
-        state = imported;
-        saveState();
-        lastBalance = null;
-        renderCycle();
-        renderDebts();
-        renderOverview();
-        alert('Restored.');
-      } catch(err) {
-        alert('That does not look like a valid backup file.');
-      }
+  const allBills = [...bills, ...foodGas];
+  let billsPaid = 0;
+  let billsTotalPlanned = 0;
+  for (const b of allBills) {
+    // Skip if the debt is killed (no need to pay bill for dead debt)
+    const debtIdMap = {
+      "Upstart Michela": "upstart_big", "Octane / Roadrunner": "roadrunner",
+      "Discover minimum": "discover", "Amex minimum": "amex",
+      "Yamaha minimum": "yamaha", "Costco/Cap One minimum": "costco",
+      "Chase 6685 minimum": "chase", "Upstart smaller": "upstart_small",
+      "RevZilla Pay Monthly": "revzilla_klarna",
+      "Affirm - Amazon $1845": "aff_amz_1845", "Affirm - Amazon $3078": "aff_amz_3078",
+      "Affirm - Amazon $804": "aff_amz_804", "Affirm - Amazon $948": "aff_amz_948",
+      "Affirm - RevZilla": "aff_revzilla", "Affirm - Amazon $451": "aff_amz_451",
+      "Affirm - Amazon $902": "aff_amz_902", "Affirm - Amazon $422": "aff_amz_422",
     };
-    r.readAsText(f);
-    inp.value = '';
-  };
-  inp.click();
-}
-
-// ===== CONFETTI =====
-
-function fireConfetti() {
-  const canvas = document.getElementById('confetti');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const ctx = canvas.getContext('2d');
-  const colors = ['#7FB890', '#E8B66B', '#F5A85B', '#5A9D75'];
-  const particles = [];
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight / 3;
-  
-  for (let i = 0; i < 50; i++) {
-    particles.push({
-      x: cx + (Math.random() - 0.5) * 100,
-      y: cy,
-      vx: (Math.random() - 0.5) * 12,
-      vy: Math.random() * -14 - 4,
-      size: Math.random() * 5 + 3,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rot: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.3,
-      life: 1
-    });
-  }
-  
-  let frames = 0;
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-    particles.forEach(p => {
-      if (p.life <= 0) return;
-      alive = true;
-      p.vy += 0.4;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.rotSpeed;
-      p.life -= 0.012;
-      
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.globalAlpha = Math.max(0, p.life);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size * 0.6);
-      ctx.restore();
-    });
-    frames++;
-    if (alive && frames < 200) {
-      requestAnimationFrame(animate);
-    } else {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const linkedDebtId = debtIdMap[b.name];
+    if (linkedDebtId && state.debts[linkedDebtId] && state.debts[linkedDebtId].killed) {
+      continue; // skip - debt is dead
     }
+    billsTotalPlanned += b.amount;
+    const checked = cs.billsChecked.includes(b.billId);
+    if (checked) billsPaid += b.amount;
+    billRows.innerHTML += `
+      <div class="row${checked ? ' done' : ''}">
+        <div class="row-check${checked ? ' checked' : ''}" data-bill="${b.billId}"></div>
+        <div class="row-name">${b.name}<span class="sub">${b.when}${b.sub ? ' · ' + b.sub : ''}</span></div>
+        <div class="row-amount">${fmtMoneyExact(b.amount)}</div>
+      </div>
+    `;
   }
-  animate();
+  document.getElementById("totalBills").textContent = `${fmtMoney(billsPaid)} / ${fmtMoney(billsTotalPlanned)}`;
+
+  // Debt attack - show suggested kills in priority order
+  const attackRows = document.getElementById("attackRows");
+  attackRows.innerHTML = "";
+  const order = getKillOrder().slice(0, 6); // top 6 priority debts
+  for (const d of order) {
+    const debtState = state.debts[d.id];
+    const attackAmt = cs.attacks[d.id] || 0;
+    const checked = cs.attacksChecked.includes(d.id);
+    attackRows.innerHTML += `
+      <div class="row${checked ? ' done' : ''}">
+        <div class="row-check${checked ? ' checked' : ''}" data-attack="${d.id}"></div>
+        <div class="row-name">${d.name}
+          <span class="sub">Balance: ${fmtMoneyExact(debtState.balance)} · ${d.apr}% APR
+          <span class="phase-badge phase-${d.phase}">P${d.phase}</span></span>
+        </div>
+        <div class="row-amount"><input type="number" data-debt="${d.id}" value="${attackAmt}" step="0.01" placeholder="0"></div>
+      </div>
+    `;
+  }
+
+  // Savings
+  document.getElementById("savingsInput").value = cs.savings;
+  document.getElementById("savingsCheck").className = "row-check" + (cs.savingsChecked ? " checked" : "");
+
+  // Track checked debt attacks
+  let attackPaid = 0;
+  let attackTotalPlanned = 0;
+  for (const debtId in cs.attacks) {
+    const amt = parseFloat(cs.attacks[debtId]) || 0;
+    attackTotalPlanned += amt;
+    if (cs.attacksChecked.includes(debtId)) attackPaid += amt;
+  }
+  document.getElementById("totalAttack").textContent = `${fmtMoney(attackPaid)} / ${fmtMoney(attackTotalPlanned)}`;
+
+  // Savings - includes both savings amount and EF
+  const savingsAmt = parseFloat(cs.savings) || 0;
+  const savingsPaid = cs.savingsChecked ? savingsAmt : 0;
+  document.getElementById("totalSavings").textContent = `${fmtMoney(savingsPaid)} / ${fmtMoney(savingsAmt)}`;
+
+  // LIVE balance = startBal + checked income - checked bills - checked attack - checked savings
+  const liveBalance = startBal + incomeReceived - billsPaid - attackPaid - savingsPaid;
+
+  // PROJECTED end-of-cycle balance = startBal + total planned income - total planned out
+  const projectedEnd = startBal + incomeTotalPlanned - billsTotalPlanned - attackTotalPlanned - savingsAmt;
+
+  // RIGHT NOW big number
+  const liveDollars = Math.floor(Math.abs(liveBalance));
+  const liveCents = Math.round((Math.abs(liveBalance) - liveDollars) * 100);
+  const liveSign = liveBalance < 0 ? "-" : "";
+  document.getElementById("nowAmount").innerHTML =
+    `${liveSign}$${liveDollars.toLocaleString()}<span class="cents">.${String(liveCents).padStart(2, '0')}</span>`;
+  document.getElementById("nowCycleLabel").textContent =
+    `Cycle ${c.id} · ${fmtDate(c.startDate)} - ${fmtDate(c.endDate)}, ${c.endDate.getFullYear()}`;
+
+  // Progress bar based on debt killed
+  let totalOrigDebt = 0, totalRemaining = 0;
+  for (const d of DEBTS) {
+    totalOrigDebt += d.balance;
+    if (!state.debts[d.id].killed) totalRemaining += state.debts[d.id].balance;
+  }
+  const pctKilled = totalOrigDebt > 0 ? ((totalOrigDebt - totalRemaining) / totalOrigDebt) * 100 : 0;
+  document.getElementById("nowProgressBar").style.width = pctKilled.toFixed(0) + "%";
+  document.getElementById("nowProgressLeft").textContent = `Cycle ${c.id} of ${CYCLES.length}`;
+  document.getElementById("nowProgressRight").textContent = `${pctKilled.toFixed(0)}% to debt-free`;
+
+  // Three stats
+  document.getElementById("statIn").textContent = fmtMoney(startBal + incomeReceived);
+  document.getElementById("statOut").textContent = fmtMoney(billsPaid + attackPaid + savingsPaid);
+  document.getElementById("statEnds").textContent = fmtMoney(projectedEnd);
+
+  // Cycle badges
+  const badges = document.getElementById("cycleBadges");
+  badges.innerHTML = "";
+  const today = new Date();
+  if (today >= c.startDate && today <= c.endDate) {
+    badges.innerHTML += `<span class="cyc-badge here">You are here</span>`;
+  }
+  const hasVA = incomeItems.some(i => i.id === "va");
+  if (hasVA) badges.innerHTML += `<span class="cyc-badge va">VA payday</span>`;
+  // Kill day if any debt is scheduled to die based on attacks
+  const debtsKillingThisCycle = Object.keys(cs.attacks).filter(did => {
+    const amt = parseFloat(cs.attacks[did]) || 0;
+    return state.debts[did] && !state.debts[did].killed && amt >= state.debts[did].balance - 0.01 && amt > 0;
+  });
+  if (debtsKillingThisCycle.length > 0) {
+    badges.innerHTML += `<span class="cyc-badge kill">Kill day · ${debtsKillingThisCycle.length}</span>`;
+  }
+
+  // Motivational banner
+  const banner = document.getElementById("motivBanner");
+  const freedThisCycle = getFreedMinimums() / 2;
+  let bannerText = "";
+  if (debtsKillingThisCycle.length >= 3) {
+    bannerText = `<b>Big cycle.</b> ${debtsKillingThisCycle.length} debts dying. Keep showing up. 🔥`;
+  } else if (debtsKillingThisCycle.length >= 1) {
+    bannerText = `<b>Strong cycle.</b> ${debtsKillingThisCycle.length} debt${debtsKillingThisCycle.length > 1 ? 's' : ''} going down this cycle. 💪`;
+  } else if (hasVA) {
+    bannerText = `<b>Fat paycheck cycle.</b> VA + GI Bill + CDL all hit. Plan your kills.`;
+  } else if (projectedEnd < 200) {
+    bannerText = `<b>Tight cycle.</b> Below the $200 buffer. Stay disciplined.`;
+  } else {
+    bannerText = `Steady cycle. Knock out the bills and keep the snowball rolling.`;
+  }
+  if (freedThisCycle >= 50) {
+    bannerText += `<br><span style="font-size:11px;color:var(--warn)">🔥 Snowball: +${fmtMoneyExact(freedThisCycle)}/cycle freed from dead debts</span>`;
+  }
+  banner.innerHTML = `<div class="banner">${bannerText}</div>`;
+
+  const warn = document.getElementById("bufferWarn");
+  if (projectedEnd < 200) {
+    warn.innerHTML = `<div class="warning-banner">⚠️ Below $200 buffer. Cut some attack or savings.</div>`;
+  } else {
+    warn.innerHTML = "";
+  }
+
+  // Bottom summary
+  document.getElementById("sumIncome").textContent = fmtMoney(incomeTotalPlanned);
+  document.getElementById("sumBills").textContent = fmtMoney(billsTotalPlanned);
+  document.getElementById("sumAttack").textContent = fmtMoney(attackTotalPlanned);
+  document.getElementById("sumSavings").textContent = fmtMoney(savingsAmt);
+  document.getElementById("endBalance").textContent = fmtMoney(projectedEnd);
 }
 
-// ===== SWIPE =====
-
-let touchStartX = 0;
-let touchStartY = 0;
-let touchTime = 0;
-let touchMovedVertical = false;
-
-document.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
-  touchStartY = e.changedTouches[0].screenY;
-  touchTime = Date.now();
-  touchMovedVertical = false;
-}, { passive: true });
-
-document.addEventListener('touchmove', e => {
-  const dy = Math.abs(e.changedTouches[0].screenY - touchStartY);
-  const dx = Math.abs(e.changedTouches[0].screenX - touchStartX);
-  // If they're scrolling vertically more than horizontally, lock it as a vertical scroll
-  if (dy > 10 && dy > dx) touchMovedVertical = true;
-}, { passive: true });
-
-document.addEventListener('touchend', e => {
-  if (touchMovedVertical) return;
-  if (!document.getElementById('view-cycle').classList.contains('active')) return;
-  if (document.getElementById('cycle-picker').classList.contains('open')) return;
-  if (document.getElementById('edit-sheet').classList.contains('open')) return;
-  
-  const dx = e.changedTouches[0].screenX - touchStartX;
-  const dy = e.changedTouches[0].screenY - touchStartY;
-  const dt = Date.now() - touchTime;
-  
-  // Must be clearly horizontal, fast, and significant
-  if (Math.abs(dx) > 80 && Math.abs(dy) < 50 && dt < 500) {
-    if (dx > 0 && currentCycleId > 1) changeCycle(-1);
-    else if (dx < 0 && currentCycleId < 34) changeCycle(1);
+function computeEndingBalance(cycleId) {
+  if (cycleId < 1) return 0;
+  let bal = 0;
+  for (let i = 1; i <= cycleId; i++) {
+    const c = CYCLES.find(x => x.id === i);
+    const cs = state.cycles[i];
+    if (!c || !cs) continue;
+    let startBal;
+    if (i === 1) {
+      startBal = parseFloat(cs.startBal) || 0;
+    } else if (cs.startBal && cs.startBal !== 0) {
+      startBal = parseFloat(cs.startBal);
+    } else {
+      startBal = bal;
+    }
+    const bills = getBillsForCycle(c);
+    const foodGas = [{ amount: 210 }, { amount: 200 }, { amount: 50 }, { amount: 100 }];
+    const billsTotal = [...bills, ...foodGas].reduce((s, b) => s + b.amount, 0);
+    const attackTotal = Object.values(cs.attacks).reduce((s, a) => s + (parseFloat(a) || 0), 0);
+    // Date-driven income
+    const incomeItems = getIncomeForCycle(c);
+    const incomeTotal = incomeItems.reduce((s, item) => {
+      const amt = (cs.incomeOverrides && cs.incomeOverrides[item.id] !== undefined) ? cs.incomeOverrides[item.id] : item.amount;
+      return s + (parseFloat(amt) || 0);
+    }, 0);
+    const savings = parseFloat(cs.savings) || 0;
+    bal = startBal + incomeTotal - billsTotal - attackTotal - savings;
   }
-}, { passive: true });
+  return bal;
+}
 
-// Resize confetti canvas
-window.addEventListener('resize', () => {
-  const c = document.getElementById('confetti');
-  c.width = window.innerWidth;
-  c.height = window.innerHeight;
-});
+function renderDebts() {
+  const list = document.getElementById("debtList");
+  list.innerHTML = "";
+  const order = [...DEBTS].sort((a, b) => a.killOrder - b.killOrder);
+  let active = 0;
+  for (const d of order) {
+    const s = state.debts[d.id];
+    if (!s.killed) active++;
+    const pctPaid = ((d.balance - s.balance) / d.balance) * 100;
+    list.innerHTML += `
+      <div class="debt-item${s.killed ? ' dead' : ''}" data-killdebt="${d.id}">
+        <div class="debt-head">
+          <div>
+            <div class="debt-name">${d.name}${d.urgent && !s.killed ? ' ⚠️' : ''}</div>
+            <div class="debt-meta">${d.apr}% APR · $${d.monthly}/mo min <span class="phase-badge phase-${d.phase}">P${d.phase}</span></div>
+          </div>
+          <div class="debt-balance">${fmtMoneyExact(s.balance)}</div>
+        </div>
+        <div class="debt-bar">
+          <div class="debt-bar-fill${d.urgent ? ' urgent' : ''}" style="width:${Math.min(100, pctPaid)}%"></div>
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById("activeCount").textContent = `${active} active`;
+}
 
-// Re-detect today on visibility change (in case app was open overnight)
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
-    const newToday = findTodayCycle();
-    if (newToday !== todayCycleId) {
-      todayCycleId = newToday;
-      renderTodayPill();
+function renderMilestones() {
+  const milestones = [
+    { goal: "Kill first Affirm (RevZilla $336)", target: 1, icon: "🎯" },
+    { goal: "All 4 small Affirms dead", target: 4, icon: "🔥" },
+    { goal: "Amex paid off (no more overdue stress)", target: 5, icon: "💳" },
+    { goal: "All credit cards dead", target: 9, icon: "✂️" },
+    { goal: "Both Upstart loans gone", target: 10, icon: "🚀" },
+    { goal: "Truck fund hits $2,000", target: null, icon: "🛻", custom: () => {
+      let s = 0;
+      for (const cid in state.cycles) {
+        if (state.cycles[cid].savingsChecked) s += parseFloat(state.cycles[cid].savings) || 0;
+      }
+      return s >= 2000;
+    }},
+    { goal: "Truck fund hits $4,000", target: null, icon: "🛻", custom: () => {
+      let s = 0;
+      for (const cid in state.cycles) {
+        if (state.cycles[cid].savingsChecked) s += parseFloat(state.cycles[cid].savings) || 0;
+      }
+      return s >= 4000;
+    }},
+    { goal: "Truck fund hits $8,000 (READY TO LAUNCH)", target: null, icon: "🏕️", custom: () => {
+      let s = 0;
+      for (const cid in state.cycles) {
+        if (state.cycles[cid].savingsChecked) s += parseFloat(state.cycles[cid].savings) || 0;
+      }
+      return s >= 8000;
+    }},
+    { goal: "All unsecured debt killed", target: 17, icon: "🏆" },
+    { goal: "Hyundai lease ends - truck day (Sept 27, 2027)", target: null, icon: "🎉", custom: () => false },
+  ];
+  const killed = DEBTS.filter(d => state.debts[d.id].killed).length;
+  const list = document.getElementById("milestoneList");
+  list.innerHTML = "";
+  for (const m of milestones) {
+    const hit = m.custom ? m.custom() : (m.target && killed >= m.target);
+    list.innerHTML += `
+      <div class="milestone">
+        <div class="milestone-icon${hit ? ' hit' : ''}">${m.icon}</div>
+        <div>
+          <div class="milestone-title">${m.goal}</div>
+          <div class="milestone-sub">${hit ? '✅ HIT' : 'Pending'}</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// =============== EVENT HANDLERS ===============
+function bind() {
+  // Tabs
+  document.querySelectorAll(".tab").forEach(t => {
+    t.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+      document.getElementById("tab-" + t.dataset.tab).classList.add("active");
+    });
+  });
+  // Strategy
+  document.querySelectorAll(".strat-btn").forEach(b => {
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".strat-btn").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      state.strategy = b.dataset.strat;
+      // Update explanation
+      document.getElementById("stratExplain").innerHTML = STRAT_TEXT[state.strategy];
+      // Update savings default for current + future cycles (only ones not manually changed)
+      const newSavings = getStrategySavings();
+      const today = new Date();
+      for (const c of CYCLES) {
+        if (c.endDate < today) continue; // skip past cycles
+        const cs = state.cycles[c.id];
+        if (!cs._savingsTouched) {
+          cs.savings = newSavings;
+        }
+      }
+      saveState();
+      render();
+    });
+  });
+  // Cycle nav
+  document.getElementById("prevCycle").addEventListener("click", () => {
+    if (state.currentCycle > 1) {
+      state.currentCycle--;
+      saveState();
       renderCycle();
-      updateGoTodayBtn();
+    }
+  });
+  document.getElementById("nextCycle").addEventListener("click", () => {
+    if (state.currentCycle < CYCLES.length) {
+      state.currentCycle++;
+      saveState();
+      renderCycle();
+    }
+  });
+  // Recommendation input
+  document.getElementById("recInput").addEventListener("input", (e) => {
+    document.getElementById("recResult").innerHTML = recommend(parseFloat(e.target.value));
+  });
+  // Reset
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if (confirm("Wipe all data and start fresh? This cannot be undone.")) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+  // Delegated cycle handlers
+  document.getElementById("tab-cycle").addEventListener("input", (e) => {
+    const cs = state.cycles[state.currentCycle];
+    if (e.target.id === "startBalInput") {
+      cs.startBal = parseFloat(e.target.value) || 0;
+    } else if (e.target.dataset.income) {
+      if (!cs.incomeOverrides) cs.incomeOverrides = {};
+      cs.incomeOverrides[e.target.dataset.income] = parseFloat(e.target.value) || 0;
+    } else if (e.target.dataset.debt) {
+      cs.attacks[e.target.dataset.debt] = parseFloat(e.target.value) || 0;
+    } else if (e.target.id === "savingsInput") {
+      cs.savings = parseFloat(e.target.value) || 0;
+      cs._savingsTouched = true;
+    }
+    saveState();
+    renderCycle();
+    renderOverview();
+  });
+  document.getElementById("tab-cycle").addEventListener("click", (e) => {
+    const cs = state.cycles[state.currentCycle];
+    if (e.target.dataset.incomecheck) {
+      const id = e.target.dataset.incomecheck;
+      const idx = cs.incomeChecked.indexOf(id);
+      if (idx > -1) cs.incomeChecked.splice(idx, 1);
+      else cs.incomeChecked.push(id);
+      saveState();
+      renderCycle();
+    } else if (e.target.dataset.bill) {
+      const id = e.target.dataset.bill;
+      const idx = cs.billsChecked.indexOf(id);
+      if (idx > -1) cs.billsChecked.splice(idx, 1);
+      else cs.billsChecked.push(id);
+      saveState();
+      renderCycle();
+    } else if (e.target.dataset.attack) {
+      const id = e.target.dataset.attack;
+      const idx = cs.attacksChecked.indexOf(id);
+      if (idx > -1) {
+        cs.attacksChecked.splice(idx, 1);
+        // Restore balance
+        state.debts[id].balance += (parseFloat(cs.attacks[id]) || 0);
+      } else {
+        cs.attacksChecked.push(id);
+        // Deduct from balance
+        const amt = parseFloat(cs.attacks[id]) || 0;
+        state.debts[id].balance = Math.max(0, state.debts[id].balance - amt);
+        if (state.debts[id].balance <= 0.01) {
+          state.debts[id].killed = true;
+          state.debts[id].killedCycle = state.currentCycle;
+        }
+      }
+      saveState();
+      render();
+    } else if (e.target.id === "savingsCheck") {
+      cs.savingsChecked = !cs.savingsChecked;
+      saveState();
+      render();
+    }
+  });
+  // Debt list - tap to mark killed (or revive)
+  document.getElementById("debtList").addEventListener("click", (e) => {
+    const item = e.target.closest(".debt-item");
+    if (!item) return;
+    const id = item.dataset.killdebt;
+    const orig = DEBTS.find(d => d.id === id);
+    if (state.debts[id].killed) {
+      if (confirm(`Revive ${orig.name}? Balance returns to ${fmtMoneyExact(orig.balance)}.`)) {
+        state.debts[id].killed = false;
+        state.debts[id].killedCycle = null;
+        state.debts[id].balance = orig.balance;
+        saveState();
+        render();
+      }
     } else {
-      renderTodayPill();
+      if (confirm(`Mark ${orig.name} as KILLED? (${fmtMoneyExact(state.debts[id].balance)} balance set to $0)`)) {
+        state.debts[id].killed = true;
+        state.debts[id].balance = 0;
+        state.debts[id].killedCycle = state.currentCycle;
+        saveState();
+        render();
+      }
+    }
+  });
+}
+
+// =============== INIT ===============
+initState();
+const hadSaved = loadState();
+// Auto-jump to current cycle on first load (or if currentCycle wasn't set)
+if (!hadSaved || !state.currentCycle || state.currentCycle === 1) {
+  const today = new Date();
+  for (const c of CYCLES) {
+    if (today >= c.startDate && today <= c.endDate) {
+      state.currentCycle = c.id;
+      break;
     }
   }
-});
-
-// ===== INIT =====
-todayCycleId = findTodayCycle();
-currentCycleId = todayCycleId;
-renderTodayPill();
-renderCycle();
-renderOverview();
-updateGoTodayBtn();
+}
+bind();
+// Sync strategy UI on load
+document.querySelectorAll(".strat-btn").forEach(x => x.classList.remove("active"));
+const activeBtn = document.querySelector(`.strat-btn[data-strat="${state.strategy}"]`);
+if (activeBtn) activeBtn.classList.add("active");
+if (STRAT_TEXT[state.strategy]) {
+  document.getElementById("stratExplain").innerHTML = STRAT_TEXT[state.strategy];
+}
+render();
 </script>
 </body>
 </html>
