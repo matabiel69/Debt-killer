@@ -4,1154 +4,417 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Debt Killer">
-<meta name="theme-color" content="#5A9D75">
-<title>Debt Killer</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Biweekly</title>
 <style>
-:root {
-  --sage: #7FB890;
-  --sage-deep: #5A9D75;
-  --sage-dark: #3F7A55;
-  --sage-bg: #F1F7F2;
-  --paper: #FFFFFF;
-  --ink: #1F2A24;
-  --ink-soft: #4A5751;
-  --line: #DCE6DE;
-  --gold: #C9A961;
-  --warn: #B8741A;
-  --dead: #9DB0A4;
-}
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; padding: 0; background: var(--sage-bg); color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
-.app { max-width: 720px; margin: 0 auto; padding-bottom: 100px; }
-
-/* Header */
-.header { background: var(--sage-deep); color: white; padding: 16px 18px 14px;
-  position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.brand { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
-.brand em { font-style: italic; color: #E8F0E9; font-weight: 600; }
-.tagline { font-size: 12px; opacity: 0.85; margin-top: 2px; }
-
-/* Tabs */
-.tabs { display: flex; background: var(--paper); border-bottom: 1px solid var(--line);
-  position: sticky; top: 64px; z-index: 49; }
-.tab { flex: 1; padding: 12px 4px; text-align: center; font-size: 13px; font-weight: 600;
-  color: var(--ink-soft); border-bottom: 3px solid transparent; cursor: pointer; }
-.tab.active { color: var(--sage-dark); border-bottom-color: var(--sage-deep); }
-
-/* Cycle nav */
-.cycle-nav { display: flex; align-items: center; justify-content: space-between;
-  background: var(--paper); padding: 10px 14px; border-bottom: 1px solid var(--line); }
-.cycle-nav button { background: var(--sage-bg); border: 1px solid var(--line);
-  color: var(--ink); padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; }
-.cycle-nav button:disabled { opacity: 0.4; }
-.cycle-label { font-size: 14px; font-weight: 700; color: var(--sage-dark); text-align: center; }
-.cycle-label .small { font-size: 11px; font-weight: 500; color: var(--ink-soft); display: block; margin-top: 1px; }
-
-/* Sections */
-.section { background: var(--paper); margin: 10px; border-radius: 12px;
-  border: 1px solid var(--line); overflow: hidden; }
-.section-head { padding: 12px 14px; background: var(--sage-bg);
-  border-bottom: 1px solid var(--line); font-weight: 700; font-size: 14px;
-  color: var(--sage-dark); display: flex; justify-content: space-between; align-items: center; }
-.section-head .total { font-size: 14px; color: var(--ink); font-weight: 700; }
-.row { display: flex; align-items: center; padding: 10px 14px;
-  border-bottom: 1px solid var(--line); gap: 10px; font-size: 14px; }
-.row:last-child { border-bottom: none; }
-.row.done { background: #F4F8F5; }
-.row.done .row-name { color: var(--dead); text-decoration: line-through; }
-.row.done .row-amount { color: var(--dead); }
-.row-check { width: 22px; height: 22px; min-width: 22px; border: 2px solid var(--line);
-  border-radius: 5px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; background: white; }
-.row-check.checked { background: var(--sage-deep); border-color: var(--sage-deep); }
-.row-check.checked::after { content: "✓"; color: white; font-weight: bold; font-size: 14px; }
-.row-name { flex: 1; }
-.row-name .sub { font-size: 11px; color: var(--ink-soft); display: block; margin-top: 1px; }
-.row-amount { font-weight: 700; min-width: 80px; text-align: right; }
-.row-amount input { width: 90px; padding: 4px 6px; border: 1px solid var(--line);
-  border-radius: 6px; text-align: right; font-size: 14px; font-weight: 700; font-family: inherit; }
-
-/* Summary card */
-.summary { background: linear-gradient(135deg, var(--sage-deep), var(--sage-dark));
-  color: white; margin: 10px; border-radius: 12px; padding: 14px 16px; }
-.summary-row { display: flex; justify-content: space-between; align-items: center;
-  padding: 5px 0; font-size: 14px; }
-.summary-row.big { font-size: 18px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.2);
-  padding-top: 10px; margin-top: 6px; }
-.summary-row .label { opacity: 0.9; }
-
-/* Recommendation card */
-.rec-card { background: white; margin: 10px; border-radius: 12px;
-  border: 2px solid var(--sage); padding: 14px 16px; }
-.rec-title { font-weight: 700; color: var(--sage-dark); font-size: 15px; margin-bottom: 8px; }
-.rec-input { width: 100%; padding: 10px 12px; border: 1px solid var(--line);
-  border-radius: 8px; font-size: 16px; font-weight: 700; text-align: center; font-family: inherit;
-  margin-bottom: 10px; }
-.rec-result { background: var(--sage-bg); padding: 10px 12px; border-radius: 8px;
-  font-size: 13px; line-height: 1.5; }
-.rec-result strong { color: var(--sage-dark); }
-.rec-result .kill-item { padding: 4px 0; border-bottom: 1px dashed var(--line); }
-.rec-result .kill-item:last-child { border-bottom: none; }
-
-/* Strategy toggle */
-.strategy { display: flex; gap: 6px; margin: 10px; }
-.strat-btn { flex: 1; padding: 10px; background: white; border: 1px solid var(--line);
-  border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
-.strat-btn.active { background: var(--sage-deep); color: white; border-color: var(--sage-deep); }
-
-/* Debt list */
-.debt-item { padding: 12px 14px; border-bottom: 1px solid var(--line); }
-.debt-item:last-child { border-bottom: none; }
-.debt-item.dead { background: #F4F8F5; }
-.debt-item.dead .debt-name { color: var(--dead); text-decoration: line-through; }
-.debt-head { display: flex; justify-content: space-between; align-items: center; }
-.debt-name { font-weight: 700; font-size: 14px; }
-.debt-meta { font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
-.debt-balance { font-weight: 700; font-size: 14px; }
-.debt-bar { height: 6px; background: var(--line); border-radius: 3px;
-  margin-top: 8px; overflow: hidden; }
-.debt-bar-fill { height: 100%; background: var(--sage); transition: width 0.3s; }
-.debt-bar-fill.urgent { background: var(--warn); }
-
-/* Phase badge */
-.phase-badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-left: 6px; }
-.phase-1 { background: #FFF4DC; color: #8B6914; }
-.phase-2 { background: #FFE3D8; color: #8B3E14; }
-.phase-3 { background: #E0EAFF; color: #1F3A8B; }
-
-/* Milestones */
-.milestone { display: flex; align-items: center; padding: 14px;
-  border-bottom: 1px solid var(--line); gap: 12px; }
-.milestone:last-child { border-bottom: none; }
-.milestone-icon { width: 40px; height: 40px; border-radius: 20px; background: var(--sage-bg);
-  display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-.milestone-icon.hit { background: var(--sage); }
-.milestone-title { font-weight: 700; font-size: 14px; }
-.milestone-sub { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
-
-/* Hero */
-.hero { padding: 18px; text-align: center; }
-.hero-num { font-size: 32px; font-weight: 800; color: var(--sage-dark); letter-spacing: -1px; }
-.hero-label { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
-
-/* Hidden tabs */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
-/* Utility */
-.btn { background: var(--sage-deep); color: white; border: none; padding: 10px 18px;
-  border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
-.btn-ghost { background: white; color: var(--sage-dark); border: 1px solid var(--sage); }
-.btn-warn { background: var(--warn); color: white; }
-.flex-row { display: flex; gap: 8px; align-items: center; padding: 10px 14px; flex-wrap: wrap; }
-.note { font-size: 12px; color: var(--ink-soft); padding: 8px 14px; background: #FAFCFA;
-  border-top: 1px dashed var(--line); }
-.warning-banner { background: #FFE3D8; color: #8B3E14; padding: 10px 14px; font-size: 13px;
-  font-weight: 600; text-align: center; }
-
-/* RIGHT NOW card */
-.now-card { background: white; margin: 10px; border-radius: 14px;
-  border: 1px solid var(--line); padding: 16px 18px; }
-.now-label { font-size: 11px; font-weight: 700; color: var(--ink-soft);
-  letter-spacing: 0.5px; text-transform: uppercase; }
-.now-amount { font-size: 36px; font-weight: 800; color: var(--sage-dark);
-  letter-spacing: -1.5px; line-height: 1.05; margin: 2px 0 4px; }
-.now-amount .cents { font-size: 16px; color: var(--ink-soft); font-weight: 700; vertical-align: top; margin-left: -3px; }
-.now-cycle { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
-.now-progress { height: 6px; background: var(--sage-bg); border-radius: 3px; overflow: hidden; }
-.now-progress-fill { height: 100%; background: var(--sage-deep); transition: width 0.3s; }
-.now-progress-meta { display: flex; justify-content: space-between; font-size: 11px;
-  color: var(--ink-soft); margin-top: 6px; font-weight: 600; }
-
-/* Three-stat row */
-.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px; }
-.stat-box { background: white; border: 1px solid var(--line); border-radius: 10px;
-  padding: 10px; text-align: center; }
-.stat-label { font-size: 10px; font-weight: 700; color: var(--ink-soft);
-  letter-spacing: 0.3px; text-transform: uppercase; }
-.stat-value { font-size: 15px; font-weight: 700; color: var(--ink); margin-top: 3px; }
-.stat-value.green { color: var(--sage-dark); }
-.stat-value.orange { color: var(--warn); }
-
-/* Cycle badges */
-.cycle-badges { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
-  padding: 8px 14px 4px; }
-.cyc-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px;
-  font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
-.cyc-badge.here { background: var(--sage); color: white; }
-.cyc-badge.va { background: #FFF4DC; color: #8B6914; }
-.cyc-badge.kill { background: #FFE3D8; color: #8B3E14; }
-
-/* Motivational banner */
-.banner { margin: 10px; padding: 10px 14px; border-radius: 10px;
-  border: 1px solid var(--gold); background: #FFF8EB; font-size: 13px; }
-.banner b { color: var(--warn); }
+  :root{
+    --ink:#14150f;--paper:#f4f1e8;--card:#fbf9f2;--line:#ded8c7;
+    --green:#3a5a40;--gold:#b0842a;--muted:#7c786c;--check:#3a5a40;--copper:#c9772f;--dim:#9a9686;--red:#a23b3b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;}
+  body{max-width:480px;margin:0 auto;padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 30px);min-height:100vh;}
+  header{padding:24px 2px 14px;}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  h1{font-family:"SF Pro Display",-apple-system,sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:3px;}
+  .tabs{display:flex;gap:8px;margin:14px 0 16px;}
+  .tab{flex:1;text-align:center;padding:11px 6px;border:1.5px solid var(--line);border-radius:11px;background:var(--card);font-size:13px;font-weight:700;color:var(--muted);}
+  .tab.on{border-color:var(--ink);color:var(--ink);background:#fff;}
+  .cycle{border:1px solid var(--line);border-radius:16px;margin-bottom:14px;background:var(--card);overflow:hidden;}
+  .cycle.here{border:1.5px solid var(--copper);}
+  .chead{padding:16px 18px;display:flex;align-items:center;gap:12px;}
+  .cnum{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .cdate{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-top:2px;}
+  .here-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--copper);padding:3px 8px;border-radius:99px;}
+  .cleft{margin-left:auto;text-align:right;}
+  .cleft .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .cleft .amt{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink);}
+  .cleft .amt.neg{color:var(--copper);}
+  .chev{color:var(--muted);font-size:14px;margin-left:4px;transition:transform .2s;}
+  .cycle.open .chev{transform:rotate(90deg);}
+  .cbody{display:none;padding:0 18px 8px;}
+  .cycle.open .cbody{display:block;}
+  .grp{margin-top:6px;}
+  .grp-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 0 4px;border-top:1px solid var(--line);display:flex;justify-content:space-between;}
+  .grp-h .rt{color:var(--dim);letter-spacing:0;text-transform:none;}
+  .line{display:flex;align-items:center;gap:11px;padding:10px 0;}
+  .day{font-size:12px;font-weight:700;color:var(--muted);width:42px;flex-shrink:0;font-variant-numeric:tabular-nums;}
+  .line .nm{flex:1;font-size:15px;font-weight:600;}
+  .line .nm .est{font-size:11px;color:var(--dim);font-weight:600;margin-left:5px;}
+  .line .vl{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .vl.in{color:var(--green);}
+  .box{width:24px;height:24px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff;}
+  .box.on{background:var(--check);border-color:var(--check);}
+  .box.on.ginc{background:var(--gold);border-color:var(--gold);}
+  .box.on::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px);}
+  .line.done .nm{text-decoration:line-through;color:var(--muted);}
+  .line.done .vl{color:var(--muted);}
+  .line.done .vl.in{color:var(--green);}
+  .carry{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;color:var(--muted);}
+  .carry .v{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);}
+  .bigleft{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 4px;font-size:15px;border-top:1.5px solid var(--ink);margin-top:8px;}
+  .bigleft .k{color:var(--ink);font-weight:800;}
+  .bigleft .v{font-weight:800;font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .bigleft .v.neg{color:var(--copper);}
+  .subnote{font-size:11px;color:var(--dim);padding-bottom:8px;line-height:1.5;}
+  .halfline{display:flex;align-items:center;gap:10px;padding:6px 0 4px;margin-top:4px;}
+  .halfline .rule{flex:1;height:0;border-top:1.5px dashed var(--copper);opacity:.55;}
+  .halfline .lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:700;white-space:nowrap;}
+  .reset{width:100%;background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;margin-top:18px;padding:10px;text-decoration:underline;}
+  .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;padding:0 10px;}
+  .startbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+  .startbox label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;flex:1;}
+  .startbox input{width:120px;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px;font-size:16px;font-weight:700;font-family:inherit;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);}
+  .startbox input:focus{outline:none;border-color:var(--ink);}
+  .debt{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:16px 18px;margin-bottom:12px;}
+  .debt .top{display:flex;justify-content:space-between;align-items:baseline;}
+  .debt .dn{font-size:16px;font-weight:800;}
+  .debt .db{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--copper);}
+  .debt .meta{font-size:12px;color:var(--muted);margin-top:4px;}
+  .debt .bar{height:7px;border-radius:99px;background:var(--line);margin-top:12px;overflow:hidden;}
+  .debt .bar > i{display:block;height:100%;background:var(--green);border-radius:99px;}
+  .payoff-intro{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;padding:0 2px;}
+  .hidden{display:none;}
+  .halfline{display:flex;align-items:center;gap:10px;padding:8px 0 2px;margin-top:4px;}
+  .halfline .lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper);font-weight:700;white-space:nowrap;}
+  .halfline .rule{flex:1;height:1.5px;background:repeating-linear-gradient(90deg,var(--copper) 0 6px,transparent 6px 11px);opacity:.5;}
+  /* what-if */
+  .wf-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;}
+  .wf-box label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px;}
+  .wf-row{display:flex;gap:10px;margin-bottom:14px;}
+  .wf-row input{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:13px;font-size:16px;font-family:inherit;color:var(--ink);}
+  .wf-row input.amt{max-width:130px;font-weight:800;font-variant-numeric:tabular-nums;font-size:20px;text-align:right;}
+  .wf-row input:focus{outline:none;border-color:var(--ink);}
+  .wf-verdict{border-radius:14px;padding:18px;margin-bottom:8px;text-align:center;}
+  .wf-verdict.yes{background:#e8efe6;border:1.5px solid var(--green);}
+  .wf-verdict.no{background:#f3e3e1;border:1.5px solid var(--red);}
+  .wf-verdict.idle{background:var(--card);border:1px solid var(--line);}
+  .wf-big{font-size:22px;font-weight:800;letter-spacing:-.01em;}
+  .wf-big.yes{color:var(--green);}
+  .wf-big.no{color:var(--red);}
+  .wf-sub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;}
+  .wf-ripple-h{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:20px 2px 10px;}
+  .wf-cyc{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);margin-bottom:8px;}
+  .wf-cyc .lab{font-size:14px;font-weight:700;}
+  .wf-cyc .lab span{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;}
+  .wf-cyc .comp{text-align:right;font-variant-numeric:tabular-nums;}
+  .wf-cyc .comp .was{font-size:12px;color:var(--muted);text-decoration:line-through;}
+  .wf-cyc .comp .now{font-size:16px;font-weight:800;}
+  .wf-cyc .comp .now.neg{color:var(--red);}
+  .wf-cyc.tight{border-color:var(--red);}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="header">
-    <div class="brand">Debt <em>Killer</em></div>
-    <div class="tagline">Sept 2027 → debt-free overland life</div>
-  </div>
-  <div class="tabs">
-    <div class="tab active" data-tab="overview">Overview</div>
-    <div class="tab" data-tab="cycle">Cycle</div>
-    <div class="tab" data-tab="debts">Debts</div>
-    <div class="tab" data-tab="milestones">Goals</div>
-  </div>
+<header>
+  <div class="eyebrow">Paycheck to paycheck</div>
+  <h1>Biweekly</h1>
+</header>
 
-  <!-- OVERVIEW -->
-  <div class="tab-content active" id="tab-overview">
-    <div class="hero">
-      <div class="hero-num" id="totalDebtNum">$0</div>
-      <div class="hero-label">total unsecured debt remaining</div>
-    </div>
-    <div class="summary">
-      <div class="summary-row"><span class="label">Debts killed</span><span id="debtsKilled">0 of 0</span></div>
-      <div class="summary-row"><span class="label">Total paid down</span><span id="totalPaid">$0</span></div>
-      <div class="summary-row"><span class="label">Truck savings</span><span id="truckSavings">$0</span></div>
-      <div class="summary-row"><span class="label">Target debt-free</span><span id="targetDate">Sept 2027</span></div>
-      <div class="summary-row big"><span>Cycles to go</span><span id="cyclesLeft">--</span></div>
-    </div>
-
-    <div class="rec-card">
-      <div class="rec-title">💡 What should I kill?</div>
-      <div style="font-size:12px;color:var(--ink-soft);margin-bottom:8px">Type the dollars you have extra this cycle. I'll rank what to kill.</div>
-      <input type="number" class="rec-input" id="recInput" placeholder="$500" inputmode="decimal">
-      <div class="rec-result" id="recResult">Enter an amount above to see your kill list.</div>
-    </div>
-
-    <div class="strategy">
-      <div class="strat-btn" data-strat="maxattack">🔥 Max Attack</div>
-      <div class="strat-btn active" data-strat="hybrid">💪 Balanced</div>
-      <div class="strat-btn" data-strat="safety">🛡️ Safety First</div>
-    </div>
-    <div class="note" style="margin:0 10px 10px;border-radius:8px;border:1px solid var(--line)" id="stratExplain">
-      <b>Balanced:</b> $100/cycle to savings, rest crushes debt. Hybrid kill order (small Affirms first, then highest APR). Debt-free of unsecured by Jul 2027 with $3K+ truck fund.
-    </div>
-
-    <div class="rec-card" id="snowballCard" style="display:none;border-color:var(--gold);background:#FFF8EB">
-      <div class="rec-title" style="color:var(--warn)">🔥 Snowball rolling</div>
-      <div style="font-size:13px" id="snowballText"></div>
-    </div>
-  </div>
-
-  <!-- CYCLE -->
-  <div class="tab-content" id="tab-cycle">
-    <div class="now-card">
-      <div class="now-label">Right Now</div>
-      <div class="now-amount" id="nowAmount">$0</div>
-      <div class="now-cycle" id="nowCycleLabel">--</div>
-      <div class="now-progress"><div class="now-progress-fill" id="nowProgressBar" style="width:0%"></div></div>
-      <div class="now-progress-meta">
-        <span id="nowProgressLeft">Cycle 1 of 34</span>
-        <span id="nowProgressRight">0% to debt-free</span>
-      </div>
-    </div>
-
-    <div class="cycle-nav">
-      <button id="prevCycle">‹ Prev</button>
-      <div class="cycle-label">
-        <span id="cycleNum">Cycle 1</span>
-        <span class="small" id="cycleDates">--</span>
-      </div>
-      <button id="nextCycle">Next ›</button>
-    </div>
-    <div class="cycle-badges" id="cycleBadges"></div>
-
-    <div class="stats-row">
-      <div class="stat-box"><div class="stat-label">Money In</div><div class="stat-value green" id="statIn">$0</div></div>
-      <div class="stat-box"><div class="stat-label">Money Out</div><div class="stat-value orange" id="statOut">$0</div></div>
-      <div class="stat-box"><div class="stat-label">Ends At</div><div class="stat-value" id="statEnds">$0</div></div>
-    </div>
-
-    <div id="motivBanner"></div>
-
-    <div class="section">
-      <div class="section-head">Starting balance<span class="total" id="startBalDisp">$0</span></div>
-      <div class="row">
-        <div class="row-name">Checking balance at cycle start</div>
-        <div class="row-amount"><input type="number" id="startBalInput" step="0.01"></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">Income<span class="total" id="totalIncome">$0</span></div>
-      <div id="incomeRows"></div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">Bills (check off as paid)<span class="total" id="totalBills">$0</span></div>
-      <div id="billRows"></div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">Debt attack this cycle<span class="total" id="totalAttack">$0</span></div>
-      <div id="attackRows"></div>
-      <div class="note">Edit the amount to change what you throw at each debt. Check the box when you actually send the payment.</div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">Savings<span class="total" id="totalSavings">$0</span></div>
-      <div class="row">
-        <div class="row-check" id="savingsCheck"></div>
-        <div class="row-name">Move to Chase Savings 5961<span class="sub">Truck fund + emergency cushion</span></div>
-        <div class="row-amount"><input type="number" id="savingsInput" step="0.01"></div>
-      </div>
-    </div>
-
-    <div class="summary">
-      <div class="summary-row"><span class="label">Income</span><span id="sumIncome">$0</span></div>
-      <div class="summary-row"><span class="label">Bills</span><span id="sumBills">$0</span></div>
-      <div class="summary-row"><span class="label">Debt attack</span><span id="sumAttack">$0</span></div>
-      <div class="summary-row"><span class="label">Savings</span><span id="sumSavings">$0</span></div>
-      <div class="summary-row big"><span>Ending balance</span><span id="endBalance">$0</span></div>
-    </div>
-    <div id="bufferWarn"></div>
-  </div>
-
-  <!-- DEBTS -->
-  <div class="tab-content" id="tab-debts">
-    <div class="section">
-      <div class="section-head">Active debts<span class="total" id="activeCount">0</span></div>
-      <div id="debtList"></div>
-    </div>
-    <div class="note" style="margin:10px;border-radius:8px;border:1px solid var(--line)">
-      Tap any debt to mark it killed. Numbers update everywhere automatically.
-    </div>
-  </div>
-
-  <!-- MILESTONES -->
-  <div class="tab-content" id="tab-milestones">
-    <div class="section">
-      <div class="section-head">Roadmap to Sept 2027</div>
-      <div id="milestoneList"></div>
-    </div>
-    <div class="flex-row" style="justify-content:center;margin-top:10px">
-      <button class="btn btn-ghost" id="resetBtn">Reset all data</button>
-    </div>
-  </div>
-
+<div class="tabs">
+  <div class="tab on" id="tabCycles" onclick="showTab('cycles')">Cycles</div>
+  <div class="tab" id="tabWhatif" onclick="showTab('whatif')">What if</div>
+  <div class="tab" id="tabPayoff" onclick="showTab('payoff')">Payoff</div>
 </div>
 
+<div id="cyclesView">
+  <div class="startbox">
+    <label>Starting balance today</label>
+    <input id="startBal" inputmode="decimal" placeholder="0.00">
+  </div>
+  <div id="cycles"></div>
+  <button class="reset" onclick="resetAll()">Uncheck everything</button>
+  <div class="note">Nothing moves until you check it. Tap a paycheck when it lands to add it, tap a bill when you pay it to subtract it. Amounts marked "est" are from your last audit.</div>
+</div>
+
+<div id="whatifView" class="hidden">
+  <div class="wf-box">
+    <label>What do you want to buy?</label>
+    <div class="wf-row">
+      <input id="wfName" placeholder="e.g. shoes" autocomplete="off">
+      <input id="wfAmt" class="amt" inputmode="decimal" placeholder="100">
+    </div>
+    <div id="wfVerdict" class="wf-verdict idle">
+      <div class="wf-sub">Enter an amount to see if you can spend it right now without missing a bill.</div>
+    </div>
+  </div>
+  <div id="wfRipple"></div>
+</div>
+
+<div id="payoffView" class="hidden"></div>
+
 <script>
-const STORAGE_KEY = "jarred_debt_killer_v8";
+const FIRST_CYCLE=new Date(2026,8,1);   // first VA-anchored cycle starts Sep 1, 2026
+const CYCLES=6;
+const CDL=2240;
+const VA=5233;
+const CDL_ANCHOR=new Date(2026,7,21);   // a known CDL payday; checks every 14 days from here
+const CUSHION=200;
 
-// =============== DEBT DATA (current as of June 26, 2026) ===============
-const DEBTS = [
-  // PHASE 1 - SMALL AFFIRM QUICK WINS (smallest balances first)
-  { id: "aff_revzilla", name: "Affirm - RevZilla.com", balance: 336.27, monthly: 86.68, apr: 0, phase: 1, killOrder: 1 },
-  { id: "aff_amz_422", name: "Affirm - Amazon ($422)", balance: 422.32, monthly: 43.41, apr: 0, phase: 1, killOrder: 2 },
-  { id: "aff_amz_451", name: "Affirm - Amazon ($451)", balance: 451.51, monthly: 51.16, apr: 0, phase: 1, killOrder: 3 },
-  { id: "aff_amz_804", name: "Affirm - Amazon ($804)", balance: 804.16, monthly: 50.53, apr: 0, phase: 1, killOrder: 4 },
-  // PHASE 2 - HIGHEST APR + URGENT
-  { id: "amex", name: "Amex Platinum ⚠️ OVERDUE", balance: 3880.62, monthly: 130, apr: 0, phase: 2, killOrder: 5, urgent: true },
-  { id: "discover", name: "Discover", balance: 223.12, monthly: 25, apr: 22, phase: 2, killOrder: 6 },
-  { id: "chase", name: "Chase 6685", balance: 989.19, monthly: 50, apr: 25.74, phase: 2, killOrder: 7 },
-  { id: "upstart_small", name: "Upstart (small)", balance: 2401.05, monthly: 107, apr: 29.92, phase: 2, killOrder: 8 },
-  { id: "costco", name: "Costco (Citi)", balance: 5688.37, monthly: 120, apr: 22.49, phase: 2, killOrder: 9, sub: "$8k limit" },
-  { id: "upstart_big", name: "Upstart Michela", balance: 8144.64, monthly: 410, apr: 29.66, phase: 2, killOrder: 10 },
-  // PHASE 3 - SNOWBALL REMAINING
-  { id: "aff_amz_902", name: "Affirm - Amazon ($902)", balance: 902.36, monthly: 43.78, apr: 0, phase: 3, killOrder: 11 },
-  { id: "aff_amz_948", name: "Affirm - Amazon ($948)", balance: 948.67, monthly: 45.53, apr: 0, phase: 3, killOrder: 12 },
-  { id: "revzilla_klarna", name: "RevZilla Pay Monthly", balance: 1680.08, monthly: 88.63, apr: 20.99, phase: 3, killOrder: 13 },
-  { id: "aff_amz_1845", name: "Affirm - Amazon ($1845)", balance: 1845.43, monthly: 45.02, apr: 0, phase: 3, killOrder: 14 },
-  { id: "aff_amz_3078", name: "Affirm - Amazon ($3078)", balance: 3078.62, monthly: 134.42, apr: 0, phase: 3, killOrder: 15 },
-  { id: "roadrunner", name: "Octane / Roadrunner (moto)", balance: 8979.47, monthly: 200, apr: 14.99, phase: 3, killOrder: 16 },
-  { id: "yamaha", name: "Yamaha card (moto)", balance: 12068.45, monthly: 399, apr: 23, phase: 3, killOrder: 17 },
+const BILLS=[
+  {name:"Bilt rent",amt:2081,day:2,est:true},
+  {name:"Hyundai lease",amt:956,day:4,est:true},
+  {name:"T-Mobile",amt:220,day:16,est:true},
+  {name:"Yamaha",amt:410,day:17,est:true},
+  {name:"USAA auto insurance",amt:465,day:18,est:true},
+  {name:"Comcast / Xfinity",amt:136,day:29,est:true},
+  {name:"Lemonade renters",amt:76,day:30,est:true},
+  {name:"Subscriptions",amt:280,day:15,est:true},
+  {name:"Dog daycare",amt:222,day:6,est:true},
+  {name:"Meal subscription",amt:100,weekly:true,est:true},
+  {name:"Groceries",amt:50,perCycle:true,est:true},
+  {name:"Amex",amt:127,day:21},
+  {name:"Citi / Costco",amt:228,day:28},
+  {name:"Chase Prime Visa",amt:41,day:2},
+  {name:"Affirm A",amt:45.02,day:4, end:new Date(2029,9,4)},
+  {name:"Affirm B",amt:134.42,day:6, end:new Date(2028,3,6)},
+  {name:"Affirm C",amt:50.53,day:7, end:new Date(2027,8,7)},
+  {name:"Affirm D",amt:45.53,day:13, end:new Date(2028,1,13)},
+  {name:"Affirm E",amt:51.16,day:17, end:new Date(2027,1,17)},
+  {name:"Affirm F",amt:43.78,day:18, end:new Date(2028,1,18)},
+  {name:"Affirm G",amt:43.41,day:25, end:new Date(2027,2,25)}
 ];
 
-// =============== BILLS TEMPLATE ===============
-// Day-of-month based. Cycle picks up bills whose day falls in the cycle window.
-// Verified against 3 months of Chase Sapphire Checking statements
-const BILLS_TEMPLATE = [
-  { day: 1, name: "Upstart Michela", amount: 410 },
-  { day: 2, name: "Bilt rent", amount: 2081, sub: "Rent + parking + utilities" },
-  { day: 2, name: "Octane / Roadrunner", amount: 200 },
-  { day: 4, name: "Hyundai lease (HMF)", amount: 956 },
-  { day: 4, name: "Discover minimum", amount: 65 },
-  { day: 10, name: "Amex minimum", amount: 130 },
-  { day: 16, name: "T-Mobile", amount: 220 },
-  { day: 17, name: "Yamaha minimum", amount: 410 },
-  { day: 18, name: "USAA auto insurance", amount: 465 },
-  { day: 18, name: "Costco (Citi) minimum", amount: 120 },
-  { day: 20, name: "Subscriptions cap", amount: 250, sub: "Apple, Microsoft, Claude, Spotify, DashPass, Klover, PayPal BNPL" },
-  { day: 21, name: "RevZilla Pay Monthly", amount: 89 },
-  { day: 24, name: "Chase 6685 minimum", amount: 50 },
-  { day: 28, name: "Upstart smaller (Mpli)", amount: 107 },
-  { day: 29, name: "Comcast/Xfinity", amount: 136 },
-  { day: 30, name: "Lemonade renters insurance", amount: 76 },
+const DEBTS=[
+  {name:"Citi / Costco",bal:6475.24,pay:228,apr:"~22%"},
+  {name:"Amex Platinum",bal:3803.41,pay:127,apr:"charge card"},
+  {name:"Chase Prime Visa",bal:1460.04,pay:41,apr:"~27%"},
+  {name:"Affirm (7 plans)",bal:7621.28,pay:413.85,apr:"fixed installments"}
 ];
 
-// Affirm payments by date
-const AFFIRM_BILLS = [
-  { day: 4, name: "Affirm - Amazon $1845", amount: 45.02 },
-  { day: 6, name: "Affirm - Amazon $3078", amount: 134.42 },
-  { day: 7, name: "Affirm - Amazon $804", amount: 50.53 },
-  { day: 13, name: "Affirm - Amazon $948", amount: 45.53 },
-  { day: 15, name: "Affirm - RevZilla", amount: 86.68 },
-  { day: 17, name: "Affirm - Amazon $451", amount: 51.16 },
-  { day: 18, name: "Affirm - Amazon $902", amount: 43.78 },
-  { day: 25, name: "Affirm - Amazon $422", amount: 43.41 },
-];
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const money=n=>(n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const money0=n=>(n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
+const fmt=d=>MON[d.getMonth()]+" "+d.getDate();
+const ord=n=>{const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);};
+const key=d=>d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
 
-// =============== CYCLE GENERATION ===============
-function buildCycles() {
-  const cycles = [];
-  let cs = new Date(2026, 5, 26); // Fri Jun 26, 2026 - Cycle 1 starts NOW
-  const endTarget = new Date(2027, 8, 30); // Sept 30, 2027
-  let i = 1;
-  while (cs <= endTarget) {
-    const ce = new Date(cs);
-    ce.setDate(ce.getDate() + 13);
-    cycles.push({
-      id: i,
-      startDate: new Date(cs),
-      endDate: new Date(ce),
-    });
-    cs = new Date(ce);
-    cs.setDate(cs.getDate() + 1);
-    i++;
-  }
-  return cycles;
+let done={};
+let startBal=0;
+async function load(){
+  try{const r=await window.storage.get("biweekly_v8");if(r&&r.value){const d=JSON.parse(r.value);done=d.done||{};startBal=d.startBal||0;}}catch(e){}
+  document.getElementById("startBal").value=startBal?startBal:"";
+  build();buildPayoff();
 }
+async function persist(){try{await window.storage.set("biweekly_v8",JSON.stringify({done,startBal}));}catch(e){}}
 
-// Date-driven income for each cycle
-function getIncomeForCycle(cycle) {
-  const items = [];
-  const cur = new Date(cycle.startDate);
-  // Walk every day in cycle window
-  while (cur <= cycle.endDate) {
-    if (cur.getDate() === 1) {
-      // 1st of month = VA Disability + GI Bill hit
-      items.push({ id: "va", name: "VA Disability", sub: `100% P&T · ${fmtDate(cur)}`, amount: 4298, editable: false });
-      items.push({ id: "gibill", name: "VA Education (GI Bill)", sub: `${fmtDate(cur)} · varies $280-$1,052`, amount: 900, editable: true });
-    }
-    cur.setDate(cur.getDate() + 1);
-  }
-  // CDL paycheck - one per cycle, anchored to cycle start Monday
-  items.push({ id: "cdl", name: "CDL Schools paycheck", sub: `${fmtDate(cycle.startDate)} · biweekly`, amount: 2240, editable: true });
-  return items;
-}
+document.getElementById("startBal").addEventListener("input",e=>{startBal=parseFloat(e.target.value)||0;persist();build(true);runWhatif();});
+document.getElementById("wfAmt").addEventListener("input",runWhatif);
+document.getElementById("wfName").addEventListener("input",runWhatif);
 
-const CYCLES = buildCycles();
-
-function fmtDate(d) {
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
-function fmtMoney(n) {
-  if (isNaN(n)) n = 0;
-  const sign = n < 0 ? "-" : "";
-  const abs = Math.abs(n);
-  return sign + "$" + abs.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-function fmtMoneyExact(n) {
-  if (isNaN(n)) n = 0;
-  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-// Get bills for a specific cycle based on date window
-function getBillsForCycle(cycle) {
-  const bills = [];
-  const allBills = [...BILLS_TEMPLATE, ...AFFIRM_BILLS];
-  // Walk each day in cycle, check if any bill day matches
-  const cur = new Date(cycle.startDate);
-  while (cur <= cycle.endDate) {
-    const dayOfMonth = cur.getDate();
-    for (const b of allBills) {
-      if (b.day === dayOfMonth) {
-        bills.push({
-          ...b,
-          when: fmtDate(cur),
-          billId: `${b.name}_${cur.getMonth()}_${cur.getDate()}`,
-        });
-      }
-    }
-    cur.setDate(cur.getDate() + 1);
-  }
-  return bills;
-}
-
-// =============== STATE ===============
-let state = {
-  strategy: "hybrid",
-  currentCycle: 1,
-  debts: {}, // id -> { balance, killed, killedCycle }
-  cycles: {}, // cycleId -> { income: {giBill, cdl, startBal}, attacks: {debtId: amount}, savings, billsChecked: [], attacksChecked: [], savingsChecked: bool }
-};
-
-function initState() {
-  // Init debts from definitions
-  for (const d of DEBTS) {
-    state.debts[d.id] = { balance: d.balance, killed: false, killedCycle: null };
-  }
-  // Init cycles
-  for (const c of CYCLES) {
-    state.cycles[c.id] = {
-      startBal: 0,
-      incomeOverrides: {}, // id -> custom amount
-      incomeChecked: [], // ids of income items marked received
-      attacks: {},
-      savings: 100,
-      billsChecked: [],
-      attacksChecked: [],
-      savingsChecked: false,
-      efChecked: false,
-    };
-  }
-}
-
-function loadState() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      state = { ...state, ...parsed };
-      // Make sure all debts exist (in case schema changes)
-      for (const d of DEBTS) {
-        if (!state.debts[d.id]) state.debts[d.id] = { balance: d.balance, killed: false, killedCycle: null };
-      }
-      for (const c of CYCLES) {
-        if (!state.cycles[c.id]) {
-          state.cycles[c.id] = {
-            startBal: 0,
-            incomeOverrides: {},
-            incomeChecked: [],
-            attacks: {}, savings: 100, billsChecked: [], attacksChecked: [], savingsChecked: false, efChecked: false,
-          };
-        }
-        // Migrate existing cycles missing new fields
-        if (!state.cycles[c.id].incomeChecked) state.cycles[c.id].incomeChecked = [];
-        if (state.cycles[c.id].efChecked === undefined) state.cycles[c.id].efChecked = false;
-      }
-      return true;
-    }
-  } catch (e) { console.error(e); }
-  return false;
-}
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-// =============== KILL ORDER LOGIC ===============
-function getKillOrder() {
-  const active = DEBTS.filter(d => !state.debts[d.id].killed && state.debts[d.id].balance > 0);
-  if (state.strategy === "safety") {
-    // Safety First = smallest balance first (quick wins for momentum)
-    return active.sort((a, b) => state.debts[a.id].balance - state.debts[b.id].balance);
-  }
-  if (state.strategy === "maxattack") {
-    // Max Attack = urgent first, then highest APR avalanche
-    return active.sort((a, b) => {
-      if (a.urgent && !b.urgent) return -1;
-      if (b.urgent && !a.urgent) return 1;
-      return b.apr - a.apr || a.killOrder - b.killOrder;
-    });
-  }
-  // hybrid (default): urgent first, then by killOrder (small wins → big avalanche → snowball)
-  return active.sort((a, b) => {
-    if (a.urgent && !b.urgent) return -1;
-    if (b.urgent && !a.urgent) return 1;
-    return a.killOrder - b.killOrder;
+function showTab(t){
+  ["cycles","whatif","payoff"].forEach(x=>{
+    document.getElementById("tab"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("on",x===t);
+    document.getElementById(x+"View").classList.toggle("hidden",x!==t);
   });
+  if(t==="whatif")runWhatif();
 }
 
-// Default savings per cycle based on strategy
-function getStrategySavings() {
-  if (state.strategy === "maxattack") return 0;
-  if (state.strategy === "safety") return 250;
-  return 100; // hybrid default
+// Is date d a CDL payday? (every 14 days from CDL_ANCHOR)
+function isCDLday(d){
+  const days=Math.round((d-CDL_ANCHOR)/(1000*60*60*24));
+  return days%14===0;
+}
+// All CDL paydays within [from, to] inclusive
+function cdlDaysIn(from,to){
+  const out=[];
+  let p=new Date(CDL_ANCHOR);
+  // rewind to before 'from'
+  while(p>from){p=new Date(p);p.setDate(p.getDate()-14);}
+  while(p<from){p=new Date(p);p.setDate(p.getDate()+14);}
+  while(p<=to){out.push(new Date(p));p=new Date(p);p.setDate(p.getDate()+14);}
+  return out;
 }
 
-// Sum of monthly minimums from killed debts (the snowball)
-function getFreedMinimums() {
-  let total = 0;
-  for (const d of DEBTS) {
-    if (state.debts[d.id].killed) total += d.monthly;
-  }
-  return total;
-}
-
-// Strategy explanations
-const STRAT_TEXT = {
-  maxattack: "<b>Max Attack:</b> $0 to savings, every spare dollar kills debt. <b>100% debt-free by Sep 2, 2027</b> (motorcycles included). Risk: no emergency cushion.",
-  hybrid: "<b>Balanced:</b> $100/cycle to savings, rest crushes debt. Hybrid kill order (small Affirms first, then highest APR). Debt-free of unsecured by Jul 2027 with $3K+ truck fund.",
-  safety: "<b>Safety First:</b> $250/cycle to savings ($6,500/yr), rest goes to debt. Smallest debts first for quick wins. Slower payoff but builds real emergency fund.",
-};
-
-// =============== RECOMMENDATION ENGINE ===============
-function recommend(amount) {
-  if (!amount || amount <= 0) return "Enter an amount above to see your kill list.";
-  const order = getKillOrder();
-  let remaining = amount;
-  const freedMo = getFreedMinimums();
-  let html = `<div style="margin-bottom:8px"><strong>You have ${fmtMoneyExact(amount)}.</strong> Hit these in order:</div>`;
-  let killed = 0;
-  let newlyFreedMo = 0;
-  for (const d of order) {
-    const bal = state.debts[d.id].balance;
-    if (remaining >= bal) {
-      html += `<div class="kill-item">✅ <strong>KILL ${d.name}</strong> - ${fmtMoneyExact(bal)} ${d.urgent ? "(URGENT!)" : ""} <span style="color:var(--sage-dark);font-size:11px">+frees ${fmtMoneyExact(d.monthly)}/mo</span></div>`;
-      remaining -= bal;
-      newlyFreedMo += d.monthly;
-      killed++;
-    } else if (remaining > 10) {
-      html += `<div class="kill-item">💥 Pay <strong>${fmtMoneyExact(remaining)}</strong> toward ${d.name} (${fmtMoneyExact(bal)} balance)</div>`;
-      remaining = 0;
-      break;
-    } else {
-      break;
-    }
-  }
-  if (killed > 0) {
-    html += `<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-weight:700;color:var(--sage-dark)">Kills this round: ${killed} 🔥 · Frees ${fmtMoneyExact(newlyFreedMo)}/mo</div>`;
-  }
-  if (freedMo > 0) {
-    html += `<div style="margin-top:4px;font-size:11px;color:var(--ink-soft)">Total snowball from past kills: ${fmtMoneyExact(freedMo)}/mo freed</div>`;
-  }
-  if (remaining > 10) {
-    html += `<div style="margin-top:6px;font-size:12px;color:var(--ink-soft)">Leftover: ${fmtMoneyExact(remaining)} → bank it for the truck fund or next cycle.</div>`;
-  }
-  return html;
-}
-
-// =============== RENDER ===============
-function render() {
-  renderOverview();
-  renderCycle();
-  renderDebts();
-  renderMilestones();
-}
-
-function renderOverview() {
-  let totalDebt = 0, totalPaid = 0, killed = 0;
-  for (const d of DEBTS) {
-    const s = state.debts[d.id];
-    if (s.killed) {
-      killed++;
-      totalPaid += d.balance;
-    } else {
-      totalDebt += s.balance;
-      totalPaid += (d.balance - s.balance);
-    }
-  }
-  document.getElementById("totalDebtNum").textContent = fmtMoney(totalDebt);
-  document.getElementById("debtsKilled").textContent = `${killed} of ${DEBTS.length}`;
-  document.getElementById("totalPaid").textContent = fmtMoney(totalPaid);
-
-  // Truck savings = sum of all savings entries marked checked
-  let truckSavings = 0;
-  for (const cid in state.cycles) {
-    if (state.cycles[cid].savingsChecked) truckSavings += (parseFloat(state.cycles[cid].savings) || 0);
-  }
-  document.getElementById("truckSavings").textContent = fmtMoney(truckSavings);
-
-  // Cycles left = cycles after current
-  const cyclesLeft = CYCLES.length - state.currentCycle;
-  document.getElementById("cyclesLeft").textContent = cyclesLeft;
-
-  // Snowball - freed monthly minimums
-  const freedMo = getFreedMinimums();
-  const snowballCard = document.getElementById("snowballCard");
-  const snowballText = document.getElementById("snowballText");
-  if (freedMo > 0) {
-    snowballCard.style.display = "block";
-    snowballText.innerHTML = `You've killed ${killed} debt${killed > 1 ? 's' : ''} and freed <strong>${fmtMoneyExact(freedMo)}/month</strong> in minimum payments. That's <strong>${fmtMoneyExact(freedMo/2)}/cycle</strong> extra ammo. Stack it on the next target.`;
-  } else {
-    snowballCard.style.display = "none";
-  }
-
-  // Update recommendation
-  const recVal = parseFloat(document.getElementById("recInput").value) || 0;
-  document.getElementById("recResult").innerHTML = recommend(recVal);
-}
-
-function renderCycle() {
-  const c = CYCLES.find(x => x.id === state.currentCycle);
-  if (!c) return;
-  const cs = state.cycles[c.id];
-
-  document.getElementById("cycleNum").textContent = `Cycle ${c.id}`;
-  document.getElementById("cycleDates").textContent = `${fmtDate(c.startDate)} - ${fmtDate(c.endDate)}, ${c.endDate.getFullYear()}`;
-  document.getElementById("prevCycle").disabled = c.id <= 1;
-  document.getElementById("nextCycle").disabled = c.id >= CYCLES.length;
-
-  // Starting balance - cascades from previous cycle's ending if not manually set
-  let startBal = cs.startBal;
-  if (c.id > 1 && (startBal === 0 || startBal === undefined)) {
-    startBal = computeEndingBalance(c.id - 1);
-  }
-  document.getElementById("startBalDisp").textContent = fmtMoney(startBal);
-  document.getElementById("startBalInput").value = cs.startBal || (c.id > 1 ? computeEndingBalance(c.id - 1).toFixed(2) : "");
-
-  // Income - date-driven, only items that land in this cycle
-  const incomeItems = getIncomeForCycle(c);
-  const incomeRows = document.getElementById("incomeRows");
-  incomeRows.innerHTML = "";
-  let incomeReceived = 0;
-  let incomeTotalPlanned = 0;
-  for (const item of incomeItems) {
-    const amount = (cs.incomeOverrides && cs.incomeOverrides[item.id] !== undefined) ? cs.incomeOverrides[item.id] : item.amount;
-    incomeTotalPlanned += parseFloat(amount) || 0;
-    const checked = cs.incomeChecked.includes(item.id);
-    if (checked) incomeReceived += parseFloat(amount) || 0;
-    const amountHtml = item.editable
-      ? `<input type="number" data-income="${item.id}" value="${amount}" step="0.01">`
-      : fmtMoney(amount);
-    incomeRows.innerHTML += `
-      <div class="row${checked ? ' done' : ''}">
-        <div class="row-check${checked ? ' checked' : ''}" data-incomecheck="${item.id}"></div>
-        <div class="row-name">${item.name}<span class="sub">${item.sub}</span></div>
-        <div class="row-amount">${amountHtml}</div>
-      </div>
-    `;
-  }
-  document.getElementById("totalIncome").textContent = `${fmtMoney(incomeReceived)} / ${fmtMoney(incomeTotalPlanned)}`;
-
-  // Bills for this cycle
-  const bills = getBillsForCycle(c);
-  const billRows = document.getElementById("billRows");
-  billRows.innerHTML = "";
-  // Add food/gas/personal as standing items
-  const foodGas = [
-    { billId: `dog_${c.id}`, name: "Murphy daycare (6 days)", sub: "3x/week @ $35", amount: 210, when: "ongoing" },
-    { billId: `food_${c.id}`, name: "Groceries", sub: "Commissary + Walmart", amount: 200, when: "this cycle" },
-    { billId: `gas_${c.id}`, name: "Gas / EV charging", sub: "", amount: 50, when: "this cycle" },
-    { billId: `personal_${c.id}`, name: "Personal / misc", sub: "Coffee, vape, etc.", amount: 100, when: "this cycle" },
-  ];
-  const allBills = [...bills, ...foodGas];
-  let billsPaid = 0;
-  let billsTotalPlanned = 0;
-  for (const b of allBills) {
-    // Skip if the debt is killed (no need to pay bill for dead debt)
-    const debtIdMap = {
-      "Upstart Michela": "upstart_big", "Octane / Roadrunner": "roadrunner",
-      "Discover minimum": "discover", "Amex minimum": "amex",
-      "Yamaha minimum": "yamaha", "Costco/Cap One minimum": "costco",
-      "Chase 6685 minimum": "chase", "Upstart smaller": "upstart_small",
-      "RevZilla Pay Monthly": "revzilla_klarna",
-      "Affirm - Amazon $1845": "aff_amz_1845", "Affirm - Amazon $3078": "aff_amz_3078",
-      "Affirm - Amazon $804": "aff_amz_804", "Affirm - Amazon $948": "aff_amz_948",
-      "Affirm - RevZilla": "aff_revzilla", "Affirm - Amazon $451": "aff_amz_451",
-      "Affirm - Amazon $902": "aff_amz_902", "Affirm - Amazon $422": "aff_amz_422",
-    };
-    const linkedDebtId = debtIdMap[b.name];
-    if (linkedDebtId && state.debts[linkedDebtId] && state.debts[linkedDebtId].killed) {
-      continue; // skip - debt is dead
-    }
-    billsTotalPlanned += b.amount;
-    const checked = cs.billsChecked.includes(b.billId);
-    if (checked) billsPaid += b.amount;
-    billRows.innerHTML += `
-      <div class="row${checked ? ' done' : ''}">
-        <div class="row-check${checked ? ' checked' : ''}" data-bill="${b.billId}"></div>
-        <div class="row-name">${b.name}<span class="sub">${b.when}${b.sub ? ' · ' + b.sub : ''}</span></div>
-        <div class="row-amount">${fmtMoneyExact(b.amount)}</div>
-      </div>
-    `;
-  }
-  document.getElementById("totalBills").textContent = `${fmtMoney(billsPaid)} / ${fmtMoney(billsTotalPlanned)}`;
-
-  // Debt attack - show suggested kills in priority order
-  const attackRows = document.getElementById("attackRows");
-  attackRows.innerHTML = "";
-  const order = getKillOrder().slice(0, 6); // top 6 priority debts
-  for (const d of order) {
-    const debtState = state.debts[d.id];
-    const attackAmt = cs.attacks[d.id] || 0;
-    const checked = cs.attacksChecked.includes(d.id);
-    attackRows.innerHTML += `
-      <div class="row${checked ? ' done' : ''}">
-        <div class="row-check${checked ? ' checked' : ''}" data-attack="${d.id}"></div>
-        <div class="row-name">${d.name}
-          <span class="sub">Balance: ${fmtMoneyExact(debtState.balance)} · ${d.apr}% APR
-          <span class="phase-badge phase-${d.phase}">P${d.phase}</span></span>
-        </div>
-        <div class="row-amount"><input type="number" data-debt="${d.id}" value="${attackAmt}" step="0.01" placeholder="0"></div>
-      </div>
-    `;
-  }
-
-  // Savings
-  document.getElementById("savingsInput").value = cs.savings;
-  document.getElementById("savingsCheck").className = "row-check" + (cs.savingsChecked ? " checked" : "");
-
-  // Track checked debt attacks
-  let attackPaid = 0;
-  let attackTotalPlanned = 0;
-  for (const debtId in cs.attacks) {
-    const amt = parseFloat(cs.attacks[debtId]) || 0;
-    attackTotalPlanned += amt;
-    if (cs.attacksChecked.includes(debtId)) attackPaid += amt;
-  }
-  document.getElementById("totalAttack").textContent = `${fmtMoney(attackPaid)} / ${fmtMoney(attackTotalPlanned)}`;
-
-  // Savings - includes both savings amount and EF
-  const savingsAmt = parseFloat(cs.savings) || 0;
-  const savingsPaid = cs.savingsChecked ? savingsAmt : 0;
-  document.getElementById("totalSavings").textContent = `${fmtMoney(savingsPaid)} / ${fmtMoney(savingsAmt)}`;
-
-  // LIVE balance = startBal + checked income - checked bills - checked attack - checked savings
-  const liveBalance = startBal + incomeReceived - billsPaid - attackPaid - savingsPaid;
-
-  // PROJECTED end-of-cycle balance = startBal + total planned income - total planned out
-  const projectedEnd = startBal + incomeTotalPlanned - billsTotalPlanned - attackTotalPlanned - savingsAmt;
-
-  // RIGHT NOW big number
-  const liveDollars = Math.floor(Math.abs(liveBalance));
-  const liveCents = Math.round((Math.abs(liveBalance) - liveDollars) * 100);
-  const liveSign = liveBalance < 0 ? "-" : "";
-  document.getElementById("nowAmount").innerHTML =
-    `${liveSign}$${liveDollars.toLocaleString()}<span class="cents">.${String(liveCents).padStart(2, '0')}</span>`;
-  document.getElementById("nowCycleLabel").textContent =
-    `Cycle ${c.id} · ${fmtDate(c.startDate)} - ${fmtDate(c.endDate)}, ${c.endDate.getFullYear()}`;
-
-  // Progress bar based on debt killed
-  let totalOrigDebt = 0, totalRemaining = 0;
-  for (const d of DEBTS) {
-    totalOrigDebt += d.balance;
-    if (!state.debts[d.id].killed) totalRemaining += state.debts[d.id].balance;
-  }
-  const pctKilled = totalOrigDebt > 0 ? ((totalOrigDebt - totalRemaining) / totalOrigDebt) * 100 : 0;
-  document.getElementById("nowProgressBar").style.width = pctKilled.toFixed(0) + "%";
-  document.getElementById("nowProgressLeft").textContent = `Cycle ${c.id} of ${CYCLES.length}`;
-  document.getElementById("nowProgressRight").textContent = `${pctKilled.toFixed(0)}% to debt-free`;
-
-  // Three stats
-  document.getElementById("statIn").textContent = fmtMoney(startBal + incomeReceived);
-  document.getElementById("statOut").textContent = fmtMoney(billsPaid + attackPaid + savingsPaid);
-  document.getElementById("statEnds").textContent = fmtMoney(projectedEnd);
-
-  // Cycle badges
-  const badges = document.getElementById("cycleBadges");
-  badges.innerHTML = "";
-  const today = new Date();
-  if (today >= c.startDate && today <= c.endDate) {
-    badges.innerHTML += `<span class="cyc-badge here">You are here</span>`;
-  }
-  const hasVA = incomeItems.some(i => i.id === "va");
-  if (hasVA) badges.innerHTML += `<span class="cyc-badge va">VA payday</span>`;
-  // Kill day if any debt is scheduled to die based on attacks
-  const debtsKillingThisCycle = Object.keys(cs.attacks).filter(did => {
-    const amt = parseFloat(cs.attacks[did]) || 0;
-    return state.debts[did] && !state.debts[did].killed && amt >= state.debts[did].balance - 0.01 && amt > 0;
-  });
-  if (debtsKillingThisCycle.length > 0) {
-    badges.innerHTML += `<span class="cyc-badge kill">Kill day · ${debtsKillingThisCycle.length}</span>`;
-  }
-
-  // Motivational banner
-  const banner = document.getElementById("motivBanner");
-  const freedThisCycle = getFreedMinimums() / 2;
-  let bannerText = "";
-  if (debtsKillingThisCycle.length >= 3) {
-    bannerText = `<b>Big cycle.</b> ${debtsKillingThisCycle.length} debts dying. Keep showing up. 🔥`;
-  } else if (debtsKillingThisCycle.length >= 1) {
-    bannerText = `<b>Strong cycle.</b> ${debtsKillingThisCycle.length} debt${debtsKillingThisCycle.length > 1 ? 's' : ''} going down this cycle. 💪`;
-  } else if (hasVA) {
-    bannerText = `<b>Fat paycheck cycle.</b> VA + GI Bill + CDL all hit. Plan your kills.`;
-  } else if (projectedEnd < 200) {
-    bannerText = `<b>Tight cycle.</b> Below the $200 buffer. Stay disciplined.`;
-  } else {
-    bannerText = `Steady cycle. Knock out the bills and keep the snowball rolling.`;
-  }
-  if (freedThisCycle >= 50) {
-    bannerText += `<br><span style="font-size:11px;color:var(--warn)">🔥 Snowball: +${fmtMoneyExact(freedThisCycle)}/cycle freed from dead debts</span>`;
-  }
-  banner.innerHTML = `<div class="banner">${bannerText}</div>`;
-
-  const warn = document.getElementById("bufferWarn");
-  if (projectedEnd < 200) {
-    warn.innerHTML = `<div class="warning-banner">⚠️ Below $200 buffer. Cut some attack or savings.</div>`;
-  } else {
-    warn.innerHTML = "";
-  }
-
-  // Bottom summary
-  document.getElementById("sumIncome").textContent = fmtMoney(incomeTotalPlanned);
-  document.getElementById("sumBills").textContent = fmtMoney(billsTotalPlanned);
-  document.getElementById("sumAttack").textContent = fmtMoney(attackTotalPlanned);
-  document.getElementById("sumSavings").textContent = fmtMoney(savingsAmt);
-  document.getElementById("endBalance").textContent = fmtMoney(projectedEnd);
-}
-
-function computeEndingBalance(cycleId) {
-  if (cycleId < 1) return 0;
-  let bal = 0;
-  for (let i = 1; i <= cycleId; i++) {
-    const c = CYCLES.find(x => x.id === i);
-    const cs = state.cycles[i];
-    if (!c || !cs) continue;
-    let startBal;
-    if (i === 1) {
-      startBal = parseFloat(cs.startBal) || 0;
-    } else if (cs.startBal && cs.startBal !== 0) {
-      startBal = parseFloat(cs.startBal);
-    } else {
-      startBal = bal;
-    }
-    const bills = getBillsForCycle(c);
-    const foodGas = [{ amount: 210 }, { amount: 200 }, { amount: 50 }, { amount: 100 }];
-    const billsTotal = [...bills, ...foodGas].reduce((s, b) => s + b.amount, 0);
-    const attackTotal = Object.values(cs.attacks).reduce((s, a) => s + (parseFloat(a) || 0), 0);
-    // Date-driven income
-    const incomeItems = getIncomeForCycle(c);
-    const incomeTotal = incomeItems.reduce((s, item) => {
-      const amt = (cs.incomeOverrides && cs.incomeOverrides[item.id] !== undefined) ? cs.incomeOverrides[item.id] : item.amount;
-      return s + (parseFloat(amt) || 0);
-    }, 0);
-    const savings = parseFloat(cs.savings) || 0;
-    bal = startBal + incomeTotal - billsTotal - attackTotal - savings;
-  }
-  return bal;
-}
-
-function renderDebts() {
-  const list = document.getElementById("debtList");
-  list.innerHTML = "";
-  const order = [...DEBTS].sort((a, b) => a.killOrder - b.killOrder);
-  let active = 0;
-  for (const d of order) {
-    const s = state.debts[d.id];
-    if (!s.killed) active++;
-    const pctPaid = ((d.balance - s.balance) / d.balance) * 100;
-    list.innerHTML += `
-      <div class="debt-item${s.killed ? ' dead' : ''}" data-killdebt="${d.id}">
-        <div class="debt-head">
-          <div>
-            <div class="debt-name">${d.name}${d.urgent && !s.killed ? ' ⚠️' : ''}</div>
-            <div class="debt-meta">${d.apr}% APR · $${d.monthly}/mo min <span class="phase-badge phase-${d.phase}">P${d.phase}</span></div>
-          </div>
-          <div class="debt-balance">${fmtMoneyExact(s.balance)}</div>
-        </div>
-        <div class="debt-bar">
-          <div class="debt-bar-fill${d.urgent ? ' urgent' : ''}" style="width:${Math.min(100, pctPaid)}%"></div>
-        </div>
-      </div>
-    `;
-  }
-  document.getElementById("activeCount").textContent = `${active} active`;
-}
-
-function renderMilestones() {
-  const milestones = [
-    { goal: "Kill first Affirm (RevZilla $336)", target: 1, icon: "🎯" },
-    { goal: "All 4 small Affirms dead", target: 4, icon: "🔥" },
-    { goal: "Amex paid off (no more overdue stress)", target: 5, icon: "💳" },
-    { goal: "All credit cards dead", target: 9, icon: "✂️" },
-    { goal: "Both Upstart loans gone", target: 10, icon: "🚀" },
-    { goal: "Truck fund hits $2,000", target: null, icon: "🛻", custom: () => {
-      let s = 0;
-      for (const cid in state.cycles) {
-        if (state.cycles[cid].savingsChecked) s += parseFloat(state.cycles[cid].savings) || 0;
+// Assign each CDL payday to a cycle-month using the count rule:
+// checks belong to the month they fall in, EXCEPT a 3rd+ check landing in the
+// last 4 days of a month rolls into the next month (the new VA cycle).
+function cdlForCycle(cycleStart, cycleEnd){
+  // gather candidate CDL days from a wide window around this month
+  const wideFrom=new Date(cycleStart);wideFrom.setDate(wideFrom.getDate()-6);
+  const wideTo=new Date(cycleEnd);wideTo.setDate(wideTo.getDate()+6);
+  const all=cdlDaysIn(new Date(2026,0,1), new Date(2027,11,31));
+  // build month assignment for every check
+  const assign=new Map();
+  // group by calendar month first
+  const byMonth={};
+  all.forEach(d=>{const k=d.getFullYear()+"-"+d.getMonth();(byMonth[k]=byMonth[k]||[]).push(new Date(d));});
+  Object.values(byMonth).forEach(list=>{
+    list.sort((a,b)=>a-b);
+    list.forEach((d,i)=>{
+      let owner=new Date(d.getFullYear(),d.getMonth(),1); // default: its own month
+      // 3rd+ check (index>=2) within last 4 days of month -> next month
+      const lastOfMonth=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+      if(i>=2 && (lastOfMonth-d.getDate())<=4){
+        owner=new Date(d.getFullYear(),d.getMonth()+1,1);
       }
-      return s >= 2000;
-    }},
-    { goal: "Truck fund hits $4,000", target: null, icon: "🛻", custom: () => {
-      let s = 0;
-      for (const cid in state.cycles) {
-        if (state.cycles[cid].savingsChecked) s += parseFloat(state.cycles[cid].savings) || 0;
-      }
-      return s >= 4000;
-    }},
-    { goal: "Truck fund hits $8,000 (READY TO LAUNCH)", target: null, icon: "🏕️", custom: () => {
-      let s = 0;
-      for (const cid in state.cycles) {
-        if (state.cycles[cid].savingsChecked) s += parseFloat(state.cycles[cid].savings) || 0;
-      }
-      return s >= 8000;
-    }},
-    { goal: "All unsecured debt killed", target: 17, icon: "🏆" },
-    { goal: "Hyundai lease ends - truck day (Sept 27, 2027)", target: null, icon: "🎉", custom: () => false },
-  ];
-  const killed = DEBTS.filter(d => state.debts[d.id].killed).length;
-  const list = document.getElementById("milestoneList");
-  list.innerHTML = "";
-  for (const m of milestones) {
-    const hit = m.custom ? m.custom() : (m.target && killed >= m.target);
-    list.innerHTML += `
-      <div class="milestone">
-        <div class="milestone-icon${hit ? ' hit' : ''}">${m.icon}</div>
-        <div>
-          <div class="milestone-title">${m.goal}</div>
-          <div class="milestone-sub">${hit ? '✅ HIT' : 'Pending'}</div>
-        </div>
-      </div>
-    `;
-  }
-}
-
-// =============== EVENT HANDLERS ===============
-function bind() {
-  // Tabs
-  document.querySelectorAll(".tab").forEach(t => {
-    t.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
-      document.querySelectorAll(".tab-content").forEach(x => x.classList.remove("active"));
-      t.classList.add("active");
-      document.getElementById("tab-" + t.dataset.tab).classList.add("active");
+      assign.set(+d, owner);
     });
   });
-  // Strategy
-  document.querySelectorAll(".strat-btn").forEach(b => {
-    b.addEventListener("click", () => {
-      document.querySelectorAll(".strat-btn").forEach(x => x.classList.remove("active"));
-      b.classList.add("active");
-      state.strategy = b.dataset.strat;
-      // Update explanation
-      document.getElementById("stratExplain").innerHTML = STRAT_TEXT[state.strategy];
-      // Update savings default for current + future cycles (only ones not manually changed)
-      const newSavings = getStrategySavings();
-      const today = new Date();
-      for (const c of CYCLES) {
-        if (c.endDate < today) continue; // skip past cycles
-        const cs = state.cycles[c.id];
-        if (!cs._savingsTouched) {
-          cs.savings = newSavings;
-        }
-      }
-      saveState();
-      render();
-    });
-  });
-  // Cycle nav
-  document.getElementById("prevCycle").addEventListener("click", () => {
-    if (state.currentCycle > 1) {
-      state.currentCycle--;
-      saveState();
-      renderCycle();
+  // this cycle owns checks whose owner-month === cycleStart's month
+  const mine=[];
+  all.forEach(d=>{
+    const owner=assign.get(+d);
+    if(owner && owner.getFullYear()===cycleStart.getFullYear() && owner.getMonth()===cycleStart.getMonth()){
+      mine.push(new Date(d));
     }
   });
-  document.getElementById("nextCycle").addEventListener("click", () => {
-    if (state.currentCycle < CYCLES.length) {
-      state.currentCycle++;
-      saveState();
-      renderCycle();
-    }
-  });
-  // Recommendation input
-  document.getElementById("recInput").addEventListener("input", (e) => {
-    document.getElementById("recResult").innerHTML = recommend(parseFloat(e.target.value));
-  });
-  // Reset
-  document.getElementById("resetBtn").addEventListener("click", () => {
-    if (confirm("Wipe all data and start fresh? This cannot be undone.")) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  });
-  // Delegated cycle handlers
-  document.getElementById("tab-cycle").addEventListener("input", (e) => {
-    const cs = state.cycles[state.currentCycle];
-    if (e.target.id === "startBalInput") {
-      cs.startBal = parseFloat(e.target.value) || 0;
-    } else if (e.target.dataset.income) {
-      if (!cs.incomeOverrides) cs.incomeOverrides = {};
-      cs.incomeOverrides[e.target.dataset.income] = parseFloat(e.target.value) || 0;
-    } else if (e.target.dataset.debt) {
-      cs.attacks[e.target.dataset.debt] = parseFloat(e.target.value) || 0;
-    } else if (e.target.id === "savingsInput") {
-      cs.savings = parseFloat(e.target.value) || 0;
-      cs._savingsTouched = true;
-    }
-    saveState();
-    renderCycle();
-    renderOverview();
-  });
-  document.getElementById("tab-cycle").addEventListener("click", (e) => {
-    const cs = state.cycles[state.currentCycle];
-    if (e.target.dataset.incomecheck) {
-      const id = e.target.dataset.incomecheck;
-      const idx = cs.incomeChecked.indexOf(id);
-      if (idx > -1) cs.incomeChecked.splice(idx, 1);
-      else cs.incomeChecked.push(id);
-      saveState();
-      renderCycle();
-    } else if (e.target.dataset.bill) {
-      const id = e.target.dataset.bill;
-      const idx = cs.billsChecked.indexOf(id);
-      if (idx > -1) cs.billsChecked.splice(idx, 1);
-      else cs.billsChecked.push(id);
-      saveState();
-      renderCycle();
-    } else if (e.target.dataset.attack) {
-      const id = e.target.dataset.attack;
-      const idx = cs.attacksChecked.indexOf(id);
-      if (idx > -1) {
-        cs.attacksChecked.splice(idx, 1);
-        // Restore balance
-        state.debts[id].balance += (parseFloat(cs.attacks[id]) || 0);
-      } else {
-        cs.attacksChecked.push(id);
-        // Deduct from balance
-        const amt = parseFloat(cs.attacks[id]) || 0;
-        state.debts[id].balance = Math.max(0, state.debts[id].balance - amt);
-        if (state.debts[id].balance <= 0.01) {
-          state.debts[id].killed = true;
-          state.debts[id].killedCycle = state.currentCycle;
-        }
-      }
-      saveState();
-      render();
-    } else if (e.target.id === "savingsCheck") {
-      cs.savingsChecked = !cs.savingsChecked;
-      saveState();
-      render();
-    }
-  });
-  // Debt list - tap to mark killed (or revive)
-  document.getElementById("debtList").addEventListener("click", (e) => {
-    const item = e.target.closest(".debt-item");
-    if (!item) return;
-    const id = item.dataset.killdebt;
-    const orig = DEBTS.find(d => d.id === id);
-    if (state.debts[id].killed) {
-      if (confirm(`Revive ${orig.name}? Balance returns to ${fmtMoneyExact(orig.balance)}.`)) {
-        state.debts[id].killed = false;
-        state.debts[id].killedCycle = null;
-        state.debts[id].balance = orig.balance;
-        saveState();
-        render();
-      }
-    } else {
-      if (confirm(`Mark ${orig.name} as KILLED? (${fmtMoneyExact(state.debts[id].balance)} balance set to $0)`)) {
-        state.debts[id].killed = true;
-        state.debts[id].balance = 0;
-        state.debts[id].killedCycle = state.currentCycle;
-        saveState();
-        render();
-      }
-    }
-  });
+  mine.sort((a,b)=>a-b);
+  return mine;
 }
 
-// =============== INIT ===============
-initState();
-const hadSaved = loadState();
-// Auto-jump to current cycle on first load (or if currentCycle wasn't set)
-if (!hadSaved || !state.currentCycle || state.currentCycle === 1) {
-  const today = new Date();
-  for (const c of CYCLES) {
-    if (today >= c.startDate && today <= c.endDate) {
-      state.currentCycle = c.id;
-      break;
+function cycleData(c){
+  // cycle c starts on the 1st of (FIRST_CYCLE month + c), ends last day of that month
+  const start=new Date(FIRST_CYCLE.getFullYear(), FIRST_CYCLE.getMonth()+c, 1);
+  const end=new Date(start.getFullYear(), start.getMonth()+1, 0); // last day of month
+
+  const income=[{name:"VA (disability + education)",amt:VA,date:new Date(start),est:true}];
+  cdlForCycle(start,end).forEach(d=>{
+    income.push({name:"CDL paycheck",amt:CDL,date:new Date(d),est:true});
+  });
+
+  const bills=[];
+  BILLS.forEach(b=>{
+    if(b.weekly){
+      // weekly: every 7 days across the month, starting on the 3rd (first food hit)
+      let dd=new Date(start.getFullYear(),start.getMonth(),3);
+      while(dd<=end){
+        if(!(b.end&&dd>b.end))bills.push({name:b.name,amt:b.amt,date:new Date(dd),est:b.est});
+        dd=new Date(dd);dd.setDate(dd.getDate()+7);
+      }
+      return;
     }
+    if(b.perCycle){
+      const dd=new Date(start.getFullYear(),start.getMonth(),10);
+      if(!(b.end&&dd>b.end))bills.push({name:b.name,amt:b.amt,date:dd,est:b.est});
+      return;
+    }
+    const dd=new Date(start.getFullYear(),start.getMonth(),Math.min(b.day,end.getDate()));
+    if(!(b.end&&dd>b.end))bills.push({name:b.name,amt:b.amt,date:dd,est:b.est});
+  });
+  // VA always leads the cycle; other income (incl. a rolled-in end-of-prev-month CDL) sorts after
+  const va=income.filter(x=>/VA/.test(x.name));
+  const rest=income.filter(x=>!/VA/.test(x.name)).sort((a,b)=>a.date-b.date);
+  const orderedIncome=va.concat(rest);
+  bills.sort((a,b)=>a.date-b.date);
+  return {start,end,income:orderedIncome,bills};
+}
+
+
+function build(preserveOpen){
+  const now=new Date();now.setHours(0,0,0,0);
+  const opensPrev=preserveOpen?[...document.querySelectorAll('#cycles .cycle')].map(c=>c.classList.contains('open')):null;
+  const wrap=document.getElementById("cycles");
+  wrap.innerHTML="";
+  let carry=startBal;
+  for(let c=0;c<CYCLES;c++){
+    const {start,end,income,bills}=cycleData(c);
+    const isHere=(now>=start&&now<=end)||(c===0&&now<start);
+    const incTot=income.reduce((s,x)=>s+x.amt,0);
+    const billTot=bills.reduce((s,x)=>s+x.amt,0);
+    const incGot=income.filter(x=>done["inc|"+key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
+    const billPaid=bills.filter(x=>done["bill|"+key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
+    const running=carry+incGot-billPaid;
+    const el=document.createElement("div");
+    el.className="cycle"+(isHere?" here open":"");
+    el.innerHTML=`
+      <div class="chead" onclick="this.parentNode.classList.toggle('open')">
+        <div><div class="cnum">${MON[start.getMonth()]} ${start.getFullYear()}</div><div class="cdate">${fmt(start)} – ${fmt(end)}</div></div>
+        ${isHere?'<span class="here-tag">You are here</span>':''}
+        <div class="cleft"><div class="lbl">Balance now</div><div class="amt ${running<0?'neg':''}">${money(running)}</div></div>
+        <span class="chev">▶</span>
+      </div>
+      <div class="cbody">
+        <div class="carry"><span>Started this cycle with</span><span class="v">${money(carry)}</span></div>
+        <div class="grp">
+          <div class="grp-h"><span>Money in — tap when it lands</span><span class="rt">${money(incTot)} total</span></div>
+          ${(()=>{const cdls=income.filter(x=>/CDL/.test(x.name)).sort((a,b)=>a.date-b.date);const split=cdls.length>1?cdls[1].date:null;let out="";let drawn=false;income.forEach(x=>{const k="inc|"+key(x.date)+"|"+x.name;if(split&&!drawn&&x.date>=split){out+=`<div class="halfline"><span class="lab">2nd half · from ${fmt(split)}</span><span class="rule"></span></div>`;drawn=true;}out+=`<div class="line ${done[k]?'done':''}"><span class="day">${ord(x.date.getDate())}</span><span class="box ginc ${done[k]?'on ginc':''}" onclick="toggle('${k}')"></span><span class="nm" onclick="toggle('${k}')">${x.name}${x.est?'<span class="est">est</span>':''}</span><span class="vl in">+${money(x.amt)}</span></div>`;});return out;})()}
+        </div>
+        <div class="grp">
+          <div class="grp-h"><span>Bills — tap when you pay</span><span class="rt">${money(billTot)} total</span></div>
+          ${bills.length?(()=>{const cdls=income.filter(x=>/CDL/.test(x.name)).sort((a,b)=>a.date-b.date);const split=cdls.length>1?cdls[1].date:null;let out="";let drawn=false;bills.forEach(x=>{const k="bill|"+key(x.date)+"|"+x.name;if(split&&!drawn&&x.date>=split){out+=`<div class="halfline"><span class="lab">2nd half · from ${fmt(split)}</span><span class="rule"></span></div>`;drawn=true;}out+=`<div class="line ${done[k]?'done':''}"><span class="day">${ord(x.date.getDate())}</span><span class="box ${done[k]?'on':''}" onclick="toggle('${k}')"></span><span class="nm" onclick="toggle('${k}')">${x.name}${x.est?'<span class="est">est</span>':''}</span><span class="vl">${money(x.amt)}</span></div>`;});return out;})():'<div class="line"><span class="nm" style="color:var(--muted)">No bills this window</span></div>'}
+        </div>
+        <div class="bigleft"><span class="k">Balance now</span><span class="v ${running<0?'neg':''}">${money(running)}</span></div>
+        <div class="subnote">Started with ${money(carry)}. Received ${money(incGot)} of ${money(incTot)} income, paid ${money(billPaid)} of ${money(billTot)} bills. Check everything and this cycle lands at ${money(carry+incTot-billTot)}.</div>
+      </div>`;
+    wrap.appendChild(el);
+    carry=running;
   }
+  if(opensPrev){document.querySelectorAll('#cycles .cycle').forEach((c,i)=>{if(opensPrev[i])c.classList.add('open');else c.classList.remove('open');});}
 }
-bind();
-// Sync strategy UI on load
-document.querySelectorAll(".strat-btn").forEach(x => x.classList.remove("active"));
-const activeBtn = document.querySelector(`.strat-btn[data-strat="${state.strategy}"]`);
-if (activeBtn) activeBtn.classList.add("active");
-if (STRAT_TEXT[state.strategy]) {
-  document.getElementById("stratExplain").innerHTML = STRAT_TEXT[state.strategy];
+
+function runWhatif(){
+  const amt=parseFloat(document.getElementById("wfAmt").value)||0;
+  const name=document.getElementById("wfName").value.trim()||"that";
+  const vEl=document.getElementById("wfVerdict");
+  const rEl=document.getElementById("wfRipple");
+  if(amt<=0){
+    vEl.className="wf-verdict idle";
+    vEl.innerHTML=`<div class="wf-sub">Enter an amount to see if you can spend it right now without missing a bill this cycle.</div>`;
+    rEl.innerHTML="";return;
+  }
+
+  // Which cycle are we in right now?
+  const now=new Date();now.setHours(0,0,0,0);
+  let curr=0;
+  for(let c=0;c<CYCLES;c++){
+    const {start,end}=cycleData(c);
+    if((now>=start&&now<=end)||(c===0&&now<start)){curr=c;break;}
+    if(c===CYCLES-1)curr=CYCLES-1;
+  }
+
+  // Balance right now = startBal + income received (checked) - bills paid (checked), all cycles up to & incl current.
+  // Then hold back only the UNPAID bills left in THIS cycle.
+  let received=0, billsPaid=0;
+  for(let c=0;c<=curr;c++){
+    const {income,bills}=cycleData(c);
+    income.forEach(x=>{if(done["inc|"+key(x.date)+"|"+x.name])received+=x.amt;});
+    bills.forEach(x=>{if(done["bill|"+key(x.date)+"|"+x.name])billsPaid+=x.amt;});
+  }
+  const balanceNow = startBal + received - billsPaid;
+
+  // Unpaid bills remaining in the current cycle only
+  const {bills:currBills}=cycleData(curr);
+  const owedThisCycle = currBills
+    .filter(x=>!done["bill|"+key(x.date)+"|"+x.name])
+    .reduce((s,x)=>s+x.amt,0);
+
+  const spendable = balanceNow - owedThisCycle;
+  const afterBuy = spendable - amt;
+  const canAfford = afterBuy >= 0;
+
+  vEl.className="wf-verdict "+(canAfford?"yes":"no");
+  vEl.innerHTML=`
+    <div class="wf-big ${canAfford?'yes':'no'}">${canAfford?"Yes — go ahead":"No — can't right now"}</div>
+    <div class="wf-sub">
+      You have ${money(balanceNow)} right now. You still owe ${money(owedThisCycle)} in bills this cycle, leaving ${money(spendable)} free to spend.
+      ${canAfford
+        ? `Buying ${name} for ${money0(amt)} leaves ${money(afterBuy)} spare.`
+        : `Buying ${name} for ${money0(amt)} would put you ${money(afterBuy)} short on this cycle's bills.`}
+    </div>`;
+  rEl.innerHTML="";
 }
-render();
+
+function buildPayoff(){
+  const v=document.getElementById("payoffView");
+  const totalBal=DEBTS.reduce((s,d)=>s+d.bal,0);
+  const totalPay=DEBTS.reduce((s,d)=>s+d.pay,0);
+  let html=`<div class="payoff-intro">Your total debt is <b>${money(totalBal)}</b> across these accounts. Right now you pay about <b>${money(totalPay)}/mo</b> combined. The order below puts the smallest balance first for a quick win, then works up. Turn any surplus from a good cycle toward the top of this list.</div>`;
+  const sorted=[...DEBTS].sort((a,b)=>a.bal-b.bal);
+  const maxBal=Math.max(...DEBTS.map(d=>d.bal));
+  sorted.forEach((d,i)=>{
+    html+=`<div class="debt">
+      <div class="top"><span class="dn">${i+1}. ${d.name}</span><span class="db">${money(d.bal)}</span></div>
+      <div class="meta">Paying ${money(d.pay)}/mo · ${d.apr}</div>
+      <div class="bar"><i style="width:${Math.round(d.bal/maxBal*100)}%"></i></div>
+    </div>`;
+  });
+  html+=`<div class="note">A view, not a plan locked to your cycles yet. When you want, I can wire it so paying a debt off rolls its payment onto the next target.</div>`;
+  v.innerHTML=html;
+}
+
+function toggle(k){done[k]=!done[k];persist();build(true);}
+function resetAll(){done={};persist();build(true);}
+load();
 </script>
 </body>
 </html>
