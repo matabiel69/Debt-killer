@@ -191,11 +191,11 @@ const key=d=>d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
 let done={};
 let startBal=0;
 async function load(){
-  try{const r=await window.storage.get("biweekly_v8");if(r&&r.value){const d=JSON.parse(r.value);done=d.done||{};startBal=d.startBal||0;}}catch(e){}
+  try{const raw=localStorage.getItem("biweekly_v8");if(raw){const d=JSON.parse(raw);done=d.done||{};startBal=d.startBal||0;}}catch(e){}
   document.getElementById("startBal").value=startBal?startBal:"";
   build();buildPayoff();
 }
-async function persist(){try{await window.storage.set("biweekly_v8",JSON.stringify({done,startBal}));}catch(e){}}
+async function persist(){try{localStorage.setItem("biweekly_v8",JSON.stringify({done,startBal}));}catch(e){}}
 
 document.getElementById("startBal").addEventListener("input",e=>{startBal=parseFloat(e.target.value)||0;persist();build(true);runWhatif();});
 document.getElementById("wfAmt").addEventListener("input",runWhatif);
