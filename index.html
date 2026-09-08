@@ -62,6 +62,15 @@
   .wi-out{margin-top:10px;font-size:15px;font-weight:700;}
   .wi-out.ok{color:var(--green);}
   .wi-out.no{color:var(--red);}
+  .carryrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;}
+  .carry-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .carry-in-wrap{font-size:16px;font-weight:800;color:var(--ink);}
+  .carry-in{width:80px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;font-family:inherit;color:var(--ink);background:#fff;}
+  .runbal{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:12px 14px;background:var(--green);border-radius:12px;}
+  .runbal .rb-k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#e9f0e9;font-weight:700;}
+  .runbal .rb-v{font-size:24px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;}
+  .runbal .rb-v.neg{color:#ffd9d3;}
+  .rb-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;}
 </style>
 </head>
 <body>
@@ -129,11 +138,12 @@ const store={
 
 let paid={};
 let eduAmt=VA_EDUCATION;
+let carry={};   // per-month carryover from last month, keyed by "YYYY-M"
 async function load(){
-  try{const r=await store.get("biweekly_v5");if(r&&r.value){const d=JSON.parse(r.value);paid=d.paid||{};if(d.eduAmt!=null)eduAmt=d.eduAmt;}}catch(e){}
+  try{const r=await store.get("biweekly_v6");if(r&&r.value){const d=JSON.parse(r.value);paid=d.paid||{};if(d.eduAmt!=null)eduAmt=d.eduAmt;carry=d.carry||{};}}catch(e){}
   build();
 }
-async function persist(){try{await store.set("biweekly_v5",JSON.stringify({paid,eduAmt}));}catch(e){}}
+async function persist(){try{await store.set("biweekly_v6",JSON.stringify({paid,eduAmt,carry}));}catch(e){}}
 
 // biweekly CDL paydays (Fridays), reference Aug 21 2026
 const CDL_REF=new Date(2026,7,21);
@@ -188,7 +198,12 @@ function build(){
     const inTot=income.reduce((s,x)=>s+x.amt,0);
     const outTot=bills.reduce((s,x)=>s+x.amt,0);
     const paidTot=bills.filter(x=>paid[key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
-    const left=inTot-outTot;
+    const mkey=start.getFullYear()+"-"+start.getMonth();
+    const carryAmt=parseFloat(carry[mkey])||0;
+    // running balance: what you have right now = carryover + income - payments already checked off
+    const running=carryAmt+inTot-paidTot;
+    // projected leftover once everything is paid
+    const left=carryAmt+inTot-outTot;
 
     const el=document.createElement("div");
     el.className="cycle"+(isHere?" here open":"");
@@ -199,10 +214,14 @@ function build(){
           <div class="cdate">${MON[start.getMonth()]} ${start.getFullYear()}</div>
         </div>
         ${isHere?'<span class="here-tag">You are here</span>':''}
-        <div class="cleft"><div class="lbl">Left over</div><div class="amt ${left<0?'neg':''}">${money(left)}</div></div>
+        <div class="cleft"><div class="lbl">Money left now</div><div class="amt ${running<0?'neg':''}">${money(running)}</div></div>
         <span class="chev">▶</span>
       </div>
       <div class="cbody">
+        <div class="carryrow">
+          <span class="carry-lbl">Left over from last month</span>
+          <span class="carry-in-wrap">$<input class="carry-in" type="number" inputmode="decimal" placeholder="0" value="${carry[mkey]!=null?carry[mkey]:''}" data-mkey="${mkey}" onchange="setCarry(this)" /></span>
+        </div>
         <div class="grp">
           <div class="grp-h">Money in</div>
           ${income.map(x=>{
@@ -230,9 +249,14 @@ function build(){
             return h;
           })()}
         </div>
-        <div class="csum"><span class="k">In</span><span class="v">${money(inTot)}</span></div>
-        <div class="csum" style="border:none;padding-top:4px"><span class="k">Payments</span><span class="v">${money(outTot)}</span></div>
-        ${paidTot>0?`<div class="paidrun">${money(paidTot)} paid · ${money(outTot-paidTot)} still to pay</div>`:''}
+        <div class="csum"><span class="k">Carryover + income</span><span class="v">${money(carryAmt+inTot)}</span></div>
+        <div class="csum" style="border:none;padding-top:4px"><span class="k">Payments (total)</span><span class="v">${money(outTot)}</span></div>
+        ${paidTot>0?`<div class="paidrun">${money(paidTot)} paid so far · ${money(outTot-paidTot)} still to pay</div>`:''}
+        <div class="runbal">
+          <span class="rb-k">Money left right now</span>
+          <span class="rb-v ${running<0?'neg':''}">${money(running)}</span>
+        </div>
+        <div class="rb-note">Drops as you check off each payment. Once all are paid: ${money(left)} left.</div>
         <div class="whatif">
           <div class="wi-h">What if I spend&hellip;</div>
           <div class="wi-row">
@@ -269,6 +293,11 @@ function whatIf(el){
     out.className="wi-out no";
     out.textContent="No — you'd be "+m(after)+" short this month.";
   }
+}
+function setCarry(el){const mk=el.getAttribute("data-mkey");const v=el.value.trim();if(v==="")delete carry[mk];else carry[mk]=parseFloat(v)||0;persist();
+  const opens=[...document.querySelectorAll('.cycle')].map(c=>c.classList.contains('open'));
+  build();
+  document.querySelectorAll('.cycle').forEach((c,i)=>{if(opens[i])c.classList.add('open');else c.classList.remove('open');});
 }
 function resetAll(){paid={};persist();build();}
 load();
