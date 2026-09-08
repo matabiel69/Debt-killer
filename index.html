@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Biweekly</title>
+<title>Payments</title>
 <style>
   :root{
     --ink:#14150f;--paper:#f4f1e8;--card:#fbf9f2;--line:#ded8c7;
-    --green:#3a5a40;--gold:#b0842a;--muted:#7c786c;--check:#3a5a40;--copper:#c9772f;--dim:#9a9686;--red:#a23b3b;
+    --green:#3a5a40;--gold:#b0842a;--muted:#7c786c;--check:#3a5a40;--copper:#c9772f;--red:#a3402f;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;}
@@ -17,9 +17,6 @@
   header{padding:24px 2px 14px;}
   .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;}
   h1{font-family:"SF Pro Display",-apple-system,sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:3px;}
-  .tabs{display:flex;gap:8px;margin:14px 0 16px;}
-  .tab{flex:1;text-align:center;padding:11px 6px;border:1.5px solid var(--line);border-radius:11px;background:var(--card);font-size:13px;font-weight:700;color:var(--muted);}
-  .tab.on{border-color:var(--ink);color:var(--ink);background:#fff;}
   .cycle{border:1px solid var(--line);border-radius:16px;margin-bottom:14px;background:var(--card);overflow:hidden;}
   .cycle.here{border:1.5px solid var(--copper);}
   .chead{padding:16px 18px;display:flex;align-items:center;gap:12px;}
@@ -28,392 +25,252 @@
   .here-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--copper);padding:3px 8px;border-radius:99px;}
   .cleft{margin-left:auto;text-align:right;}
   .cleft .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;}
-  .cleft .amt{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink);}
-  .cleft .amt.neg{color:var(--copper);}
+  .cleft .amt{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green);}
+  .cleft .amt.neg{color:var(--red);}
   .chev{color:var(--muted);font-size:14px;margin-left:4px;transition:transform .2s;}
   .cycle.open .chev{transform:rotate(90deg);}
   .cbody{display:none;padding:0 18px 8px;}
   .cycle.open .cbody{display:block;}
   .grp{margin-top:6px;}
-  .grp-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 0 4px;border-top:1px solid var(--line);display:flex;justify-content:space-between;}
-  .grp-h .rt{color:var(--dim);letter-spacing:0;text-transform:none;}
+  .grp-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 0 4px;border-top:1px solid var(--line);}
   .line{display:flex;align-items:center;gap:11px;padding:10px 0;}
   .day{font-size:12px;font-weight:700;color:var(--muted);width:42px;flex-shrink:0;font-variant-numeric:tabular-nums;}
   .line .nm{flex:1;font-size:15px;font-weight:600;}
-  .line .nm .est{font-size:11px;color:var(--dim);font-weight:600;margin-left:5px;}
   .line .vl{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;}
   .vl.in{color:var(--green);}
   .box{width:24px;height:24px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff;}
   .box.on{background:var(--check);border-color:var(--check);}
-  .box.on.ginc{background:var(--gold);border-color:var(--gold);}
   .box.on::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px);}
-  .line.done .nm{text-decoration:line-through;color:var(--muted);}
-  .line.done .vl{color:var(--muted);}
-  .line.done .vl.in{color:var(--green);}
-  .carry{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;color:var(--muted);}
-  .carry .v{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);}
-  .bigleft{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 4px;font-size:15px;border-top:1.5px solid var(--ink);margin-top:8px;}
-  .bigleft .k{color:var(--ink);font-weight:800;}
-  .bigleft .v{font-weight:800;font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;}
-  .bigleft .v.neg{color:var(--copper);}
-  .subnote{font-size:11px;color:var(--dim);padding-bottom:8px;line-height:1.5;}
-  .halfline{display:flex;align-items:center;gap:10px;padding:6px 0 4px;margin-top:4px;}
-  .halfline .rule{flex:1;height:0;border-top:1.5px dashed var(--copper);opacity:.55;}
-  .halfline .lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:700;white-space:nowrap;}
+  .line.paid .nm{text-decoration:line-through;color:var(--muted);}
+  .line.paid .vl{color:var(--muted);}
+  .csum{display:flex;justify-content:space-between;padding:13px 0 6px;border-top:1.5px solid var(--ink);margin-top:6px;font-size:13px;}
+  .csum .k{color:var(--muted);font-weight:600;}
+  .csum .v{font-weight:700;font-variant-numeric:tabular-nums;}
+  .paidrun{font-size:12px;color:var(--green);font-weight:600;padding-bottom:8px;}
   .reset{width:100%;background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;margin-top:18px;padding:10px;text-decoration:underline;}
   .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;padding:0 10px;}
-  .startbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-  .startbox label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;flex:1;}
-  .startbox input{width:120px;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px;font-size:16px;font-weight:700;font-family:inherit;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);}
-  .startbox input:focus{outline:none;border-color:var(--ink);}
-  .debt{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:16px 18px;margin-bottom:12px;}
-  .debt .top{display:flex;justify-content:space-between;align-items:baseline;}
-  .debt .dn{font-size:16px;font-weight:800;}
-  .debt .db{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--copper);}
-  .debt .meta{font-size:12px;color:var(--muted);margin-top:4px;}
-  .debt .bar{height:7px;border-radius:99px;background:var(--line);margin-top:12px;overflow:hidden;}
-  .debt .bar > i{display:block;height:100%;background:var(--green);border-radius:99px;}
-  .payoff-intro{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;padding:0 2px;}
-  .hidden{display:none;}
-  .halfline{display:flex;align-items:center;gap:10px;padding:8px 0 2px;margin-top:4px;}
-  .halfline .lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper);font-weight:700;white-space:nowrap;}
-  .halfline .rule{flex:1;height:1.5px;background:repeating-linear-gradient(90deg,var(--copper) 0 6px,transparent 6px 11px);opacity:.5;}
-  /* what-if */
-  .wf-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;}
-  .wf-box label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px;}
-  .wf-row{display:flex;gap:10px;margin-bottom:14px;}
-  .wf-row input{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:13px;font-size:16px;font-family:inherit;color:var(--ink);}
-  .wf-row input.amt{max-width:130px;font-weight:800;font-variant-numeric:tabular-nums;font-size:20px;text-align:right;}
-  .wf-row input:focus{outline:none;border-color:var(--ink);}
-  .wf-verdict{border-radius:14px;padding:18px;margin-bottom:8px;text-align:center;}
-  .wf-verdict.yes{background:#e8efe6;border:1.5px solid var(--green);}
-  .wf-verdict.no{background:#f3e3e1;border:1.5px solid var(--red);}
-  .wf-verdict.idle{background:var(--card);border:1px solid var(--line);}
-  .wf-big{font-size:22px;font-weight:800;letter-spacing:-.01em;}
-  .wf-big.yes{color:var(--green);}
-  .wf-big.no{color:var(--red);}
-  .wf-sub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;}
-  .wf-ripple-h{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:20px 2px 10px;}
-  .wf-cyc{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);margin-bottom:8px;}
-  .wf-cyc .lab{font-size:14px;font-weight:700;}
-  .wf-cyc .lab span{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;}
-  .wf-cyc .comp{text-align:right;font-variant-numeric:tabular-nums;}
-  .wf-cyc .comp .was{font-size:12px;color:var(--muted);text-decoration:line-through;}
-  .wf-cyc .comp .now{font-size:16px;font-weight:800;}
-  .wf-cyc .comp .now.neg{color:var(--red);}
-  .wf-cyc.tight{border-color:var(--red);}
+  .eduin{width:78px;border:1px solid var(--line);border-radius:6px;padding:3px 6px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--green);background:#fff;text-align:right;font-family:inherit;}
+  .paydivider{display:flex;align-items:center;gap:8px;margin:12px 0 4px;}
+  .pdline{flex:1;height:1px;background:var(--copper);opacity:.4;}
+  .pdlabel{font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--copper);white-space:nowrap;}
+  .pdsub{font-size:11px;color:var(--muted);font-weight:600;padding:0 0 4px;}
+  .whatif{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+  .wi-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px;}
+  .wi-row{display:flex;align-items:center;gap:6px;}
+  .wi-dollar{font-size:20px;font-weight:800;color:var(--ink);}
+  .wi-in{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;background:#fff;font-family:inherit;color:var(--ink);}
+  .wi-out{margin-top:10px;font-size:15px;font-weight:700;}
+  .wi-out.ok{color:var(--green);}
+  .wi-out.no{color:var(--red);}
 </style>
 </head>
 <body>
 <header>
-  <div class="eyebrow">Paycheck to paycheck</div>
-  <h1>Biweekly</h1>
+  <div class="eyebrow">Recurring payments</div>
+  <h1>Monthly</h1>
 </header>
-
-<div class="tabs">
-  <div class="tab on" id="tabCycles" onclick="showTab('cycles')">Cycles</div>
-  <div class="tab" id="tabWhatif" onclick="showTab('whatif')">What if</div>
-  <div class="tab" id="tabPayoff" onclick="showTab('payoff')">Payoff</div>
-</div>
-
-<div id="cyclesView">
-  <div class="startbox">
-    <label>Starting balance today</label>
-    <input id="startBal" inputmode="decimal" placeholder="0.00">
-  </div>
-  <div id="cycles"></div>
-  <button class="reset" onclick="resetAll()">Uncheck everything</button>
-  <div class="note">Nothing moves until you check it. Tap a paycheck when it lands to add it, tap a bill when you pay it to subtract it. Amounts marked "est" are from your last audit.</div>
-</div>
-
-<div id="whatifView" class="hidden">
-  <div class="wf-box">
-    <label>What do you want to buy?</label>
-    <div class="wf-row">
-      <input id="wfName" placeholder="e.g. shoes" autocomplete="off">
-      <input id="wfAmt" class="amt" inputmode="decimal" placeholder="100">
-    </div>
-    <div id="wfVerdict" class="wf-verdict idle">
-      <div class="wf-sub">Enter an amount to see if you can spend it right now without missing a bill.</div>
-    </div>
-  </div>
-  <div id="wfRipple"></div>
-</div>
-
-<div id="payoffView" class="hidden"></div>
+<div id="cycles"></div>
+<button class="reset" onclick="resetAll()">Uncheck everything</button>
+<div class="note">Tap a cycle to open it. Check payments off as you make them. Leftover updates live. Saved on this device.</div>
 
 <script>
-const FIRST_CYCLE=new Date(2026,8,1);   // first VA-anchored cycle starts Sep 1, 2026
+// Cycles run monthly, starting on the 1st when VA money lands.
+// Start from the 1st of the current month.
+function firstOfThisMonth(){
+  const now=new Date();
+  return new Date(now.getFullYear(), now.getMonth(), 1);
+}
+const ANCHOR=firstOfThisMonth();
 const CYCLES=6;
-const CDL=2240;
-const VA=5233;
-const CDL_ANCHOR=new Date(2026,7,21);   // a known CDL payday; checks every 14 days from here
-const CUSHION=200;
+const CDL=2240;                 // per paycheck (avg)
+const VA_DISABILITY=4298;       // 1st of month, fixed
+let VA_EDUCATION=935;           // 1st of month, VARIES — editable in the app
 
+// Monthly recurring payments only. name, amount, day-of-month
 const BILLS=[
-  {name:"Bilt rent",amt:2081,day:2,est:true},
-  {name:"Hyundai lease",amt:956,day:4,est:true},
-  {name:"T-Mobile",amt:220,day:16,est:true},
-  {name:"Yamaha",amt:410,day:17,est:true},
-  {name:"USAA auto insurance",amt:465,day:18,est:true},
-  {name:"Comcast / Xfinity",amt:136,day:29,est:true},
-  {name:"Lemonade renters",amt:76,day:30,est:true},
-  {name:"Subscriptions",amt:280,day:15,est:true},
-  {name:"Dog daycare",amt:222,day:6,est:true},
-  {name:"Meal subscription",amt:100,weekly:true,est:true},
-  {name:"Groceries",amt:50,perCycle:true,est:true},
-  {name:"Amex",amt:127,day:21},
-  {name:"Citi / Costco",amt:228,day:28},
-  {name:"Chase Prime Visa",amt:41,day:2},
-  {name:"Affirm A",amt:45.02,day:4, end:new Date(2029,9,4)},
-  {name:"Affirm B",amt:134.42,day:6, end:new Date(2028,3,6)},
-  {name:"Affirm C",amt:50.53,day:7, end:new Date(2027,8,7)},
-  {name:"Affirm D",amt:45.53,day:13, end:new Date(2028,1,13)},
-  {name:"Affirm E",amt:51.16,day:17, end:new Date(2027,1,17)},
-  {name:"Affirm F",amt:43.78,day:18, end:new Date(2028,1,18)},
-  {name:"Affirm G",amt:43.41,day:25, end:new Date(2027,2,25)}
-];
-
-const DEBTS=[
-  {name:"Citi / Costco",bal:6475.24,pay:228,apr:"~22%"},
-  {name:"Amex Platinum",bal:3803.41,pay:127,apr:"charge card"},
-  {name:"Chase Prime Visa",bal:1460.04,pay:41,apr:"~27%"},
-  {name:"Affirm (7 plans)",bal:7621.28,pay:413.85,apr:"fixed installments"}
+  // Housing + fixed
+  {name:"Bilt rent",amt:2086.55,day:2},
+  {name:"Hyundai lease",amt:955.84,day:4},
+  {name:"Roadrunner",amt:200,day:2},
+  {name:"Upstart (Michela)",amt:409.95,day:1},
+  {name:"Upstart (Mpli)",amt:106.61,day:28},
+  {name:"Upstart (Fu)",amt:41.21,day:1},
+  {name:"T-Mobile",amt:255,day:16},
+  {name:"Yamaha",amt:410,day:17},
+  {name:"USAA auto insurance",amt:500,day:18},
+  {name:"Comcast / Xfinity",amt:136.23,day:29},
+  {name:"Lemonade renters",amt:76.25,day:30},
+  // Credit cards (amount = what you actually pay)
+  {name:"Amex",amt:116,day:21},
+  {name:"Citi / Costco",amt:174,day:28},
+  {name:"Chase Prime Visa",amt:200,day:2},
+  // Affirm plans, individually, with real due dates
+  {name:"Affirm 1",amt:134.42,day:3},
+  {name:"Affirm 2",amt:86.68,day:13},
+  {name:"Affirm 3",amt:51.16,day:3},
+  {name:"Affirm 4",amt:50.53,day:3},
+  {name:"Affirm 5",amt:45.53,day:3},
+  {name:"Affirm 6",amt:45.02,day:3},
+  {name:"Affirm 7",amt:43.78,day:13},
+  {name:"Affirm 8",amt:43.41,day:13},
+  {name:"Affirm 9",amt:28.28,day:3}
 ];
 
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const money=n=>(n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-const money0=n=>(n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
+const money=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
 const fmt=d=>MON[d.getMonth()]+" "+d.getDate();
 const ord=n=>{const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);};
 const key=d=>d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
 
-let done={};
-let startBal=0;
+const store={
+  async get(k){ if(window.storage&&window.storage.get)return window.storage.get(k); const v=localStorage.getItem(k); return v!=null?{value:v}:null; },
+  async set(k,v){ if(window.storage&&window.storage.set)return window.storage.set(k,v); localStorage.setItem(k,v); return {value:v}; }
+};
+
+let paid={};
+let eduAmt=VA_EDUCATION;
 async function load(){
-  try{const raw=localStorage.getItem("biweekly_v8");if(raw){const d=JSON.parse(raw);done=d.done||{};startBal=d.startBal||0;}}catch(e){}
-  document.getElementById("startBal").value=startBal?startBal:"";
-  build();buildPayoff();
+  try{const r=await store.get("biweekly_v5");if(r&&r.value){const d=JSON.parse(r.value);paid=d.paid||{};if(d.eduAmt!=null)eduAmt=d.eduAmt;}}catch(e){}
+  build();
 }
-async function persist(){try{localStorage.setItem("biweekly_v8",JSON.stringify({done,startBal}));}catch(e){}}
+async function persist(){try{await store.set("biweekly_v5",JSON.stringify({paid,eduAmt}));}catch(e){}}
 
-document.getElementById("startBal").addEventListener("input",e=>{startBal=parseFloat(e.target.value)||0;persist();build(true);runWhatif();});
-document.getElementById("wfAmt").addEventListener("input",runWhatif);
-document.getElementById("wfName").addEventListener("input",runWhatif);
-
-function showTab(t){
-  ["cycles","whatif","payoff"].forEach(x=>{
-    document.getElementById("tab"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("on",x===t);
-    document.getElementById(x+"View").classList.toggle("hidden",x!==t);
-  });
-  if(t==="whatif")runWhatif();
-}
-
-// Is date d a CDL payday? (every 14 days from CDL_ANCHOR)
-function isCDLday(d){
-  const days=Math.round((d-CDL_ANCHOR)/(1000*60*60*24));
-  return days%14===0;
-}
-// All CDL paydays within [from, to] inclusive
-function cdlDaysIn(from,to){
+// biweekly CDL paydays (Fridays), reference Aug 21 2026
+const CDL_REF=new Date(2026,7,21);
+function cdlPaydaysIn(start,end){
   const out=[];
-  let p=new Date(CDL_ANCHOR);
-  // rewind to before 'from'
-  while(p>from){p=new Date(p);p.setDate(p.getDate()-14);}
-  while(p<from){p=new Date(p);p.setDate(p.getDate()+14);}
-  while(p<=to){out.push(new Date(p));p=new Date(p);p.setDate(p.getDate()+14);}
+  const ref=new Date(CDL_REF);ref.setHours(0,0,0,0);
+  // walk back to first payday <= start
+  let d=new Date(ref);
+  const back=Math.ceil((ref-start)/(14*86400000));
+  d.setDate(ref.getDate()-back*14);
+  while(d<start){d.setDate(d.getDate()+14);}
+  while(d<=end){ out.push(new Date(d)); d.setDate(d.getDate()+14); }
   return out;
 }
 
-// Assign each CDL payday to a cycle-month using the count rule:
-// checks belong to the month they fall in, EXCEPT a 3rd+ check landing in the
-// last 4 days of a month rolls into the next month (the new VA cycle).
-function cdlForCycle(cycleStart, cycleEnd){
-  // gather candidate CDL days from a wide window around this month
-  const wideFrom=new Date(cycleStart);wideFrom.setDate(wideFrom.getDate()-6);
-  const wideTo=new Date(cycleEnd);wideTo.setDate(wideTo.getDate()+6);
-  const all=cdlDaysIn(new Date(2026,0,1), new Date(2027,11,31));
-  // build month assignment for every check
-  const assign=new Map();
-  // group by calendar month first
-  const byMonth={};
-  all.forEach(d=>{const k=d.getFullYear()+"-"+d.getMonth();(byMonth[k]=byMonth[k]||[]).push(new Date(d));});
-  Object.values(byMonth).forEach(list=>{
-    list.sort((a,b)=>a-b);
-    list.forEach((d,i)=>{
-      let owner=new Date(d.getFullYear(),d.getMonth(),1); // default: its own month
-      // 3rd+ check (index>=2) within last 4 days of month -> next month
-      const lastOfMonth=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
-      if(i>=2 && (lastOfMonth-d.getDate())<=4){
-        owner=new Date(d.getFullYear(),d.getMonth()+1,1);
-      }
-      assign.set(+d, owner);
-    });
-  });
-  // this cycle owns checks whose owner-month === cycleStart's month
-  const mine=[];
-  all.forEach(d=>{
-    const owner=assign.get(+d);
-    if(owner && owner.getFullYear()===cycleStart.getFullYear() && owner.getMonth()===cycleStart.getMonth()){
-      mine.push(new Date(d));
-    }
-  });
-  mine.sort((a,b)=>a-b);
-  return mine;
-}
-
-function cycleData(c){
-  // cycle c starts on the 1st of (FIRST_CYCLE month + c), ends last day of that month
-  const start=new Date(FIRST_CYCLE.getFullYear(), FIRST_CYCLE.getMonth()+c, 1);
-  const end=new Date(start.getFullYear(), start.getMonth()+1, 0); // last day of month
-
-  const income=[{name:"VA (disability + education)",amt:VA,date:new Date(start),est:true}];
-  cdlForCycle(start,end).forEach(d=>{
-    income.push({name:"CDL paycheck",amt:CDL,date:new Date(d),est:true});
-  });
-
-  const bills=[];
-  BILLS.forEach(b=>{
-    if(b.weekly){
-      // weekly: every 7 days across the month, starting on the 3rd (first food hit)
-      let dd=new Date(start.getFullYear(),start.getMonth(),3);
-      while(dd<=end){
-        if(!(b.end&&dd>b.end))bills.push({name:b.name,amt:b.amt,date:new Date(dd),est:b.est});
-        dd=new Date(dd);dd.setDate(dd.getDate()+7);
-      }
-      return;
-    }
-    if(b.perCycle){
-      const dd=new Date(start.getFullYear(),start.getMonth(),10);
-      if(!(b.end&&dd>b.end))bills.push({name:b.name,amt:b.amt,date:dd,est:b.est});
-      return;
-    }
-    const dd=new Date(start.getFullYear(),start.getMonth(),Math.min(b.day,end.getDate()));
-    if(!(b.end&&dd>b.end))bills.push({name:b.name,amt:b.amt,date:dd,est:b.est});
-  });
-  // VA always leads the cycle; other income (incl. a rolled-in end-of-prev-month CDL) sorts after
-  const va=income.filter(x=>/VA/.test(x.name));
-  const rest=income.filter(x=>!/VA/.test(x.name)).sort((a,b)=>a.date-b.date);
-  const orderedIncome=va.concat(rest);
-  bills.sort((a,b)=>a.date-b.date);
-  return {start,end,income:orderedIncome,bills};
-}
-
-
-function build(preserveOpen){
+function build(){
   const now=new Date();now.setHours(0,0,0,0);
-  const opensPrev=preserveOpen?[...document.querySelectorAll('#cycles .cycle')].map(c=>c.classList.contains('open')):null;
   const wrap=document.getElementById("cycles");
   wrap.innerHTML="";
-  let carry=startBal;
   for(let c=0;c<CYCLES;c++){
-    const {start,end,income,bills}=cycleData(c);
-    const isHere=(now>=start&&now<=end)||(c===0&&now<start);
-    const incTot=income.reduce((s,x)=>s+x.amt,0);
-    const billTot=bills.reduce((s,x)=>s+x.amt,0);
-    const incGot=income.filter(x=>done["inc|"+key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
-    const billPaid=bills.filter(x=>done["bill|"+key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
-    const running=carry+incGot-billPaid;
+    // monthly cycle: 1st of month -> last day of month
+    const start=new Date(ANCHOR.getFullYear(), ANCHOR.getMonth()+c, 1);
+    const end=new Date(ANCHOR.getFullYear(), ANCHOR.getMonth()+c+1, 0);
+    const isHere=(now>=start&&now<=end);
+
+    const income=[];
+    // VA on the 1st, two separate lines
+    income.push({name:"VA disability",amt:VA_DISABILITY,date:new Date(start),kind:"va"});
+    income.push({name:"VA education",amt:eduAmt,date:new Date(start),kind:"edu"});
+    // CDL paychecks that fall in this month
+    cdlPaydaysIn(start,end).forEach(d=>income.push({name:"CDL paycheck",amt:CDL,date:d,kind:"cdl"}));
+
+    const bills=[];
+    BILLS.forEach(b=>{
+      const dd=new Date(start.getFullYear(), start.getMonth(), b.day);
+      if(dd>=start&&dd<=end&&b.amt>0)bills.push({name:b.name,amt:b.amt,date:dd});
+    });
+    // Dog daycare: $34 x 3 = $102 per week. One charge per week (dated Monday) in this month.
+    {
+      const d=new Date(start);
+      // move to first Monday on/after the 1st
+      while(d.getDay()!==1) d.setDate(d.getDate()+1);
+      let wk=1;
+      while(d<=end){
+        bills.push({name:"Dog daycare (week "+wk+")",amt:102,date:new Date(d)});
+        d.setDate(d.getDate()+7); wk++;
+      }
+    }
+    income.sort((a,b)=>a.date-b.date);
+    bills.sort((a,b)=>a.date-b.date);
+
+    const inTot=income.reduce((s,x)=>s+x.amt,0);
+    const outTot=bills.reduce((s,x)=>s+x.amt,0);
+    const paidTot=bills.filter(x=>paid[key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
+    const left=inTot-outTot;
+
     const el=document.createElement("div");
     el.className="cycle"+(isHere?" here open":"");
     el.innerHTML=`
       <div class="chead" onclick="this.parentNode.classList.toggle('open')">
-        <div><div class="cnum">${MON[start.getMonth()]} ${start.getFullYear()}</div><div class="cdate">${fmt(start)} – ${fmt(end)}</div></div>
+        <div>
+          <div class="cnum">Month</div>
+          <div class="cdate">${MON[start.getMonth()]} ${start.getFullYear()}</div>
+        </div>
         ${isHere?'<span class="here-tag">You are here</span>':''}
-        <div class="cleft"><div class="lbl">Balance now</div><div class="amt ${running<0?'neg':''}">${money(running)}</div></div>
+        <div class="cleft"><div class="lbl">Left over</div><div class="amt ${left<0?'neg':''}">${money(left)}</div></div>
         <span class="chev">▶</span>
       </div>
       <div class="cbody">
-        <div class="carry"><span>Started this cycle with</span><span class="v">${money(carry)}</span></div>
         <div class="grp">
-          <div class="grp-h"><span>Money in — tap when it lands</span><span class="rt">${money(incTot)} total</span></div>
-          ${(()=>{const cdls=income.filter(x=>/CDL/.test(x.name)).sort((a,b)=>a.date-b.date);const split=cdls.length>1?cdls[1].date:null;let out="";let drawn=false;income.forEach(x=>{const k="inc|"+key(x.date)+"|"+x.name;if(split&&!drawn&&x.date>=split){out+=`<div class="halfline"><span class="lab">2nd half · from ${fmt(split)}</span><span class="rule"></span></div>`;drawn=true;}out+=`<div class="line ${done[k]?'done':''}"><span class="day">${ord(x.date.getDate())}</span><span class="box ginc ${done[k]?'on ginc':''}" onclick="toggle('${k}')"></span><span class="nm" onclick="toggle('${k}')">${x.name}${x.est?'<span class="est">est</span>':''}</span><span class="vl in">+${money(x.amt)}</span></div>`;});return out;})()}
+          <div class="grp-h">Money in</div>
+          ${income.map(x=>{
+            if(x.kind==="edu"){
+              return `<div class="line"><span class="day">${ord(x.date.getDate())}</span><span class="nm">VA education <span style="color:var(--muted);font-weight:500">(editable)</span></span><span class="vl in">+$<input class="eduin" type="number" inputmode="decimal" value="${eduAmt}" onchange="setEdu(this.value)" /></span></div>`;
+            }
+            return `<div class="line"><span class="day">${ord(x.date.getDate())}</span><span class="nm">${x.name}</span><span class="vl in">+${money(x.amt)}</span></div>`;
+          }).join("")}
         </div>
         <div class="grp">
-          <div class="grp-h"><span>Bills — tap when you pay</span><span class="rt">${money(billTot)} total</span></div>
-          ${bills.length?(()=>{const cdls=income.filter(x=>/CDL/.test(x.name)).sort((a,b)=>a.date-b.date);const split=cdls.length>1?cdls[1].date:null;let out="";let drawn=false;bills.forEach(x=>{const k="bill|"+key(x.date)+"|"+x.name;if(split&&!drawn&&x.date>=split){out+=`<div class="halfline"><span class="lab">2nd half · from ${fmt(split)}</span><span class="rule"></span></div>`;drawn=true;}out+=`<div class="line ${done[k]?'done':''}"><span class="day">${ord(x.date.getDate())}</span><span class="box ${done[k]?'on':''}" onclick="toggle('${k}')"></span><span class="nm" onclick="toggle('${k}')">${x.name}${x.est?'<span class="est">est</span>':''}</span><span class="vl">${money(x.amt)}</span></div>`;});return out;})():'<div class="line"><span class="nm" style="color:var(--muted)">No bills this window</span></div>'}
+          <div class="grp-h">Payments due</div>
+          ${(()=>{
+            const cdls=income.filter(x=>x.kind==="cdl").sort((a,b)=>a.date-b.date);
+            const secondCdl=cdls.length>=2?cdls[1].date:null;
+            const rowHtml=x=>{const k=key(x.date)+"|"+x.name;return `<div class="line ${paid[k]?'paid':''}"><span class="day">${ord(x.date.getDate())}</span><span class="box ${paid[k]?'on':''}" onclick="toggle('${k}')"></span><span class="nm" onclick="toggle('${k}')">${x.name}</span><span class="vl">${money(x.amt)}</span></div>`;};
+            if(!bills.length) return '<div class="line"><span class="nm" style="color:var(--muted)">No payments this window</span></div>';
+            if(!secondCdl) return bills.map(rowHtml).join("");
+            const before=bills.filter(x=>x.date<secondCdl);
+            const after=bills.filter(x=>x.date>=secondCdl);
+            const afterTot=after.reduce((s,x)=>s+x.amt,0);
+            let h=before.map(rowHtml).join("");
+            h+=`<div class="paydivider"><span class="pdline"></span><span class="pdlabel">2nd CDL check hits ${MON[secondCdl.getMonth()]} ${secondCdl.getDate()} · +${money(CDL)}</span><span class="pdline"></span></div>`;
+            h+=`<div class="pdsub">These come out of the 2nd check — ${money(afterTot)}</div>`;
+            h+=after.map(rowHtml).join("");
+            return h;
+          })()}
         </div>
-        <div class="bigleft"><span class="k">Balance now</span><span class="v ${running<0?'neg':''}">${money(running)}</span></div>
-        <div class="subnote">Started with ${money(carry)}. Received ${money(incGot)} of ${money(incTot)} income, paid ${money(billPaid)} of ${money(billTot)} bills. Check everything and this cycle lands at ${money(carry+incTot-billTot)}.</div>
+        <div class="csum"><span class="k">In</span><span class="v">${money(inTot)}</span></div>
+        <div class="csum" style="border:none;padding-top:4px"><span class="k">Payments</span><span class="v">${money(outTot)}</span></div>
+        ${paidTot>0?`<div class="paidrun">${money(paidTot)} paid · ${money(outTot-paidTot)} still to pay</div>`:''}
+        <div class="whatif">
+          <div class="wi-h">What if I spend&hellip;</div>
+          <div class="wi-row">
+            <span class="wi-dollar">$</span>
+            <input class="wi-in" type="number" inputmode="decimal" placeholder="1000" data-left="${left}" oninput="whatIf(this)" />
+          </div>
+          <div class="wi-out"></div>
+        </div>
       </div>`;
     wrap.appendChild(el);
-    carry=running;
   }
-  if(opensPrev){document.querySelectorAll('#cycles .cycle').forEach((c,i)=>{if(opensPrev[i])c.classList.add('open');else c.classList.remove('open');});}
 }
-
-function runWhatif(){
-  const amt=parseFloat(document.getElementById("wfAmt").value)||0;
-  const name=document.getElementById("wfName").value.trim()||"that";
-  const vEl=document.getElementById("wfVerdict");
-  const rEl=document.getElementById("wfRipple");
-  if(amt<=0){
-    vEl.className="wf-verdict idle";
-    vEl.innerHTML=`<div class="wf-sub">Enter an amount to see if you can spend it right now without missing a bill this cycle.</div>`;
-    rEl.innerHTML="";return;
-  }
-
-  // Which cycle are we in right now?
-  const now=new Date();now.setHours(0,0,0,0);
-  let curr=0;
-  for(let c=0;c<CYCLES;c++){
-    const {start,end}=cycleData(c);
-    if((now>=start&&now<=end)||(c===0&&now<start)){curr=c;break;}
-    if(c===CYCLES-1)curr=CYCLES-1;
-  }
-
-  // Balance right now = startBal + income received (checked) - bills paid (checked), all cycles up to & incl current.
-  // Then hold back only the UNPAID bills left in THIS cycle.
-  let received=0, billsPaid=0;
-  for(let c=0;c<=curr;c++){
-    const {income,bills}=cycleData(c);
-    income.forEach(x=>{if(done["inc|"+key(x.date)+"|"+x.name])received+=x.amt;});
-    bills.forEach(x=>{if(done["bill|"+key(x.date)+"|"+x.name])billsPaid+=x.amt;});
-  }
-  const balanceNow = startBal + received - billsPaid;
-
-  // Unpaid bills remaining in the current cycle only
-  const {bills:currBills}=cycleData(curr);
-  const owedThisCycle = currBills
-    .filter(x=>!done["bill|"+key(x.date)+"|"+x.name])
-    .reduce((s,x)=>s+x.amt,0);
-
-  const spendable = balanceNow - owedThisCycle;
-  const afterBuy = spendable - amt;
-  const canAfford = afterBuy >= 0;
-
-  vEl.className="wf-verdict "+(canAfford?"yes":"no");
-  vEl.innerHTML=`
-    <div class="wf-big ${canAfford?'yes':'no'}">${canAfford?"Yes — go ahead":"No — can't right now"}</div>
-    <div class="wf-sub">
-      You have ${money(balanceNow)} right now. You still owe ${money(owedThisCycle)} in bills this cycle, leaving ${money(spendable)} free to spend.
-      ${canAfford
-        ? `Buying ${name} for ${money0(amt)} leaves ${money(afterBuy)} spare.`
-        : `Buying ${name} for ${money0(amt)} would put you ${money(afterBuy)} short on this cycle's bills.`}
-    </div>`;
-  rEl.innerHTML="";
+function toggle(k){paid[k]=!paid[k];persist();
+  const opens=[...document.querySelectorAll('.cycle')].map(c=>c.classList.contains('open'));
+  build();
+  document.querySelectorAll('.cycle').forEach((c,i)=>{if(opens[i])c.classList.add('open');else c.classList.remove('open');});
 }
-
-function buildPayoff(){
-  const v=document.getElementById("payoffView");
-  const totalBal=DEBTS.reduce((s,d)=>s+d.bal,0);
-  const totalPay=DEBTS.reduce((s,d)=>s+d.pay,0);
-  let html=`<div class="payoff-intro">Your total debt is <b>${money(totalBal)}</b> across these accounts. Right now you pay about <b>${money(totalPay)}/mo</b> combined. The order below puts the smallest balance first for a quick win, then works up. Turn any surplus from a good cycle toward the top of this list.</div>`;
-  const sorted=[...DEBTS].sort((a,b)=>a.bal-b.bal);
-  const maxBal=Math.max(...DEBTS.map(d=>d.bal));
-  sorted.forEach((d,i)=>{
-    html+=`<div class="debt">
-      <div class="top"><span class="dn">${i+1}. ${d.name}</span><span class="db">${money(d.bal)}</span></div>
-      <div class="meta">Paying ${money(d.pay)}/mo · ${d.apr}</div>
-      <div class="bar"><i style="width:${Math.round(d.bal/maxBal*100)}%"></i></div>
-    </div>`;
-  });
-  html+=`<div class="note">A view, not a plan locked to your cycles yet. When you want, I can wire it so paying a debt off rolls its payment onto the next target.</div>`;
-  v.innerHTML=html;
+function setEdu(v){eduAmt=parseFloat(v)||0;persist();
+  const opens=[...document.querySelectorAll('.cycle')].map(c=>c.classList.contains('open'));
+  build();
+  document.querySelectorAll('.cycle').forEach((c,i)=>{if(opens[i])c.classList.add('open');else c.classList.remove('open');});
 }
-
-function toggle(k){done[k]=!done[k];persist();build(true);}
-function resetAll(){done={};persist();build(true);}
+function whatIf(el){
+  const left=parseFloat(el.getAttribute("data-left"))||0;
+  const spend=parseFloat(el.value);
+  const out=el.parentNode.parentNode.querySelector(".wi-out");
+  if(!(spend>0)){out.textContent="";out.className="wi-out";return;}
+  const after=left-spend;
+  const m=n=>"$"+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+  if(after>=0){
+    out.className="wi-out ok";
+    out.textContent="Yes — you'd have "+m(after)+" left this month.";
+  }else{
+    out.className="wi-out no";
+    out.textContent="No — you'd be "+m(after)+" short this month.";
+  }
+}
+function resetAll(){paid={};persist();build();}
 load();
 </script>
 </body>
