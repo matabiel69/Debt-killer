@@ -152,7 +152,7 @@
   <!-- Reset -->
   <section class="rounded-3xl bg-white p-5 shadow-sm">
     <h2 class="text-base font-bold">New month</h2>
-    <p class="text-sm text-slate-500 mt-1">Unchecks every bill so you can start fresh. Your bills and income amounts stay saved.</p>
+    <p class="text-sm text-slate-500 mt-1">Bills uncheck automatically the first time you open the app in a new month. Use this button to start fresh early. Your bills and income amounts stay saved.</p>
     <button id="resetBtn" type="button" class="tap mt-4 w-full h-12 rounded-2xl border-2 border-rose-200 text-rose-600 font-semibold">
       Reset Month
     </button>
@@ -237,6 +237,7 @@
     return {
       version: 1,
       month: monthKey(new Date()),
+      lastSeen: monthKey(new Date()),
       income: { disability: 0, workCheck: 0, payday: firstFridayThisMonth() },
       bills: [
         { id: uid(), name: 'Rent', amount: 1200, day: 1 },
@@ -253,6 +254,8 @@
     const base = freshData();
     if (!d || typeof d !== 'object') return base;
     if (/^\d{4}-\d{2}$/.test(d.month)) base.month = d.month;
+    // Older saves have no lastSeen; fall back to their tracking month
+    base.lastSeen = /^\d{4}-\d{2}$/.test(d.lastSeen) ? d.lastSeen : base.month;
     if (d.income && typeof d.income === 'object') {
       base.income.disability = round(Math.max(0, parseFloat(d.income.disability) || 0));
       base.income.workCheck = round(Math.max(0, parseFloat(d.income.workCheck) || 0));
@@ -610,9 +613,28 @@
   // Ask the browser to keep storage around (helps on Android)
   try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}
 
-  // Re-render when returning to the app so "past due" labels stay current
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+  // Auto-reset: the first time the app opens in a new calendar month,
+  // uncheck every bill and switch to that month. Bills and income stay.
+  function autoRollover() {
+    const current = monthKey(new Date());
+    if (data.lastSeen === current) return;
+    const hadChecks = data.paid.length > 0;
+    data.paid = [];
+    data.month = current;
+    data.lastSeen = current;
+    save();
+    if (hadChecks) {
+      const [y, m] = current.split('-').map(Number);
+      toast(`New month: bills reset for ${new Date(y, m - 1, 1).toLocaleDateString('en-US', { month: 'long' })}`);
+    }
+  }
 
+  // Re-check the month and re-render when returning to the app
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) { autoRollover(); render(); }
+  });
+
+  autoRollover();
   render();
 })();
 </script>
