@@ -2,305 +2,619 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Payments</title>
-<style>
-  :root{
-    --ink:#14150f;--paper:#f4f1e8;--card:#fbf9f2;--line:#ded8c7;
-    --green:#3a5a40;--gold:#b0842a;--muted:#7c786c;--check:#3a5a40;--copper:#c9772f;--red:#a3402f;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  html,body{background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;}
-  body{max-width:480px;margin:0 auto;padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 30px);min-height:100vh;}
-  header{padding:24px 2px 14px;}
-  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;}
-  h1{font-family:"SF Pro Display",-apple-system,sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:3px;}
-  .cycle{border:1px solid var(--line);border-radius:16px;margin-bottom:14px;background:var(--card);overflow:hidden;}
-  .cycle.here{border:1.5px solid var(--copper);}
-  .chead{padding:16px 18px;display:flex;align-items:center;gap:12px;}
-  .cnum{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;}
-  .cdate{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-top:2px;}
-  .here-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--copper);padding:3px 8px;border-radius:99px;}
-  .cleft{margin-left:auto;text-align:right;}
-  .cleft .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;}
-  .cleft .amt{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green);}
-  .cleft .amt.neg{color:var(--red);}
-  .chev{color:var(--muted);font-size:14px;margin-left:4px;transition:transform .2s;}
-  .cycle.open .chev{transform:rotate(90deg);}
-  .cbody{display:none;padding:0 18px 8px;}
-  .cycle.open .cbody{display:block;}
-  .grp{margin-top:6px;}
-  .grp-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 0 4px;border-top:1px solid var(--line);}
-  .line{display:flex;align-items:center;gap:11px;padding:10px 0;}
-  .day{font-size:12px;font-weight:700;color:var(--muted);width:42px;flex-shrink:0;font-variant-numeric:tabular-nums;}
-  .line .nm{flex:1;font-size:15px;font-weight:600;}
-  .line .vl{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;}
-  .vl.in{color:var(--green);}
-  .box{width:24px;height:24px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff;}
-  .box.on{background:var(--check);border-color:var(--check);}
-  .box.on::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px);}
-  .line.paid .nm{text-decoration:line-through;color:var(--muted);}
-  .line.paid .vl{color:var(--muted);}
-  .csum{display:flex;justify-content:space-between;padding:13px 0 6px;border-top:1.5px solid var(--ink);margin-top:6px;font-size:13px;}
-  .csum .k{color:var(--muted);font-weight:600;}
-  .csum .v{font-weight:700;font-variant-numeric:tabular-nums;}
-  .paidrun{font-size:12px;color:var(--green);font-weight:600;padding-bottom:8px;}
-  .reset{width:100%;background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;margin-top:18px;padding:10px;text-decoration:underline;}
-  .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;padding:0 10px;}
-  .eduin{width:78px;border:1px solid var(--line);border-radius:6px;padding:3px 6px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--green);background:#fff;text-align:right;font-family:inherit;}
-  .paydivider{display:flex;align-items:center;gap:8px;margin:12px 0 4px;}
-  .pdline{flex:1;height:1px;background:var(--copper);opacity:.4;}
-  .pdlabel{font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--copper);white-space:nowrap;}
-  .pdsub{font-size:11px;color:var(--muted);font-weight:600;padding:0 0 4px;}
-  .whatif{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
-  .wi-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px;}
-  .wi-row{display:flex;align-items:center;gap:6px;}
-  .wi-dollar{font-size:20px;font-weight:800;color:var(--ink);}
-  .wi-in{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;background:#fff;font-family:inherit;color:var(--ink);}
-  .wi-out{margin-top:10px;font-size:15px;font-weight:700;}
-  .wi-out.ok{color:var(--green);}
-  .wi-out.no{color:var(--red);}
-  .carryrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;}
-  .carry-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;}
-  .carry-in-wrap{font-size:16px;font-weight:800;color:var(--ink);}
-  .carry-in{width:80px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;font-family:inherit;color:var(--ink);background:#fff;}
-  .runbal{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:12px 14px;background:var(--green);border-radius:12px;}
-  .runbal .rb-k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#e9f0e9;font-weight:700;}
-  .runbal .rb-v{font-size:24px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;}
-  .runbal .rb-v.neg{color:#ffd9d3;}
-  .rb-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;}
-</style>
-</head>
-<body>
-<header>
-  <div class="eyebrow">Recurring payments</div>
-  <h1>Monthly</h1>
-</header>
-<div id="cycles"></div>
-<button class="reset" onclick="resetAll()">Uncheck everything</button>
-<div class="note">Tap a cycle to open it. Check payments off as you make them. Leftover updates live. Saved on this device.</div>
-
+<meta name="apple-mobile-web-app-title" content="Bills">
+<title>Bill Tracker</title>
+<link rel="apple-touch-icon" id="touchIcon" href="">
+<link rel="icon" id="favIcon" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 <script>
-// Cycles run monthly, starting on the 1st when VA money lands.
-// Start from the 1st of the current month.
-function firstOfThisMonth(){
-  const now=new Date();
-  return new Date(now.getFullYear(), now.getMonth(), 1);
-}
-const ANCHOR=firstOfThisMonth();
-const CYCLES=6;
-const CDL=2240;                 // per paycheck (avg)
-const VA_DISABILITY=4298;       // 1st of month, fixed
-let VA_EDUCATION=935;           // 1st of month, VARIES — editable in the app
-
-// Monthly recurring payments only. name, amount, day-of-month
-const BILLS=[
-  // Housing + fixed
-  {name:"Bilt rent",amt:2086.55,day:2},
-  {name:"Hyundai lease",amt:955.84,day:4},
-  {name:"Roadrunner",amt:200,day:2},
-  {name:"Upstart (Michela)",amt:409.95,day:1},
-  {name:"Upstart (Mpli)",amt:106.61,day:28},
-  {name:"Upstart (Fu)",amt:41.21,day:1},
-  {name:"T-Mobile",amt:255,day:16},
-  {name:"Yamaha",amt:410,day:17},
-  {name:"USAA auto insurance",amt:500,day:18},
-  {name:"Comcast / Xfinity",amt:136.23,day:29},
-  {name:"Lemonade renters",amt:76.25,day:30},
-  // Credit cards (amount = what you actually pay)
-  {name:"Amex",amt:116,day:21},
-  {name:"Citi / Costco",amt:174,day:28},
-  {name:"Chase Prime Visa",amt:200,day:2},
-  // Affirm plans, individually, with real due dates
-  {name:"Affirm 1",amt:134.42,day:3},
-  {name:"Affirm 2",amt:86.68,day:13},
-  {name:"Affirm 3",amt:51.16,day:3},
-  {name:"Affirm 4",amt:50.53,day:3},
-  {name:"Affirm 5",amt:45.53,day:3},
-  {name:"Affirm 6",amt:45.02,day:3},
-  {name:"Affirm 7",amt:43.78,day:13},
-  {name:"Affirm 8",amt:43.41,day:13},
-  {name:"Affirm 9",amt:28.28,day:3}
-];
-
-const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const money=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
-const fmt=d=>MON[d.getMonth()]+" "+d.getDate();
-const ord=n=>{const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);};
-const key=d=>d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
-
-const store={
-  async get(k){ if(window.storage&&window.storage.get)return window.storage.get(k); const v=localStorage.getItem(k); return v!=null?{value:v}:null; },
-  async set(k,v){ if(window.storage&&window.storage.set)return window.storage.set(k,v); localStorage.setItem(k,v); return {value:v}; }
-};
-
-let paid={};
-let eduAmt=VA_EDUCATION;
-let carry={};   // per-month carryover from last month, keyed by "YYYY-M"
-async function load(){
-  try{const r=await store.get("biweekly_v6");if(r&&r.value){const d=JSON.parse(r.value);paid=d.paid||{};if(d.eduAmt!=null)eduAmt=d.eduAmt;carry=d.carry||{};}}catch(e){}
-  build();
-}
-async function persist(){try{await store.set("biweekly_v6",JSON.stringify({paid,eduAmt,carry}));}catch(e){}}
-
-// biweekly CDL paydays (Fridays), reference Aug 21 2026
-const CDL_REF=new Date(2026,7,21);
-function cdlPaydaysIn(start,end){
-  const out=[];
-  const ref=new Date(CDL_REF);ref.setHours(0,0,0,0);
-  // walk back to first payday <= start
-  let d=new Date(ref);
-  const back=Math.ceil((ref-start)/(14*86400000));
-  d.setDate(ref.getDate()-back*14);
-  while(d<start){d.setDate(d.getDate()+14);}
-  while(d<=end){ out.push(new Date(d)); d.setDate(d.getDate()+14); }
-  return out;
-}
-
-function build(){
-  const now=new Date();now.setHours(0,0,0,0);
-  const wrap=document.getElementById("cycles");
-  wrap.innerHTML="";
-  for(let c=0;c<CYCLES;c++){
-    // monthly cycle: 1st of month -> last day of month
-    const start=new Date(ANCHOR.getFullYear(), ANCHOR.getMonth()+c, 1);
-    const end=new Date(ANCHOR.getFullYear(), ANCHOR.getMonth()+c+1, 0);
-    const isHere=(now>=start&&now<=end);
-
-    const income=[];
-    // VA on the 1st, two separate lines
-    income.push({name:"VA disability",amt:VA_DISABILITY,date:new Date(start),kind:"va"});
-    income.push({name:"VA education",amt:eduAmt,date:new Date(start),kind:"edu"});
-    // CDL paychecks that fall in this month
-    cdlPaydaysIn(start,end).forEach(d=>income.push({name:"CDL paycheck",amt:CDL,date:d,kind:"cdl"}));
-
-    const bills=[];
-    BILLS.forEach(b=>{
-      const dd=new Date(start.getFullYear(), start.getMonth(), b.day);
-      if(dd>=start&&dd<=end&&b.amt>0)bills.push({name:b.name,amt:b.amt,date:dd});
-    });
-    // Dog daycare: $34 x 3 = $102 per week. One charge per week (dated Monday) in this month.
-    {
-      const d=new Date(start);
-      // move to first Monday on/after the 1st
-      while(d.getDay()!==1) d.setDate(d.getDate()+1);
-      let wk=1;
-      while(d<=end){
-        bills.push({name:"Dog daycare (week "+wk+")",amt:102,date:new Date(d)});
-        d.setDate(d.getDate()+7); wk++;
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] }
       }
     }
-    income.sort((a,b)=>a.date-b.date);
-    bills.sort((a,b)=>a.date-b.date);
+  };
+</script>
+<style>
+  html, body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+  body { background: #f1f5f9; }
+  input, select, button { font-size: 16px; } /* prevents iOS zoom on focus */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
+  input[type=date]::-webkit-date-and-time-value,
+  input[type=month]::-webkit-date-and-time-value { text-align: left; }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 16px); }
+  .tap { transition: transform .08s ease; }
+  .tap:active { transform: scale(.97); }
+  .bar-fill { transition: width .45s ease; }
+  .bill-row { transition: opacity .2s ease; }
+  .check-box { transition: background-color .15s ease, border-color .15s ease; }
+  .sheet { transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+  .backdrop { transition: opacity .2s ease; }
+  .num { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body class="font-sans text-slate-900 antialiased min-h-screen">
 
-    const inTot=income.reduce((s,x)=>s+x.amt,0);
-    const outTot=bills.reduce((s,x)=>s+x.amt,0);
-    const paidTot=bills.filter(x=>paid[key(x.date)+"|"+x.name]).reduce((s,x)=>s+x.amt,0);
-    const mkey=start.getFullYear()+"-"+start.getMonth();
-    const carryAmt=parseFloat(carry[mkey])||0;
-    // running balance: what you have right now = carryover + income - payments already checked off
-    const running=carryAmt+inTot-paidTot;
-    // projected leftover once everything is paid
-    const left=carryAmt+inTot-outTot;
+<!-- Header -->
+<header class="safe-top bg-slate-900 text-white sticky top-0 z-20">
+  <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div>
+      <h1 class="text-lg font-bold tracking-tight leading-tight">Bill Tracker</h1>
+      <p class="text-xs text-slate-400">Recurring bills by paycheck</p>
+    </div>
+    <label class="relative flex items-center bg-white/10 rounded-full pl-3 pr-2 h-11">
+      <svg class="w-4 h-4 text-slate-300 mr-1.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+      <span id="monthLabel" class="text-sm font-semibold whitespace-nowrap"></span>
+      <input id="monthInput" type="month" aria-label="Tracking month" class="absolute inset-0 opacity-0 w-full h-full">
+    </label>
+  </div>
+</header>
 
-    const el=document.createElement("div");
-    el.className="cycle"+(isHere?" here open":"");
-    el.innerHTML=`
-      <div class="chead" onclick="this.parentNode.classList.toggle('open')">
-        <div>
-          <div class="cnum">Month</div>
-          <div class="cdate">${MON[start.getMonth()]} ${start.getFullYear()}</div>
-        </div>
-        ${isHere?'<span class="here-tag">You are here</span>':''}
-        <div class="cleft"><div class="lbl">Money left now</div><div class="amt ${running<0?'neg':''}">${money(running)}</div></div>
-        <span class="chev">▶</span>
+<main class="max-w-md mx-auto px-4 pt-4 pb-10 space-y-4">
+
+  <!-- Balance card -->
+  <section class="rounded-3xl bg-white p-5 shadow-sm">
+    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Remaining running balance</p>
+    <p id="remaining" class="num text-[2.6rem] leading-tight font-extrabold tracking-tight mt-1">$0.00</p>
+    <p id="remainingNote" class="text-sm text-slate-500"></p>
+
+    <div class="grid grid-cols-2 gap-3 mt-4">
+      <div class="rounded-2xl bg-emerald-50 p-3">
+        <p class="text-[11px] font-semibold uppercase tracking-wider text-emerald-700">Total income</p>
+        <p id="totalIncome" class="num text-xl font-bold text-emerald-700 mt-0.5">$0.00</p>
+        <p id="incomeBreakdown" class="text-[11px] text-emerald-700/70 mt-0.5"></p>
       </div>
-      <div class="cbody">
-        <div class="carryrow">
-          <span class="carry-lbl">Left over from last month</span>
-          <span class="carry-in-wrap">$<input class="carry-in" type="number" inputmode="decimal" placeholder="0" value="${carry[mkey]!=null?carry[mkey]:''}" data-mkey="${mkey}" onchange="setCarry(this)" /></span>
+      <div class="rounded-2xl bg-slate-100 p-3">
+        <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-600">Total paid bills</p>
+        <p id="totalPaid" class="num text-xl font-bold text-slate-900 mt-0.5">$0.00</p>
+        <p id="paidCount" class="text-[11px] text-slate-500 mt-0.5"></p>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <div class="flex justify-between text-xs text-slate-500">
+        <span>Bills paid</span>
+        <span id="paidPct" class="num font-semibold">0%</span>
+      </div>
+      <div class="h-2.5 bg-slate-100 rounded-full mt-1.5 overflow-hidden">
+        <div id="paidBar" class="bar-fill h-full rounded-full bg-emerald-500" style="width:0%"></div>
+      </div>
+      <div class="flex justify-between text-xs mt-2">
+        <span class="text-slate-500">Still due: <b id="stillDue" class="num text-slate-800">$0.00</b></span>
+        <span class="text-slate-500">After all bills: <b id="projected" class="num">$0.00</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Income inputs -->
+  <section class="rounded-3xl bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between">
+      <h2 class="text-base font-bold">Income</h2>
+      <span id="checkCountBadge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600"></span>
+    </div>
+
+    <div class="mt-4 space-y-3">
+      <div>
+        <label for="disabilityInput" class="block text-xs font-semibold text-slate-500 mb-1.5">Disability income <span class="font-normal">(monthly, on the 1st)</span></label>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 font-semibold text-slate-400">$</span>
+          <input id="disabilityInput" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00"
+            class="num w-full h-12 pl-8 pr-4 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white">
         </div>
-        <div class="grp">
-          <div class="grp-h">Money in</div>
-          ${income.map(x=>{
-            if(x.kind==="edu"){
-              return `<div class="line"><span class="day">${ord(x.date.getDate())}</span><span class="nm">VA education <span style="color:var(--muted);font-weight:500">(editable)</span></span><span class="vl in">+$<input class="eduin" type="number" inputmode="decimal" value="${eduAmt}" onchange="setEdu(this.value)" /></span></div>`;
-            }
-            return `<div class="line"><span class="day">${ord(x.date.getDate())}</span><span class="nm">${x.name}</span><span class="vl in">+${money(x.amt)}</span></div>`;
-          }).join("")}
+      </div>
+
+      <div>
+        <label for="workInput" class="block text-xs font-semibold text-slate-500 mb-1.5">Work check <span class="font-normal">(each bi-weekly check)</span></label>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 font-semibold text-slate-400">$</span>
+          <input id="workInput" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00"
+            class="num w-full h-12 pl-8 pr-4 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white">
         </div>
-        <div class="grp">
-          <div class="grp-h">Payments due</div>
-          ${(()=>{
-            const cdls=income.filter(x=>x.kind==="cdl").sort((a,b)=>a.date-b.date);
-            const secondCdl=cdls.length>=2?cdls[1].date:null;
-            const rowHtml=x=>{const k=key(x.date)+"|"+x.name;return `<div class="line ${paid[k]?'paid':''}"><span class="day">${ord(x.date.getDate())}</span><span class="box ${paid[k]?'on':''}" onclick="toggle('${k}')"></span><span class="nm" onclick="toggle('${k}')">${x.name}</span><span class="vl">${money(x.amt)}</span></div>`;};
-            if(!bills.length) return '<div class="line"><span class="nm" style="color:var(--muted)">No payments this window</span></div>';
-            if(!secondCdl) return bills.map(rowHtml).join("");
-            const before=bills.filter(x=>x.date<secondCdl);
-            const after=bills.filter(x=>x.date>=secondCdl);
-            const afterTot=after.reduce((s,x)=>s+x.amt,0);
-            let h=before.map(rowHtml).join("");
-            h+=`<div class="paydivider"><span class="pdline"></span><span class="pdlabel">2nd CDL check hits ${MON[secondCdl.getMonth()]} ${secondCdl.getDate()} · +${money(CDL)}</span><span class="pdline"></span></div>`;
-            h+=`<div class="pdsub">These come out of the 2nd check — ${money(afterTot)}</div>`;
-            h+=after.map(rowHtml).join("");
-            return h;
-          })()}
+      </div>
+
+      <div>
+        <label for="paydayInput" class="block text-xs font-semibold text-slate-500 mb-1.5">Any recent work payday <span class="font-normal">(sets the 2-week schedule)</span></label>
+        <input id="paydayInput" type="date"
+          class="w-full min-w-0 h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 font-semibold appearance-none focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white">
+      </div>
+
+      <p id="paydayList" class="text-xs text-slate-500 leading-relaxed"></p>
+    </div>
+  </section>
+
+  <!-- Buckets -->
+  <section>
+    <div class="flex items-end justify-between px-1 mb-2">
+      <div>
+        <h2 class="text-base font-bold">Bills by paycheck</h2>
+        <p class="text-xs text-slate-500">Tap a bill to mark it paid</p>
+      </div>
+      <button id="addBillBtn" type="button" class="tap h-11 px-4 rounded-full bg-slate-900 text-white text-sm font-semibold flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add bill
+      </button>
+    </div>
+    <div id="buckets" class="space-y-4"></div>
+  </section>
+
+  <!-- Reset -->
+  <section class="rounded-3xl bg-white p-5 shadow-sm">
+    <h2 class="text-base font-bold">New month</h2>
+    <p class="text-sm text-slate-500 mt-1">Unchecks every bill so you can start fresh. Your bills and income amounts stay saved.</p>
+    <button id="resetBtn" type="button" class="tap mt-4 w-full h-12 rounded-2xl border-2 border-rose-200 text-rose-600 font-semibold">
+      Reset Month
+    </button>
+    <p class="text-xs text-slate-400 mt-4 leading-relaxed">
+      Everything saves automatically on this device. For the best experience, add this page to your home screen
+      (iPhone: Share, then Add to Home Screen. Android: menu, then Add to Home screen).
+    </p>
+  </section>
+</main>
+
+<!-- Bill editor sheet -->
+<div id="sheetWrap" class="fixed inset-0 z-40 hidden">
+  <div id="backdrop" class="backdrop absolute inset-0 bg-slate-900/50 opacity-0"></div>
+  <div id="sheet" class="sheet absolute inset-x-0 bottom-0 translate-y-full">
+    <div class="max-w-md mx-auto bg-white rounded-t-3xl px-5 pt-3 safe-bottom shadow-2xl">
+      <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-4"></div>
+      <h3 id="sheetTitle" class="text-lg font-bold">Add bill</h3>
+      <form id="billForm" class="mt-4 space-y-3" novalidate>
+        <div>
+          <label for="bName" class="block text-xs font-semibold text-slate-500 mb-1.5">Bill name</label>
+          <input id="bName" type="text" maxlength="40" autocomplete="off" placeholder="e.g. Rent" enterkeyhint="next"
+            class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white">
         </div>
-        <div class="csum"><span class="k">Carryover + income</span><span class="v">${money(carryAmt+inTot)}</span></div>
-        <div class="csum" style="border:none;padding-top:4px"><span class="k">Payments (total)</span><span class="v">${money(outTot)}</span></div>
-        ${paidTot>0?`<div class="paidrun">${money(paidTot)} paid so far · ${money(outTot-paidTot)} still to pay</div>`:''}
-        <div class="runbal">
-          <span class="rb-k">Money left right now</span>
-          <span class="rb-v ${running<0?'neg':''}">${money(running)}</span>
-        </div>
-        <div class="rb-note">Drops as you check off each payment. Once all are paid: ${money(left)} left.</div>
-        <div class="whatif">
-          <div class="wi-h">What if I spend&hellip;</div>
-          <div class="wi-row">
-            <span class="wi-dollar">$</span>
-            <input class="wi-in" type="number" inputmode="decimal" placeholder="1000" data-left="${left}" oninput="whatIf(this)" />
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="bAmount" class="block text-xs font-semibold text-slate-500 mb-1.5">Amount</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 font-semibold text-slate-400">$</span>
+              <input id="bAmount" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00"
+                class="num w-full h-12 pl-8 pr-3 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white">
+            </div>
           </div>
-          <div class="wi-out"></div>
+          <div>
+            <label for="bDay" class="block text-xs font-semibold text-slate-500 mb-1.5">Due day (1-31)</label>
+            <input id="bDay" type="number" inputmode="numeric" min="1" max="31" placeholder="1"
+              class="num w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white">
+          </div>
         </div>
-      </div>`;
-    wrap.appendChild(el);
+        <button type="submit" id="saveBillBtn" class="tap w-full h-14 rounded-2xl bg-slate-900 text-white font-bold mt-2">Save bill</button>
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" id="cancelBillBtn" class="tap h-12 rounded-2xl bg-slate-100 text-slate-700 font-semibold">Cancel</button>
+          <button type="button" id="deleteBillBtn" class="tap h-12 rounded-2xl bg-rose-50 text-rose-600 font-semibold">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full text-sm font-semibold shadow-lg bg-slate-900 text-white opacity-0 pointer-events-none transition-opacity duration-200 whitespace-nowrap"
+  style="bottom: calc(env(safe-area-inset-bottom) + 24px)"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  // ---------- Helpers ----------
+  const KEY = 'billTracker.v1';
+  const $ = (s) => document.querySelector(s);
+  const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+  const money = (n) => fmt.format(n || 0);
+  const round = (n) => Math.round((Number(n) || 0) * 100) / 100;
+  const pad = (n) => String(n).padStart(2, '0');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const toISO = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const monthKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+  const parseDate = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const daysInMonth = (ym) => { const [y, m] = ym.split('-').map(Number); return new Date(y, m, 0).getDate(); };
+  const shortDate = (ym, day) => { const [y, m] = ym.split('-').map(Number); return new Date(y, m - 1, day).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); };
+  const ordinal = (n) => { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
+
+  function firstFridayThisMonth() {
+    const now = new Date();
+    const d = new Date(now.getFullYear(), now.getMonth(), 1);
+    while (d.getDay() !== 5) d.setDate(d.getDate() + 1);
+    return toISO(d);
   }
-}
-function toggle(k){paid[k]=!paid[k];persist();
-  const opens=[...document.querySelectorAll('.cycle')].map(c=>c.classList.contains('open'));
-  build();
-  document.querySelectorAll('.cycle').forEach((c,i)=>{if(opens[i])c.classList.add('open');else c.classList.remove('open');});
-}
-function setEdu(v){eduAmt=parseFloat(v)||0;persist();
-  const opens=[...document.querySelectorAll('.cycle')].map(c=>c.classList.contains('open'));
-  build();
-  document.querySelectorAll('.cycle').forEach((c,i)=>{if(opens[i])c.classList.add('open');else c.classList.remove('open');});
-}
-function whatIf(el){
-  const left=parseFloat(el.getAttribute("data-left"))||0;
-  const spend=parseFloat(el.value);
-  const out=el.parentNode.parentNode.querySelector(".wi-out");
-  if(!(spend>0)){out.textContent="";out.className="wi-out";return;}
-  const after=left-spend;
-  const m=n=>"$"+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
-  if(after>=0){
-    out.className="wi-out ok";
-    out.textContent="Yes — you'd have "+m(after)+" left this month.";
-  }else{
-    out.className="wi-out no";
-    out.textContent="No — you'd be "+m(after)+" short this month.";
+
+  // ---------- Data ----------
+  function freshData() {
+    return {
+      version: 1,
+      month: monthKey(new Date()),
+      income: { disability: 0, workCheck: 0, payday: firstFridayThisMonth() },
+      bills: [
+        { id: uid(), name: 'Rent', amount: 1200, day: 1 },
+        { id: uid(), name: 'Phone', amount: 65, day: 8 },
+        { id: uid(), name: 'Car Insurance', amount: 140, day: 12 },
+        { id: uid(), name: 'Utilities', amount: 180, day: 18 },
+        { id: uid(), name: 'Streaming', amount: 16, day: 24 }
+      ],
+      paid: []
+    };
   }
-}
-function setCarry(el){const mk=el.getAttribute("data-mkey");const v=el.value.trim();if(v==="")delete carry[mk];else carry[mk]=parseFloat(v)||0;persist();
-  const opens=[...document.querySelectorAll('.cycle')].map(c=>c.classList.contains('open'));
-  build();
-  document.querySelectorAll('.cycle').forEach((c,i)=>{if(opens[i])c.classList.add('open');else c.classList.remove('open');});
-}
-function resetAll(){paid={};persist();build();}
-load();
+
+  function normalize(d) {
+    const base = freshData();
+    if (!d || typeof d !== 'object') return base;
+    if (/^\d{4}-\d{2}$/.test(d.month)) base.month = d.month;
+    if (d.income && typeof d.income === 'object') {
+      base.income.disability = round(Math.max(0, parseFloat(d.income.disability) || 0));
+      base.income.workCheck = round(Math.max(0, parseFloat(d.income.workCheck) || 0));
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d.income.payday)) base.income.payday = d.income.payday;
+    }
+    if (Array.isArray(d.bills)) {
+      base.bills = d.bills.filter((b) => b && b.name).map((b) => ({
+        id: String(b.id || uid()),
+        name: String(b.name).slice(0, 40),
+        amount: round(Math.max(0, parseFloat(b.amount) || 0)),
+        day: Math.min(31, Math.max(1, parseInt(b.day, 10) || 1))
+      }));
+    }
+    const ids = new Set(base.bills.map((b) => b.id));
+    base.paid = Array.isArray(d.paid) ? d.paid.map(String).filter((id) => ids.has(id)) : [];
+    return base;
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) return normalize(JSON.parse(raw));
+    } catch (e) { /* fall through */ }
+    return freshData();
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(data)); }
+    catch (e) { toast('Could not save. Storage may be full or blocked.', true); }
+  }
+
+  let data = load();
+  let editingId = null;
+
+  // ---------- Schedule logic ----------
+  // All bi-weekly paydays that land inside the tracking month.
+  function paydaysInMonth() {
+    const [y, m] = data.month.split('-').map(Number);
+    const start = new Date(y, m - 1, 1);
+    const end = new Date(y, m, 0);
+    const anchor = parseDate(data.income.payday);
+    const diffDays = Math.round((start - anchor) / 86400000);
+    const k = Math.ceil(diffDays / 14);
+    const days = [];
+    let d = new Date(anchor.getFullYear(), anchor.getMonth(), anchor.getDate() + 14 * k);
+    while (d <= end) {
+      if (d >= start) days.push(d.getDate());
+      d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 14);
+    }
+    return days;
+  }
+
+  // Bills due on the 29th-31st land on the last day in shorter months.
+  const effectiveDay = (bill) => Math.min(bill.day, daysInMonth(data.month));
+
+  // Income events in order: disability on the 1st, then each work check.
+  // Each bucket covers bills due from its payday up to the day before the next one.
+  function buildBuckets() {
+    const dis = data.income.disability;
+    const wc = data.income.workCheck;
+    const last = daysInMonth(data.month);
+    const events = [{ day: 1, labels: ['Disability'], amount: dis, kind: 'disability' }];
+
+    paydaysInMonth().forEach((day, i) => {
+      if (day === 1) {
+        events[0].labels.push('Work check');
+        events[0].amount = round(events[0].amount + wc);
+        events[0].kind = 'both';
+      } else {
+        events.push({ day, labels: [`Work check ${i + 1}`], amount: wc, kind: 'work' });
+      }
+    });
+
+    events.sort((a, b) => a.day - b.day);
+    events.forEach((ev, i) => {
+      ev.endDay = i < events.length - 1 ? events[i + 1].day - 1 : last;
+      ev.bills = data.bills
+        .filter((b) => { const d = effectiveDay(b); return d >= ev.day && d <= ev.endDay; })
+        .sort((a, b) => effectiveDay(a) - effectiveDay(b) || a.name.localeCompare(b.name));
+    });
+    return events;
+  }
+
+  // ---------- Rendering ----------
+  function render() {
+    const paidSet = new Set(data.paid);
+    const paydays = paydaysInMonth();
+    const checkCount = paydays.length;
+    const totalIncome = round(data.income.disability + data.income.workCheck * checkCount);
+    const totalBills = round(data.bills.reduce((s, b) => s + b.amount, 0));
+    const totalPaid = round(data.bills.filter((b) => paidSet.has(b.id)).reduce((s, b) => s + b.amount, 0));
+    const remaining = round(totalIncome - totalPaid);
+    const stillDue = round(totalBills - totalPaid);
+    const projected = round(totalIncome - totalBills);
+
+    // Header month
+    const [y, m] = data.month.split('-').map(Number);
+    $('#monthLabel').textContent = new Date(y, m - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    $('#monthInput').value = data.month;
+
+    // Balance card
+    const rem = $('#remaining');
+    rem.textContent = money(remaining);
+    rem.classList.toggle('text-rose-600', remaining < 0);
+    rem.classList.toggle('text-emerald-600', remaining >= 0 && totalIncome > 0);
+    rem.classList.toggle('text-slate-900', remaining >= 0 && totalIncome === 0);
+
+    const note = $('#remainingNote');
+    if (totalIncome === 0) note.textContent = 'Set your income amounts below to get started.';
+    else if (remaining < 0) note.textContent = `Paid bills exceed income by ${money(-remaining)}.`;
+    else note.textContent = 'Income minus bills checked off as paid.';
+
+    $('#totalIncome').textContent = money(totalIncome);
+    $('#incomeBreakdown').textContent = `${money(data.income.disability)} + ${checkCount} × ${money(data.income.workCheck)}`;
+    $('#totalPaid').textContent = money(totalPaid);
+    $('#paidCount').textContent = `${paidSet.size} of ${data.bills.length} bills`;
+
+    const pct = totalBills > 0 ? Math.round((totalPaid / totalBills) * 100) : 0;
+    $('#paidPct').textContent = `${pct}%`;
+    $('#paidBar').style.width = `${pct}%`;
+    $('#stillDue').textContent = money(stillDue);
+    const proj = $('#projected');
+    proj.textContent = money(projected);
+    proj.className = 'num ' + (projected < 0 ? 'text-rose-600' : 'text-emerald-600');
+
+    // Income card
+    if (document.activeElement !== $('#disabilityInput')) $('#disabilityInput').value = data.income.disability || '';
+    if (document.activeElement !== $('#workInput')) $('#workInput').value = data.income.workCheck || '';
+    $('#paydayInput').value = data.income.payday;
+    $('#checkCountBadge').textContent = `${checkCount} work check${checkCount === 1 ? '' : 's'} this month`;
+    $('#paydayList').textContent = paydays.length
+      ? `Work checks hit: ${paydays.map((d) => shortDate(data.month, d)).join(', ')}`
+      : 'No work paydays fall in this month.';
+
+    renderBuckets(paidSet);
+  }
+
+  function renderBuckets(paidSet) {
+    const buckets = buildBuckets();
+    const now = new Date();
+    const isCurrentMonth = data.month === monthKey(now);
+    const today = now.getDate();
+
+    if (!data.bills.length) {
+      $('#buckets').innerHTML = `
+        <div class="rounded-3xl bg-white p-8 shadow-sm text-center">
+          <p class="font-semibold">No recurring bills yet</p>
+          <p class="text-sm text-slate-500 mt-1">Tap "Add bill" to set up rent, utilities, subscriptions and more.</p>
+        </div>`;
+      return;
+    }
+
+    $('#buckets').innerHTML = buckets.map((b) => {
+      const billsTotal = round(b.bills.reduce((s, x) => s + x.amount, 0));
+      const paidTotal = round(b.bills.filter((x) => paidSet.has(x.id)).reduce((s, x) => s + x.amount, 0));
+      const left = round(b.amount - billsTotal);
+      const allPaid = b.bills.length > 0 && b.bills.every((x) => paidSet.has(x.id));
+      const accent = b.kind === 'work' ? 'bg-sky-500' : b.kind === 'both' ? 'bg-violet-500' : 'bg-emerald-500';
+      const range = b.day === b.endDay ? shortDate(data.month, b.day) : `${shortDate(data.month, b.day)} to ${shortDate(data.month, b.endDay)}`;
+
+      const rows = b.bills.length ? b.bills.map((bill) => {
+        const paid = paidSet.has(bill.id);
+        const d = effectiveDay(bill);
+        const overdue = !paid && isCurrentMonth && d < today;
+        return `
+          <div class="bill-row flex items-stretch ${paid ? 'opacity-50' : ''}">
+            <label class="tap flex-1 min-w-0 flex items-center gap-3 py-3 pl-1 cursor-pointer select-none">
+              <input type="checkbox" class="sr-only" data-bill="${esc(bill.id)}" ${paid ? 'checked' : ''}>
+              <span class="check-box w-8 h-8 shrink-0 rounded-xl border-2 grid place-items-center ${paid ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300 bg-white'}">
+                ${paid ? '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>' : ''}
+              </span>
+              <span class="flex-1 min-w-0">
+                <span class="block font-semibold truncate ${paid ? 'line-through text-slate-500' : ''}">${esc(bill.name)}</span>
+                <span class="block text-xs ${overdue ? 'text-rose-600 font-semibold' : 'text-slate-500'}">
+                  ${paid ? 'Paid' : overdue ? 'Past due' : 'Due'} · ${shortDate(data.month, d)}
+                </span>
+              </span>
+              <span class="num font-bold ${paid ? 'line-through text-slate-500' : ''}">${money(bill.amount)}</span>
+            </label>
+            <button type="button" data-edit="${esc(bill.id)}" aria-label="Edit ${esc(bill.name)}"
+              class="tap w-11 shrink-0 grid place-items-center text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </button>
+          </div>`;
+      }).join('') : `<p class="py-4 text-sm text-slate-400 text-center">No bills due in this window</p>`;
+
+      return `
+        <article class="rounded-3xl bg-white shadow-sm overflow-hidden">
+          <div class="p-4 pb-3 border-b border-slate-100">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full ${accent}"></span>
+                  <h3 class="font-bold truncate">${esc(b.labels.join(' + '))}</h3>
+                  ${allPaid ? '<span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">All paid</span>' : ''}
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Hits ${ordinal(b.day)} · covers ${range}</p>
+              </div>
+              <p class="num font-bold text-emerald-600 whitespace-nowrap">+${money(b.amount)}</p>
+            </div>
+          </div>
+          <div class="px-3 divide-y divide-slate-100">${rows}</div>
+          <div class="px-4 py-3 bg-slate-50 flex items-center justify-between text-sm">
+            <span class="text-slate-500">Bills <b class="num text-slate-800">${money(billsTotal)}</b>
+              <span class="text-slate-400">(${money(paidTotal)} paid)</span></span>
+            <span class="num font-bold ${left < 0 ? 'text-rose-600' : 'text-emerald-600'}">${left < 0 ? 'Short ' + money(-left) : money(left) + ' left'}</span>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  // ---------- Events ----------
+  // Checkbox toggle (delegated)
+  $('#buckets').addEventListener('change', (e) => {
+    const cb = e.target.closest('input[data-bill]');
+    if (!cb) return;
+    const id = cb.dataset.bill;
+    const set = new Set(data.paid);
+    if (cb.checked) set.add(id); else set.delete(id);
+    data.paid = [...set];
+    save();
+    render();
+    if (navigator.vibrate) navigator.vibrate(10);
+  });
+
+  $('#buckets').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-edit]');
+    if (btn) openSheet(btn.dataset.edit);
+  });
+
+  // Income inputs save as you type
+  $('#disabilityInput').addEventListener('input', (e) => {
+    data.income.disability = round(Math.max(0, parseFloat(e.target.value) || 0));
+    save(); render();
+  });
+  $('#workInput').addEventListener('input', (e) => {
+    data.income.workCheck = round(Math.max(0, parseFloat(e.target.value) || 0));
+    save(); render();
+  });
+  $('#paydayInput').addEventListener('change', (e) => {
+    if (!e.target.value) return;
+    data.income.payday = e.target.value;
+    save(); render();
+    toast('Payday schedule updated');
+  });
+
+  $('#monthInput').addEventListener('change', (e) => {
+    if (!/^\d{4}-\d{2}$/.test(e.target.value)) return;
+    data.month = e.target.value;
+    save(); render();
+  });
+
+  $('#resetBtn').addEventListener('click', () => {
+    const current = monthKey(new Date());
+    const target = data.month < current ? current : data.month;
+    const [y, m] = target.split('-').map(Number);
+    const label = new Date(y, m - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    if (!confirm(`Uncheck all bills and start ${label}?`)) return;
+    data.paid = [];
+    data.month = target;
+    save(); render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast(`${label} started`);
+  });
+
+  // ---------- Bill sheet ----------
+  function openSheet(id) {
+    editingId = id || null;
+    const bill = id ? data.bills.find((b) => b.id === id) : null;
+    $('#sheetTitle').textContent = bill ? 'Edit bill' : 'Add bill';
+    $('#saveBillBtn').textContent = bill ? 'Update bill' : 'Save bill';
+    $('#deleteBillBtn').classList.toggle('hidden', !bill);
+    $('#cancelBillBtn').classList.toggle('col-span-2', !bill);
+    $('#bName').value = bill ? bill.name : '';
+    $('#bAmount').value = bill ? bill.amount : '';
+    $('#bDay').value = bill ? bill.day : '';
+
+    $('#sheetWrap').classList.remove('hidden');
+    requestAnimationFrame(() => {
+      $('#backdrop').classList.replace('opacity-0', 'opacity-100');
+      $('#sheet').classList.replace('translate-y-full', 'translate-y-0');
+    });
+    if (!bill) setTimeout(() => $('#bName').focus(), 250);
+  }
+
+  function closeSheet() {
+    document.activeElement && document.activeElement.blur();
+    $('#backdrop').classList.replace('opacity-100', 'opacity-0');
+    $('#sheet').classList.replace('translate-y-0', 'translate-y-full');
+    setTimeout(() => $('#sheetWrap').classList.add('hidden'), 250);
+    editingId = null;
+  }
+
+  $('#addBillBtn').addEventListener('click', () => openSheet());
+  $('#cancelBillBtn').addEventListener('click', closeSheet);
+  $('#backdrop').addEventListener('click', closeSheet);
+
+  $('#billForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = $('#bName').value.trim();
+    const amount = round(parseFloat($('#bAmount').value));
+    const day = parseInt($('#bDay').value, 10);
+    if (!name) { toast('Give the bill a name', true); $('#bName').focus(); return; }
+    if (!(amount > 0)) { toast('Enter an amount above $0', true); $('#bAmount').focus(); return; }
+    if (!(day >= 1 && day <= 31)) { toast('Due day must be 1 to 31', true); $('#bDay').focus(); return; }
+
+    if (editingId) {
+      const bill = data.bills.find((b) => b.id === editingId);
+      if (bill) Object.assign(bill, { name, amount, day });
+      toast('Bill updated');
+    } else {
+      data.bills.push({ id: uid(), name, amount, day });
+      toast('Bill added');
+    }
+    save(); render(); closeSheet();
+  });
+
+  $('#deleteBillBtn').addEventListener('click', () => {
+    if (!editingId) return;
+    const bill = data.bills.find((b) => b.id === editingId);
+    if (!bill || !confirm(`Delete "${bill.name}"?`)) return;
+    data.bills = data.bills.filter((b) => b.id !== editingId);
+    data.paid = data.paid.filter((id) => id !== editingId);
+    save(); render(); closeSheet();
+    toast('Bill deleted');
+  });
+
+  // ---------- Toast ----------
+  let toastTimer;
+  function toast(msg, isError) {
+    const el = $('#toast');
+    el.textContent = msg;
+    el.classList.toggle('bg-rose-600', !!isError);
+    el.classList.toggle('bg-slate-900', !isError);
+    el.classList.replace('opacity-0', 'opacity-100');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.replace('opacity-100', 'opacity-0'), 2000);
+  }
+
+  // ---------- Home screen icon (generated, no image files needed) ----------
+  (function makeIcon() {
+    try {
+      const c = document.createElement('canvas');
+      c.width = c.height = 180;
+      const x = c.getContext('2d');
+      x.fillStyle = '#0f172a'; x.fillRect(0, 0, 180, 180);
+      x.fillStyle = '#10b981'; x.beginPath(); x.arc(90, 90, 58, 0, Math.PI * 2); x.fill();
+      x.fillStyle = '#ffffff'; x.font = 'bold 78px system-ui, -apple-system, sans-serif';
+      x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('$', 90, 96);
+      const url = c.toDataURL('image/png');
+      $('#touchIcon').href = url; $('#favIcon').href = url;
+    } catch (e) { /* icon is optional */ }
+  })();
+
+  // Ask the browser to keep storage around (helps on Android)
+  try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}
+
+  // Re-render when returning to the app so "past due" labels stay current
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+
+  render();
+})();
 </script>
 </body>
 </html>
